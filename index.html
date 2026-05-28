@@ -574,6 +574,25 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
+    .edu-honor {
+      margin: 0.7rem 0 0;
+      padding-top: 0.7rem;
+      border-top: 1px dashed var(--rule);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--oxblood);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      line-height: 1.4;
+    }
+    .edu-honor::before {
+      content: "★";
+      font-size: 0.85rem;
+      color: var(--oxblood);
+    }
 
     /* ─── certifications ─── */
     .cert-grid {
@@ -1100,9 +1119,10 @@
 
         <div class="edu-grid reveal reveal-delay-1">
           <div class="edu-cell">
-            <h3 class="edu-degree">M.S., Information Systems <span class="edu-status"><span data-lang="en">In Progress</span><span data-lang="es" hidden>En Curso</span></span></h3>
+            <h3 class="edu-degree">M.S., Information Systems <span class="edu-status"><span data-lang="en">Aug 2026</span><span data-lang="es" hidden>Ago 2026</span></span></h3>
             <p class="edu-field"><span data-lang="en">Cybersecurity Concentration</span><span data-lang="es" hidden>Concentración en Ciberseguridad</span></p>
             <p class="edu-inst">Texas A&amp;M University — Central Texas</p>
+            <p class="edu-honor"><span data-lang="en">4.0 GPA · 27 of 30 credit hours completed</span><span data-lang="es" hidden>Promedio 4.0 · 27 de 30 horas-crédito completadas</span></p>
           </div>
           <div class="edu-cell">
             <h3 class="edu-degree">Master of Public Administration</h3>
@@ -1114,6 +1134,7 @@
             <h3 class="edu-degree">Bachelor of Science</h3>
             <p class="edu-field"><span data-lang="en">Technology</span><span data-lang="es" hidden>Tecnología</span></p>
             <p class="edu-inst">Cameron University</p>
+            <p class="edu-honor"><span data-lang="en">President's List · 4.0 GPA over 33 semester hours · 2 consecutive semesters</span><span data-lang="es" hidden>Lista del Presidente · Promedio 4.0 en 33 horas-crédito · 2 semestres consecutivos</span></p>
           </div>
           <div class="edu-cell">
             <h3 class="edu-degree">Associate of Science</h3>
