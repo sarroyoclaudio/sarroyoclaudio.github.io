@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page Not Found · Santos Arroyo</title>
+  <meta name="description" content="The page you're looking for could not be located." />
+  <link rel="canonical" href="https://sarroyoclaudio.github.io/" />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=DM+Sans:opsz,wght@9..40,300..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --bg-warm: #ece6d8;
+      --surface: #fbf9f3;
+      --ink: #16140f;
+      --ink-soft: #2c2926;
+      --muted: #6b6258;
+      --rule: #d8d1c2;
+      --oxblood: #7a2424;
+      --olive: #4a5043;
+      --gold: #a08145;
+    }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-weight: 400;
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .display { font-family: 'Fraunces', 'Times New Roman', serif; font-optical-sizing: auto; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+    /* radial color washes */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0;
+      background-image:
+        radial-gradient(circle at 18% 22%, rgba(122,36,36,0.06) 0%, transparent 45%),
+        radial-gradient(circle at 82% 78%, rgba(74,80,67,0.06) 0%, transparent 45%);
+    }
+    /* SVG grain overlay */
+    body::after {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 1;
+      opacity: 0.06;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+    }
+    nav, main, footer { position: relative; z-index: 2; }
+
+    /* ─── nav ─── */
+    .top-nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+    }
+    .nav-inner {
+      max-width: 1240px; margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .nav-mark {
+      font-family: 'Fraunces', serif;
+      font-weight: 500; font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+    .nav-mark .initial {
+      display: inline-flex;
+      width: 28px; height: 28px;
+      align-items: center; justify-content: center;
+      background: var(--ink); color: var(--bg);
+      margin-right: 0.6rem;
+      font-family: 'Fraunces', serif;
+      font-size: 0.85rem;
+      vertical-align: middle;
+    }
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .lang-toggle:hover { color: var(--ink); border-color: var(--ink); }
+    .lang-toggle .active { color: var(--ink); font-weight: 500; }
+
+    /* ─── main 404 ─── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 2rem 4rem;
+    }
+    .panel {
+      max-width: 640px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 2.5rem;
+    }
+    .eyebrow .bar { width: 32px; height: 1px; background: var(--oxblood); }
+
+    .code {
+      font-family: 'Fraunces', serif;
+      font-optical-sizing: auto;
+      font-variation-settings: "SOFT" 70;
+      font-weight: 300;
+      font-size: clamp(7rem, 26vw, 16rem);
+      line-height: 0.85;
+      letter-spacing: -0.04em;
+      margin: 0;
+      position: relative;
+      display: inline-block;
+    }
+    .code .mid {
+      color: var(--oxblood);
+      font-style: italic;
+      font-weight: 300;
+    }
+    /* faint scope reticle behind the 0 */
+    .code::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: clamp(8rem, 28vw, 17rem);
+      height: clamp(8rem, 28vw, 17rem);
+      transform: translate(-50%, -50%);
+      border: 1px solid var(--rule);
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0.55;
+    }
+
+    .headline {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+      margin: 2rem 0 1rem;
+    }
+    .headline em { font-style: italic; color: var(--oxblood); font-weight: 300; }
+
+    .sub {
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      max-width: 42ch;
+      margin: 0 auto 2.5rem;
+    }
+
+    .cta-row {
+      display: flex; flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.85rem 1.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500; font-size: 0.9rem;
+      letter-spacing: 0.01em;
+      border: 1px solid var(--ink);
+      background: var(--ink); color: var(--bg);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--oxblood); border-color: var(--oxblood); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--ink); }
+    .btn-ghost:hover { background: var(--ink); color: var(--bg); }
+    .btn svg { width: 14px; height: 14px; }
+
+    .coords {
+      margin-top: 3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .coords .err { color: var(--oxblood); }
+
+    /* ─── footer ─── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem 0;
+    }
+    .footer-inner {
+      max-width: 1240px; margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── load animation ─── */
+    .rise {
+      opacity: 0;
+      transform: translateY(22px);
+      animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+    }
+    .rise-1 { animation-delay: 0.05s; }
+    .rise-2 { animation-delay: 0.18s; }
+    .rise-3 { animation-delay: 0.30s; }
+    .rise-4 { animation-delay: 0.42s; }
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rise { animation: none; opacity: 1; transform: none; }
+    }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-mark">
+        <span class="initial">A</span>Santos Arroyo
+      </a>
+      <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+        <span id="langEn" class="active">EN</span>
+        <span style="opacity:0.4">/</span>
+        <span id="langEs">ES</span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <div class="panel">
+      <div class="eyebrow rise rise-1">
+        <span class="bar"></span>
+        <span data-lang="en">Error · Page Not Found</span>
+        <span data-lang="es" hidden>Error · Página No Encontrada</span>
+      </div>
+
+      <h1 class="code display rise rise-1">4<span class="mid">0</span>4</h1>
+
+      <h2 class="headline rise rise-2">
+        <span data-lang="en">This position couldn't be <em>located</em>.</span>
+        <span data-lang="es" hidden>No se pudo <em>localizar</em> esta posición.</span>
+      </h2>
+
+      <p class="sub rise rise-3">
+        <span data-lang="en">The page may have been moved or retired, or the link was mistyped. Let's get you back to known terrain.</span>
+        <span data-lang="es" hidden>Es posible que la página haya sido movida o retirada, o que el enlace se haya escrito mal. Volvamos a terreno conocido.</span>
+      </p>
+
+      <div class="cta-row rise rise-3">
+        <a href="/" class="btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l9-9 9 9"/><path d="M9 21V12h6v9"/><path d="M5 10v11h14V10"/></svg>
+          <span data-lang="en">Return to homepage</span>
+          <span data-lang="es" hidden>Volver al inicio</span>
+        </a>
+        <a href="mailto:shac70@outlook.com" class="btn btn-ghost">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span data-lang="en">Contact me</span>
+          <span data-lang="es" hidden>Contáctame</span>
+        </a>
+      </div>
+
+      <div class="coords rise rise-4">
+        <span class="err">HTTP 404</span> &nbsp;·&nbsp; <span data-lang="en">No coordinates on file</span><span data-lang="es" hidden>Sin coordenadas en archivo</span>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>© 2026 · Santos H. Arroyo Claudio</div>
+      <div>
+        <span data-lang="en">Killeen, Texas · United States</span>
+        <span data-lang="es" hidden>Killeen, Texas · Estados Unidos</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const langToggle = document.getElementById('langToggle');
+    const langEn = document.getElementById('langEn');
+    const langEs = document.getElementById('langEs');
+    let currentLang = 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-lang]').forEach(el => {
+        el.hidden = el.dataset.lang !== lang;
+      });
+      langEn.classList.toggle('active', lang === 'en');
+      langEs.classList.toggle('active', lang === 'es');
+    }
+    langToggle.addEventListener('click', () => setLang(currentLang === 'en' ? 'es' : 'en'));
+  </script>
+</body>
+</html>
