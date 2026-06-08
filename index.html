@@ -520,6 +520,77 @@
       font-family: 'Fraunces', serif;
     }
 
+    /* project hero image — top banner inside a card */
+    .project-hero {
+      margin: -2.5rem -2.5rem 1.75rem;
+      position: relative;
+      background: var(--ink);
+      overflow: hidden;
+    }
+    .project-hero img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .project-hero::after {
+      content: "";
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(22,20,15,0.55), transparent);
+      pointer-events: none;
+    }
+    .project-hero-caption {
+      position: absolute;
+      left: 1rem; bottom: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      z-index: 2;
+    }
+
+    /* wide card variant — full width row */
+    .project-card-wide { grid-column: 1 / -1; }
+    .project-wide-inner {
+      display: grid;
+      grid-template-columns: 1.7fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 880px) {
+      .project-wide-inner { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    /* phone-frame mockup for mobile app video */
+    .phone-frame {
+      position: relative;
+      max-width: 260px;
+      margin: 0.5rem auto 0;
+      border-radius: 28px;
+      overflow: hidden;
+      background: var(--ink);
+      padding: 6px;
+      box-shadow: 0 24px 60px -22px rgba(22,20,15,0.45),
+                  inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+    .phone-frame video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 22px;
+      background: var(--ink);
+    }
+    .phone-caption {
+      margin: 1rem 0 0;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
     /* ─── education ─── */
     .edu-grid {
       display: grid;
@@ -1068,6 +1139,10 @@
           </article>
 
           <article class="project-card reveal reveal-delay-2">
+            <div class="project-hero">
+              <img src="rocc-pano.jpg" alt="SunPower Remote Operations Control Center — operators at workstations with wall-mounted dashboard" loading="lazy" />
+              <span class="project-hero-caption"><span data-lang="en">Remote Operations Control Center · SunPower</span><span data-lang="es" hidden>Centro de Control de Operaciones Remotas · SunPower</span></span>
+            </div>
             <div class="project-meta">
               <span class="num">P/02</span>
               <span><span data-lang="en">Energy · Critical Infrastructure</span><span data-lang="es" hidden>Energía · Infraestructura Crítica</span></span>
@@ -1096,6 +1171,56 @@
                 <span class="outcome-chip"><strong>$3M</strong> <span data-lang="en">on schedule, under budget</span><span data-lang="es" hidden>en cronograma, bajo presupuesto</span></span>
                 <span class="outcome-chip"><strong>24/7</strong> <span data-lang="en">solar monitoring</span><span data-lang="es" hidden>monitoreo solar</span></span>
                 <span class="outcome-chip"><strong>NERC</strong> <span data-lang="en">compliant grid</span><span data-lang="es" hidden>red conforme</span></span>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card project-card-wide reveal reveal-delay-3">
+            <div class="project-wide-inner">
+              <div>
+                <div class="project-meta">
+                  <span class="num">P/03</span>
+                  <span><span data-lang="en">Energy · Power Platform &amp; Mobile</span><span data-lang="es" hidden>Energía · Power Platform y Móvil</span></span>
+                </div>
+                <h3 class="project-title">
+                  <span data-lang="en">Power Platform Solution — ReEnFoCo</span>
+                  <span data-lang="es" hidden>Solución Power Platform — ReEnFoCo</span>
+                </h3>
+                <p class="project-org">Cooperativa Hidroeléctrica de la Montaña, Puerto Rico</p>
+
+                <div class="project-section">
+                  <span class="project-label"><span data-lang="en">Scope</span><span data-lang="es" hidden>Alcance</span></span>
+                  <p class="project-text" data-lang="en">End-to-end Power Platform solution supporting CHM's ReEnFoCo initiative — a community microgrid program designing and installing photovoltaic systems to improve energy resilience for mountain residents. Enables field agents to capture business profiles and energy consumption data on-site for microgrid sizing across local commerce (colmados, pharmacies, laboratories, bakeries, supermarkets).</p>
+                  <p class="project-text" data-lang="es" hidden>Solución Power Platform integral en apoyo de la iniciativa ReEnFoCo de la CHM — un programa de microredes comunitarias que diseña e instala sistemas fotovoltaicos para mejorar la resiliencia energética de los residentes de la montaña. Permite a los agentes de campo capturar perfiles de negocios y datos de consumo energético en sitio para el dimensionamiento de microredes para el comercio local (colmados, farmacias, laboratorios, panaderías, supermercados).</p>
+                </div>
+
+                <div class="project-section">
+                  <span class="project-label"><span data-lang="en">Key Actions</span><span data-lang="es" hidden>Acciones Clave</span></span>
+                  <p class="project-text" data-lang="en">Architected mobile and desktop applications (Power Apps Canvas) for field-based customer business and energy consumption data capture; modeled the underlying Dataverse database schema to support multi-source data integration; defined and automated end-to-end business processes using Power Automate; built Power BI dashboards for data collection, analysis, transformation, and executive-level reporting.</p>
+                  <p class="project-text" data-lang="es" hidden>Diseñó aplicaciones móviles y de escritorio (Power Apps Canvas) para la captura de datos de negocios y consumo energético en campo; modeló el esquema de la base de datos Dataverse para soportar la integración de datos de múltiples fuentes; definió y automatizó procesos de negocio integrales mediante Power Automate; construyó dashboards de Power BI para la recopilación, análisis, transformación de datos e informes ejecutivos.</p>
+                </div>
+
+                <div class="project-section">
+                  <span class="project-label"><span data-lang="en">Stack</span><span data-lang="es" hidden>Tecnologías</span></span>
+                  <div class="project-outcomes">
+                    <span class="outcome-chip"><strong>Power Apps</strong> <span data-lang="en">Canvas + Model-Driven</span><span data-lang="es" hidden>Canvas + Model-Driven</span></span>
+                    <span class="outcome-chip"><strong>Dataverse</strong> <span data-lang="en">data model</span><span data-lang="es" hidden>modelo de datos</span></span>
+                    <span class="outcome-chip"><strong>Power Automate</strong> <span data-lang="en">workflows</span><span data-lang="es" hidden>flujos</span></span>
+                    <span class="outcome-chip"><strong>Power BI</strong> <span data-lang="en">dashboards</span><span data-lang="es" hidden>dashboards</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="phone-frame">
+                  <video controls muted playsinline preload="metadata" poster="chm-app-poster.jpg" aria-label="CHM ReEnFoCo mobile app demonstration">
+                    <source src="chm-app.mp4" type="video/mp4" />
+                  </video>
+                </div>
+                <p class="phone-caption">
+                  <span data-lang="en">Mobile app demo · ReEnFoCo</span>
+                  <span data-lang="es" hidden>Demo de la app móvil · ReEnFoCo</span>
+                </p>
               </div>
             </div>
           </article>
@@ -1193,8 +1318,8 @@
             <span class="honor-num">i.</span>
             <span>
               <span class="honor-name"><span data-lang="en">Bronze Star Medal</span><span data-lang="es" hidden>Medalla Estrella de Bronce</span></span>
-              <span class="honor-note" data-lang="en">Exceptional meritorious service · Operation New Dawn, Iraq</span>
-              <span class="honor-note" data-lang="es" hidden>Servicio meritorio excepcional · Operation New Dawn, Irak</span>
+              <span class="honor-note" data-lang="en">Exceptional meritorious service · Operation Iraqi Freedom / New Dawn, Iraq</span>
+              <span class="honor-note" data-lang="es" hidden>Servicio meritorio excepcional · Operation Iraqi Freedom / New Dawn, Irak</span>
             </span>
           </li>
           <li class="honor">
