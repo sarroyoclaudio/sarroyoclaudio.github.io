@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Santos H. Arroyo Claudio — Project Management & IT Leadership</title>
-  <meta name="description" content="Major (Ret.) Santos H. Arroyo Claudio, PMP, CBAP — 20+ years leading complex IT, infrastructure, and security programs across defense, energy, and higher education. M.S. Information Systems, Distinguished Graduate Honors, 2026." />
+  <meta name="description" content="Major (Ret.) Santos H. Arroyo Claudio, PMP, CBAP — 20+ years leading complex IT, infrastructure, and security programs across defense, energy, and higher education." />
   <link rel="canonical" href="https://sarroyoclaudio.github.io/" />
 
   <!-- Favicons -->
@@ -18,7 +18,7 @@
   <meta property="og:type" content="profile" />
   <meta property="og:url" content="https://sarroyoclaudio.github.io/" />
   <meta property="og:title" content="Santos H. Arroyo Claudio — Project Management & IT Leadership" />
-  <meta property="og:description" content="PMP, CBAP, Top Secret. M.S. Information Systems with Distinguished Graduate Honors, 2026. Two decades leading IT, infrastructure, and security programs." />
+  <meta property="og:description" content="PMP, CBAP, Top Secret. Two decades leading IT, infrastructure, and security programs across defense, energy, and higher education." />
   <meta property="og:image" content="https://sarroyoclaudio.github.io/portrait.jpg" />
   <meta property="og:image:alt" content="Santos H. Arroyo Claudio" />
   <meta property="og:locale" content="en_US" />
@@ -27,7 +27,7 @@
   <!-- Twitter / X card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Santos H. Arroyo Claudio — Project Management & IT Leadership" />
-  <meta name="twitter:description" content="PMP, CBAP, Top Secret. M.S. Information Systems, Distinguished Graduate Honors, 2026." />
+  <meta name="twitter:description" content="PMP, CBAP, Top Secret. Two decades leading IT, infrastructure, and security programs." />
   <meta name="twitter:image" content="https://sarroyoclaudio.github.io/portrait.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -591,6 +591,25 @@
       color: var(--muted);
     }
 
+    /* demo-frame — landscape 16:9 product walkthrough video */
+    .demo-frame {
+      position: relative;
+      margin: 0.5rem 0 0;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--ink);
+      padding: 6px;
+      box-shadow: 0 24px 60px -22px rgba(22,20,15,0.45),
+                  inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+    .demo-frame video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      background: var(--ink);
+    }
+
     /* ─── education ─── */
     .edu-grid {
       display: grid;
@@ -847,6 +866,7 @@
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
 
     /* utility */
     [hidden] { display: none !important; }
@@ -907,7 +927,7 @@
             <div class="pills">
               <span class="pill"><span class="dot"></span>PMP &nbsp;·&nbsp; CBAP</span>
               <span class="pill olive"><span class="dot"></span><span data-lang="en">Top Secret · DoD</span><span data-lang="es" hidden>Top Secret · DoD</span></span>
-              <span class="pill gold"><span class="dot"></span><span data-lang="en">M.S. Cybersecurity · Distinguished Graduate</span><span data-lang="es" hidden>M.S. Ciberseguridad · Graduado Distinguido</span></span>
+              <span class="pill gold"><span class="dot"></span><span data-lang="en">M.S. Cybersecurity (cand.)</span><span data-lang="es" hidden>M.S. Ciberseguridad (cand.)</span></span>
               <span class="pill"><span class="dot"></span>Killeen, TX</span>
             </div>
 
@@ -994,13 +1014,13 @@
           <div class="essay-body">
             <div data-lang="en">
               <p>Santos H. Arroyo Claudio is a Distinguished Leadership Graduate of the U.S. Army Officer Candidate School, a retired Major, and a project management professional with two decades of experience delivering complex programs in regulated, high-stakes environments. A native of Vega Alta, Puerto Rico, he began his Army service in 1991 as an enlisted Soldier and was commissioned a Second Lieutenant in 2000 — a "Mustang" path that defines how he leads today.</p>
-              <p>His military career spans deployments to Bosnia-Herzegovina, Kuwait, and Iraq, including service as Deputy Chief of a Stability Transition Team advising the Iraqi Border Patrol, and command of more than 400 Soldiers at Fort Hood as Commander of HHC, 3rd Brigade Special Troops Battalion, 1st Cavalry Division. In each role he was responsible not only for mission outcomes but for the people, equipment, and accountability that made those outcomes possible.</p>
-              <p>In the civilian sector he has carried that same standard into IT project management — leading classified network deployments at Army Futures Command, integrating a Student Information System across eleven institutions at Texas A&amp;M University-Central Texas, and delivering a $3M Remote Operations Control Center for SunPower Corporation under strict NERC reliability standards. Today he runs <em class="title">Major Business Solutions, LLC</em>, advising clients on digital transformation, process optimization, and low-code Power Platform solutions — including a current engagement with the Cooperativa Hidroeléctrica de la Montaña in Puerto Rico. In August 2026 he completes an M.S. in Information Systems with a cybersecurity concentration at Texas A&amp;M University-Central Texas, graduating with Distinguished Graduate Honors.</p>
+              <p>His military career spans deployments to Bosnia-Herzegovina, Kuwait, and Iraq, including service as Deputy Chief of a Stability Transition Team advising the Iraqi Border Patrol, and command of more than 400 Soldiers at Fort Hood as Commander of HHC, 3rd Brigade Special Troops Battalion. In each role he was responsible not only for mission outcomes but for the people, equipment, and accountability that made those outcomes possible.</p>
+              <p>In the civilian sector he has carried that same standard into IT project management — leading classified network deployments at Army Futures Command, integrating a Student Information System across eleven institutions at Texas A&amp;M University-Central Texas, and delivering a $3M Remote Operations Control Center for SunPower Corporation under strict NERC reliability standards. Today he runs <em class="title">Major Business Solutions, LLC</em>, which in August 2026 launched <em class="title">MajorCompliance</em> — a vendor-risk and SBOM compliance platform scoring third-party risk across six frameworks (NIST CSF, SOC 2, ISO 27001, CMMC, HIPAA, NERC CIP) with AI-verified evidence — alongside consulting engagements including Power Platform work for the Cooperativa Hidroeléctrica de la Montaña in Puerto Rico.</p>
             </div>
             <div data-lang="es" hidden>
               <p>Santos H. Arroyo Claudio es Graduado Distinguido de Liderazgo de la Escuela de Candidatos a Oficial del Ejército de EE. UU., Mayor retirado y profesional de gestión de proyectos con dos décadas de experiencia entregando programas complejos en entornos regulados y de alto riesgo. Natural de Vega Alta, Puerto Rico, comenzó su servicio en el Ejército en 1991 como soldado alistado y fue comisionado como Segundo Teniente en el año 2000 — una trayectoria "Mustang" que define su forma de liderar hoy.</p>
               <p>Su carrera militar abarca despliegues en Bosnia-Herzegovina, Kuwait e Irak, incluyendo el servicio como Jefe Adjunto de un Equipo de Transición de Estabilidad asesorando a la Patrulla Fronteriza Iraquí, y el mando de más de 400 soldados en Fort Hood como Comandante de la HHC, Batallón de Tropas Especiales de la 3ª Brigada. En cada rol fue responsable no solo de los resultados de la misión, sino de las personas, el equipo y la responsabilidad que hicieron posibles esos resultados.</p>
-              <p>En el sector civil ha llevado ese mismo estándar a la gestión de proyectos de TI — dirigiendo despliegues de redes clasificadas en el Comando de Futuros del Ejército, integrando un Sistema de Información Estudiantil en once instituciones en Texas A&amp;M University-Central Texas, y entregando un Centro de Control de Operaciones Remotas de $3M para SunPower Corporation bajo estrictos estándares de fiabilidad NERC. Actualmente dirige <em class="title">Major Business Solutions, LLC</em>, asesorando a clientes sobre transformación digital, optimización de procesos y soluciones low-code de Power Platform — incluyendo un compromiso actual con la Cooperativa Hidroeléctrica de la Montaña en Puerto Rico. En agosto de 2026 completa una M.S. en Sistemas de Información con concentración en ciberseguridad en Texas A&amp;M University-Central Texas, graduándose con Honores de Graduado Distinguido.</p>
+              <p>En el sector civil ha llevado ese mismo estándar a la gestión de proyectos de TI — dirigiendo despliegues de redes clasificadas en el Comando de Futuros del Ejército, integrando un Sistema de Información Estudiantil en once instituciones en Texas A&amp;M University-Central Texas, y entregando un Centro de Control de Operaciones Remotas de $3M para SunPower Corporation bajo estrictos estándares de fiabilidad NERC. Actualmente dirige <em class="title">Major Business Solutions, LLC</em>, que en agosto de 2026 lanzó <em class="title">MajorCompliance</em> — una plataforma de riesgo de proveedores y cumplimiento SBOM que califica el riesgo de terceros en seis marcos regulatorios (NIST CSF, SOC 2, ISO 27001, CMMC, HIPAA, NERC CIP) con evidencia verificada por IA — junto con compromisos de consultoría que incluyen trabajo en Power Platform para la Cooperativa Hidroeléctrica de la Montaña en Puerto Rico.</p>
             </div>
           </div>
         </div>
@@ -1101,9 +1121,58 @@
         </div>
 
         <div class="projects-grid">
-          <article class="project-card reveal reveal-delay-1">
+          <article class="project-card project-card-wide reveal reveal-delay-1">
+            <div class="project-wide-inner">
+              <div>
+                <div class="project-meta">
+                  <span class="num">P/01</span>
+                  <span><span data-lang="en">SaaS · Vendor-Risk &amp; SBOM Compliance</span><span data-lang="es" hidden>SaaS · Riesgo de Proveedores y Cumplimiento SBOM</span></span>
+                </div>
+                <h3 class="project-title">MajorCompliance</h3>
+                <p class="project-org"><span data-lang="en">Major Business Solutions, LLC &nbsp;·&nbsp; Launched August 2026</span><span data-lang="es" hidden>Major Business Solutions, LLC &nbsp;·&nbsp; Lanzada en agosto de 2026</span></p>
+
+                <div class="project-section">
+                  <span class="project-label"><span data-lang="en">Scope</span><span data-lang="es" hidden>Alcance</span></span>
+                  <p class="project-text" data-lang="en">Vendor-risk platform that turns a CycloneDX software bill of materials into a single, defensible FIPS 199-style risk score, with AI-verified evidence behind every compliance claim. Six frameworks in one registry: NIST CSF, SOC 2, ISO 27001 (always applies); CMMC, HIPAA, NERC CIP (sector-gated).</p>
+                  <p class="project-text" data-lang="es" hidden>Plataforma de riesgo de proveedores que convierte un software bill of materials (SBOM) CycloneDX en una puntuación de riesgo defensible al estilo FIPS 199, con evidencia verificada por IA respaldando cada declaración de cumplimiento. Seis marcos en un registro: NIST CSF, SOC 2, ISO 27001 (siempre aplican); CMMC, HIPAA, NERC CIP (por sector).</p>
+                </div>
+
+                <div class="project-section">
+                  <span class="project-label"><span data-lang="en">Key Actions</span><span data-lang="es" hidden>Acciones Clave</span></span>
+                  <p class="project-text" data-lang="en">Architected the full stack: Next.js 16 frontend, FastAPI/PostgreSQL backend, Gemini AI for SBOM structural grading and evidence verification, OSV.dev with NVD fallback for CVE lookup. Designed the zero-trust evidence model — a claim earns nothing; only a verified document moves the score — and the vendor self-service portal via time-limited invite links. Built multi-tenant per-org isolation with mandatory TOTP MFA; hosted on Render with real production and staging subdomains.</p>
+                  <p class="project-text" data-lang="es" hidden>Diseñó la arquitectura completa: frontend en Next.js 16, backend en FastAPI/PostgreSQL, Gemini AI para calificación estructural del SBOM y verificación de evidencia, OSV.dev con respaldo de NVD para búsqueda de CVE. Diseñó el modelo de evidencia de confianza cero — una declaración no vale nada; solo un documento verificado ajusta la puntuación — y el portal de autoservicio para proveedores mediante enlaces de invitación con tiempo limitado. Construyó aislamiento por organización multi-inquilino con MFA TOTP obligatorio; alojado en Render con subdominios reales de producción y staging.</p>
+                </div>
+
+                <div class="project-section">
+                  <span class="project-label"><span data-lang="en">Stack</span><span data-lang="es" hidden>Tecnologías</span></span>
+                  <div class="project-outcomes">
+                    <span class="outcome-chip"><strong>Next.js 16</strong> App Router</span>
+                    <span class="outcome-chip"><strong>FastAPI</strong> Python · psycopg 3</span>
+                    <span class="outcome-chip"><strong>PostgreSQL</strong> <span data-lang="en">org-scoped</span><span data-lang="es" hidden>por organización</span></span>
+                    <span class="outcome-chip"><strong>Gemini</strong> <span data-lang="en">AI grade + verify</span><span data-lang="es" hidden>calificación + verificación</span></span>
+                    <span class="outcome-chip"><strong>OSV.dev + NVD</strong> <span data-lang="en">CVE lookup</span><span data-lang="es" hidden>búsqueda de CVE</span></span>
+                    <span class="outcome-chip"><strong>Render</strong> <span data-lang="en">HTTPS deploy</span><span data-lang="es" hidden>despliegue HTTPS</span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div class="demo-frame">
+                  <video controls muted playsinline preload="metadata" poster="major-compliance-poster.jpg" aria-label="MajorCompliance product walkthrough">
+                    <source src="major-compliance.mp4" type="video/mp4" />
+                  </video>
+                </div>
+                <p class="phone-caption">
+                  <span data-lang="en">Product walkthrough · August 2026</span>
+                  <span data-lang="es" hidden>Recorrido del producto · Agosto 2026</span>
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card reveal reveal-delay-2">
             <div class="project-meta">
-              <span class="num">P/01</span>
+              <span class="num">P/02</span>
               <span><span data-lang="en">Defense · Classified Networks</span><span data-lang="es" hidden>Defensa · Redes Clasificadas</span></span>
             </div>
             <h3 class="project-title">
@@ -1134,13 +1203,13 @@
             </div>
           </article>
 
-          <article class="project-card reveal reveal-delay-2">
+          <article class="project-card reveal reveal-delay-3">
             <div class="project-hero">
               <img src="rocc-pano.jpg" alt="SunPower Remote Operations Control Center — operators at workstations with wall-mounted dashboard" loading="lazy" />
               <span class="project-hero-caption"><span data-lang="en">Remote Operations Control Center · SunPower</span><span data-lang="es" hidden>Centro de Control de Operaciones Remotas · SunPower</span></span>
             </div>
             <div class="project-meta">
-              <span class="num">P/02</span>
+              <span class="num">P/03</span>
               <span><span data-lang="en">Energy · Critical Infrastructure</span><span data-lang="es" hidden>Energía · Infraestructura Crítica</span></span>
             </div>
             <h3 class="project-title">
@@ -1171,11 +1240,11 @@
             </div>
           </article>
 
-          <article class="project-card project-card-wide reveal reveal-delay-3">
+          <article class="project-card project-card-wide reveal reveal-delay-4">
             <div class="project-wide-inner">
               <div>
                 <div class="project-meta">
-                  <span class="num">P/03</span>
+                  <span class="num">P/04</span>
                   <span><span data-lang="en">Energy · Power Platform &amp; Mobile</span><span data-lang="es" hidden>Energía · Power Platform y Móvil</span></span>
                 </div>
                 <h3 class="project-title">
@@ -1243,7 +1312,7 @@
             <h3 class="edu-degree">M.S., Information Systems <span class="edu-status"><span data-lang="en">Aug 2026</span><span data-lang="es" hidden>Ago 2026</span></span></h3>
             <p class="edu-field"><span data-lang="en">Cybersecurity Concentration</span><span data-lang="es" hidden>Concentración en Ciberseguridad</span></p>
             <p class="edu-inst">Texas A&amp;M University — Central Texas</p>
-            <p class="edu-honor"><span data-lang="en">Distinguished Graduate Honors · 4.0 GPA</span><span data-lang="es" hidden>Honores de Graduado Distinguido · Promedio 4.0</span></p>
+            <p class="edu-honor"><span data-lang="en">4.0 GPA · 27 of 30 credit hours completed</span><span data-lang="es" hidden>Promedio 4.0 · 27 de 30 horas-crédito completadas</span></p>
           </div>
           <div class="edu-cell">
             <h3 class="edu-degree">Master of Public Administration</h3>
