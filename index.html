@@ -750,6 +750,84 @@
       margin-top: 0.2rem;
     }
 
+    /* ─── voices (testimonials) ─── */
+    .voices-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.75rem;
+      margin-top: 3rem;
+    }
+    .voice-card {
+      position: relative;
+      padding: 3rem 2rem 1.75rem;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .voice-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(22, 20, 15, 0.08);
+      border-color: var(--muted);
+    }
+    .voice-card::before {
+      content: "\201C";
+      position: absolute;
+      top: 0.4rem;
+      left: 1.5rem;
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 5.5rem;
+      line-height: 1;
+      color: var(--oxblood);
+      opacity: 0.85;
+    }
+    .voice-quote {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: 1.02rem;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin: 0 0 1.5rem;
+      flex: 1;
+    }
+    .voice-attribution {
+      padding-top: 1.1rem;
+      border-top: 1px solid var(--rule);
+    }
+    .voice-name {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+    }
+    .voice-title {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-top: 0.3rem;
+    }
+    .voice-date {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.55rem;
+    }
+    @media (max-width: 640px) {
+      .voices-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+      .voice-card { padding: 2.75rem 1.5rem 1.5rem; }
+      .voice-card::before { font-size: 4.5rem; left: 1.25rem; }
+    }
+
     /* ─── personal block ─── */
     .personal {
       background: var(--ink);
@@ -891,6 +969,8 @@
         <a href="#education" class="nav-link" data-lang="es" hidden>Educación</a>
         <a href="#honors" class="nav-link" data-lang="en">Honors</a>
         <a href="#honors" class="nav-link" data-lang="es" hidden>Condecoraciones</a>
+        <a href="#voices" class="nav-link" data-lang="en">Voices</a>
+        <a href="#voices" class="nav-link" data-lang="es" hidden>Voces</a>
         <a href="#contact" class="nav-link" data-lang="en">Contact</a>
         <a href="#contact" class="nav-link" data-lang="es" hidden>Contacto</a>
       </div>
@@ -927,7 +1007,7 @@
             <div class="pills">
               <span class="pill"><span class="dot"></span>PMP &nbsp;·&nbsp; CBAP</span>
               <span class="pill olive"><span class="dot"></span><span data-lang="en">Top Secret · DoD</span><span data-lang="es" hidden>Top Secret · DoD</span></span>
-              <span class="pill gold"><span class="dot"></span><span data-lang="en">M.S. Cybersecurity (cand.)</span><span data-lang="es" hidden>M.S. Ciberseguridad (cand.)</span></span>
+              <span class="pill gold"><span class="dot"></span><span data-lang="en">MSIS Cybersecurity</span><span data-lang="es" hidden>MSIS Ciberseguridad</span></span>
               <span class="pill"><span class="dot"></span>Killeen, TX</span>
             </div>
 
@@ -984,8 +1064,8 @@
             <div class="stat-label"><span data-lang="en">End users on classified DISA-compliant networks</span><span data-lang="es" hidden>Usuarios finales en redes clasificadas DISA</span></div>
           </div>
           <div>
-            <div class="stat-num">197</div>
-            <div class="stat-label"><span data-lang="en">Soldiers commanded · $30M property accountability</span><span data-lang="es" hidden>Soldados comandados · $30M en propiedad bajo responsabilidad</span></div>
+            <div class="stat-num">400+</div>
+            <div class="stat-label"><span data-lang="en">Soldiers commanded across two command tours</span><span data-lang="es" hidden>Soldados comandados en dos períodos de mando</span></div>
           </div>
         </div>
       </div>
@@ -1014,12 +1094,12 @@
           <div class="essay-body">
             <div data-lang="en">
               <p>Santos H. Arroyo Claudio is a Distinguished Leadership Graduate of the U.S. Army Officer Candidate School, a retired Major, and a project management professional with two decades of experience delivering complex programs in regulated, high-stakes environments. A native of Vega Alta, Puerto Rico, he began his Army service in 1991 as an enlisted Soldier and was commissioned a Second Lieutenant in 2000 — a "Mustang" path that defines how he leads today.</p>
-              <p>His military career spans deployments to Bosnia-Herzegovina, Kuwait, and Iraq, including service as Deputy Chief of a Stability Transition Team advising the Iraqi Border Patrol, and command of more than 400 Soldiers at Fort Hood as Commander of HHC, 3rd Brigade Special Troops Battalion. In each role he was responsible not only for mission outcomes but for the people, equipment, and accountability that made those outcomes possible.</p>
+              <p>His military career spans deployments to Bosnia-Herzegovina, Kuwait, and Iraq, including service as Deputy Chief of a Stability Transition Team advising the Iraqi Border Patrol, and two command tours at Fort Hood leading more than 400 Soldiers, first as HHC Company Commander, 3rd Brigade Special Troops Battalion, and later as BSTB Detachment Commander. In each role he was responsible not only for mission outcomes but for the people, equipment, and accountability that made those outcomes possible.</p>
               <p>In the civilian sector he has carried that same standard into IT project management — leading classified network deployments at Army Futures Command, integrating a Student Information System across eleven institutions at Texas A&amp;M University-Central Texas, and delivering a $3M Remote Operations Control Center for SunPower Corporation under strict NERC reliability standards. Today he runs <em class="title">Major Business Solutions, LLC</em>, which in August 2026 launched <em class="title">MajorCompliance</em> — a vendor-risk and SBOM compliance platform scoring third-party risk across six frameworks (NIST CSF, SOC 2, ISO 27001, CMMC, HIPAA, NERC CIP) with AI-verified evidence — alongside consulting engagements including Power Platform work for the Cooperativa Hidroeléctrica de la Montaña in Puerto Rico.</p>
             </div>
             <div data-lang="es" hidden>
               <p>Santos H. Arroyo Claudio es Graduado Distinguido de Liderazgo de la Escuela de Candidatos a Oficial del Ejército de EE. UU., Mayor retirado y profesional de gestión de proyectos con dos décadas de experiencia entregando programas complejos en entornos regulados y de alto riesgo. Natural de Vega Alta, Puerto Rico, comenzó su servicio en el Ejército en 1991 como soldado alistado y fue comisionado como Segundo Teniente en el año 2000 — una trayectoria "Mustang" que define su forma de liderar hoy.</p>
-              <p>Su carrera militar abarca despliegues en Bosnia-Herzegovina, Kuwait e Irak, incluyendo el servicio como Jefe Adjunto de un Equipo de Transición de Estabilidad asesorando a la Patrulla Fronteriza Iraquí, y el mando de más de 400 soldados en Fort Hood como Comandante de la HHC, Batallón de Tropas Especiales de la 3ª Brigada. En cada rol fue responsable no solo de los resultados de la misión, sino de las personas, el equipo y la responsabilidad que hicieron posibles esos resultados.</p>
+              <p>Su carrera militar abarca despliegues en Bosnia-Herzegovina, Kuwait e Irak, incluyendo el servicio como Jefe Adjunto de un Equipo de Transición de Estabilidad asesorando a la Patrulla Fronteriza Iraquí, y dos períodos de mando en Fort Hood al frente de más de 400 soldados, primero como Comandante de Compañía de la HHC, Batallón de Tropas Especiales de la 3ª Brigada, y luego como Comandante del Destacamento del BSTB. En cada rol fue responsable no solo de los resultados de la misión, sino de las personas, el equipo y la responsabilidad que hicieron posibles esos resultados.</p>
               <p>En el sector civil ha llevado ese mismo estándar a la gestión de proyectos de TI — dirigiendo despliegues de redes clasificadas en el Comando de Futuros del Ejército, integrando un Sistema de Información Estudiantil en once instituciones en Texas A&amp;M University-Central Texas, y entregando un Centro de Control de Operaciones Remotas de $3M para SunPower Corporation bajo estrictos estándares de fiabilidad NERC. Actualmente dirige <em class="title">Major Business Solutions, LLC</em>, que en agosto de 2026 lanzó <em class="title">MajorCompliance</em> — una plataforma de riesgo de proveedores y cumplimiento SBOM que califica el riesgo de terceros en seis marcos regulatorios (NIST CSF, SOC 2, ISO 27001, CMMC, HIPAA, NERC CIP) con evidencia verificada por IA — junto con compromisos de consultoría que incluyen trabajo en Power Platform para la Cooperativa Hidroeléctrica de la Montaña en Puerto Rico.</p>
             </div>
           </div>
@@ -1096,10 +1176,10 @@
             <div class="tl-marker" style="border-color: var(--olive);"></div>
             <div class="tl-date">1991 — 2020</div>
             <div>
-              <h3 class="tl-role"><span data-lang="en">Major, U.S. Army &nbsp;·&nbsp; Company Commander &amp; Advisor</span><span data-lang="es" hidden>Mayor, Ejército de EE. UU. &nbsp;·&nbsp; Comandante de Compañía y Asesor</span></h3>
+              <h3 class="tl-role"><span data-lang="en">Major, U.S. Army &nbsp;·&nbsp; Commander &amp; Advisor</span><span data-lang="es" hidden>Mayor, Ejército de EE. UU. &nbsp;·&nbsp; Comandante y Asesor</span></h3>
               <p class="tl-org" style="color: var(--olive);"><span data-lang="en">Bosnia · Kuwait · Iraq · Fort Hood</span><span data-lang="es" hidden>Bosnia · Kuwait · Irak · Fort Hood</span></p>
-              <p class="tl-desc" data-lang="en">Commanded 197 Soldiers and $30M+ in equipment as Commander, HHC, 3rd Brigade Special Troops Battalion (100% property accountability, zero losses). Served as Deputy Chief, Stability Transition Team in Iraq, advising the Iraqi Border Patrol on operations that contributed to the early withdrawal of U.S. forces from the Iraq–Iran border. Earlier roles include Battle Staff Instructor (Kuwait, 2007 Troop Surge) and Observer-Controller Trainer with First Army Division West.</p>
-              <p class="tl-desc" data-lang="es" hidden>Comandó 197 soldados y más de $30M en equipo como Comandante de la HHC, Batallón de Tropas Especiales de la 3ª Brigada (100% de responsabilidad patrimonial, cero pérdidas). Sirvió como Jefe Adjunto del Equipo de Transición de Estabilidad en Irak, asesorando a la Patrulla Fronteriza Iraquí en operaciones que contribuyeron a la retirada temprana de las fuerzas estadounidenses de la frontera Irak-Irán. Roles anteriores incluyen Instructor de Estado Mayor de Batalla (Kuwait, aumento de tropas de 2007) y Entrenador Controlador Observador con la División Oeste del Primer Ejército.</p>
+              <p class="tl-desc" data-lang="en">Commanded more than 400 Soldiers across two command tours: 197 as HHC Company Commander, 3rd Brigade Special Troops Battalion, with $30M+ in equipment (100% property accountability, zero losses), and 220 as BSTB Detachment Commander. Served as Deputy Chief, Stability Transition Team in Iraq, advising the Iraqi Border Patrol on operations that contributed to the early withdrawal of U.S. forces from the Iraq–Iran border. Earlier roles include Battle Staff Instructor (Kuwait, 2007 Troop Surge) and Observer-Controller Trainer with First Army Division West.</p>
+              <p class="tl-desc" data-lang="es" hidden>Comandó a más de 400 soldados en dos períodos de mando: 197 como Comandante de Compañía de la HHC, Batallón de Tropas Especiales de la 3ª Brigada, con más de $30M en equipo (100% de responsabilidad patrimonial, cero pérdidas), y 220 como Comandante del Destacamento del BSTB. Sirvió como Jefe Adjunto del Equipo de Transición de Estabilidad en Irak, asesorando a la Patrulla Fronteriza Iraquí en operaciones que contribuyeron a la retirada temprana de las fuerzas estadounidenses de la frontera Irak-Irán. Roles anteriores incluyen Instructor de Estado Mayor de Batalla (Kuwait, aumento de tropas de 2007) y Entrenador Controlador Observador con la División Oeste del Primer Ejército.</p>
             </div>
           </div>
         </div>
@@ -1312,7 +1392,7 @@
             <h3 class="edu-degree">M.S., Information Systems <span class="edu-status"><span data-lang="en">Aug 2026</span><span data-lang="es" hidden>Ago 2026</span></span></h3>
             <p class="edu-field"><span data-lang="en">Cybersecurity Concentration</span><span data-lang="es" hidden>Concentración en Ciberseguridad</span></p>
             <p class="edu-inst">Texas A&amp;M University — Central Texas</p>
-            <p class="edu-honor"><span data-lang="en">4.0 GPA · 27 of 30 credit hours completed</span><span data-lang="es" hidden>Promedio 4.0 · 27 de 30 horas-crédito completadas</span></p>
+            <p class="edu-honor"><span data-lang="en">4.0 GPA · Distinguished Graduate Honors</span><span data-lang="es" hidden>Promedio 4.0 · Graduado con Honores Distinguidos</span></p>
           </div>
           <div class="edu-cell">
             <h3 class="edu-degree">Master of Public Administration</h3>
@@ -1438,6 +1518,114 @@
       </div>
     </section>
 
+    <!-- ─────────── VOICES (TESTIMONIALS) ─────────── -->
+    <section id="voices" style="background: linear-gradient(to bottom, transparent, var(--bg-warm) 30%, var(--bg-warm) 70%, transparent);">
+      <div class="wrap">
+        <div class="sect-header reveal">
+          <div class="sect-meta">
+            <span class="bar"></span>
+            <span>06 — <span data-lang="en">In Their Words</span><span data-lang="es" hidden>En Sus Palabras</span></span>
+          </div>
+          <h2 class="sect-title">
+            <span data-lang="en">Perspectives from <em>colleagues, soldiers, and students</em>.</span>
+            <span data-lang="es" hidden>Perspectivas de <em>colegas, soldados y estudiantes</em>.</span>
+          </h2>
+        </div>
+
+        <div class="voices-grid">
+          <article class="voice-card reveal reveal-delay-1">
+            <p class="voice-quote">
+              <span data-lang="en">Santos is one of the hardest working, most intelligent, and driven officers I have met in my entire military career. His dedication to organization and accountability facilitated the program's success. The passion he exhibits for excellence and his integrity are unmatched.</span>
+              <span data-lang="es" hidden>Santos es uno de los oficiales más trabajadores, inteligentes y motivados que he conocido en toda mi carrera militar. Su dedicación a la organización y la responsabilidad facilitó el éxito del programa. La pasión que exhibe por la excelencia y su integridad son incomparables.</span>
+            </p>
+            <div class="voice-attribution">
+              <span class="voice-name">Mark A. Anderson, JD, MLA</span>
+              <span class="voice-title">
+                <span data-lang="en">Chief Operations Officer, Rashieyeid, LLC  ·  LTC, MP, USAR</span>
+                <span data-lang="es" hidden>Director de Operaciones, Rashieyeid, LLC  ·  LTC, MP, USAR</span>
+              </span>
+              <span class="voice-date">2014</span>
+            </div>
+          </article>
+
+          <article class="voice-card reveal reveal-delay-2">
+            <p class="voice-quote">
+              <span data-lang="en">Santos' ability to effectively juggle multiple projects, each with flawless attention to detail, was unlike any I have seen in a senior military officer. Anyone would be lucky to have Santos go above and beyond and lead their organization.</span>
+              <span data-lang="es" hidden>La capacidad de Santos para gestionar múltiples proyectos de forma eficaz, cada uno con una atención impecable al detalle, fue como ninguna que haya visto en un oficial militar superior. Cualquiera tendría la suerte de contar con Santos para liderar su organización.</span>
+            </p>
+            <div class="voice-attribution">
+              <span class="voice-name">Tara Reese, PMP</span>
+              <span class="voice-title">
+                <span data-lang="en">Senior Digital Technology PLM Program Manager, Collins Aerospace</span>
+                <span data-lang="es" hidden>Gerente Senior de Programas de Tecnología Digital PLM, Collins Aerospace</span>
+              </span>
+              <span class="voice-date">2018</span>
+            </div>
+          </article>
+
+          <article class="voice-card reveal reveal-delay-3">
+            <p class="voice-quote">
+              <span data-lang="en">Major Arroyo is an extraordinary leader that has significantly contributed to the development of hundreds of other leaders, including myself. I continue to respect and admire him for his ability to deliver exceptional results by leading at all levels.</span>
+              <span data-lang="es" hidden>El Mayor Arroyo es un líder extraordinario que ha contribuido significativamente al desarrollo de cientos de otros líderes, incluyéndome a mí. Sigo respetándolo y admirándolo por su capacidad de entregar resultados excepcionales liderando a todos los niveles.</span>
+            </p>
+            <div class="voice-attribution">
+              <span class="voice-name">David Sunleaf</span>
+              <span class="voice-title">
+                <span data-lang="en">Manager, Deloitte</span>
+                <span data-lang="es" hidden>Gerente, Deloitte</span>
+              </span>
+              <span class="voice-date">2018</span>
+            </div>
+          </article>
+
+          <article class="voice-card reveal reveal-delay-1">
+            <p class="voice-quote">
+              <span data-lang="en">Major Santos Arroyo was an incredible leader and mentor. He was simply outstanding leading over 100 cadets, a staff of eight, and an annual budget in excess of $3 million.</span>
+              <span data-lang="es" hidden>El Mayor Santos Arroyo fue un líder y mentor increíble. Fue simplemente excepcional dirigiendo a más de 100 cadetes, un personal de ocho y un presupuesto anual de más de $3 millones.</span>
+            </p>
+            <div class="voice-attribution">
+              <span class="voice-name">Chris Talcott</span>
+              <span class="voice-title">
+                <span data-lang="en">Chief Operating Officer, 4africa</span>
+                <span data-lang="es" hidden>Director de Operaciones, 4africa</span>
+              </span>
+              <span class="voice-date">2015</span>
+            </div>
+          </article>
+
+          <article class="voice-card reveal reveal-delay-2">
+            <p class="voice-quote">
+              <span data-lang="en">At a difficult time of the combat campaign and an extraordinarily difficult location in Iraq, Santos calmly and consistently marshalled his strengths and talents, organizing his advisory and assistance operations for Iraqi government units.</span>
+              <span data-lang="es" hidden>En un momento difícil de la campaña de combate y en una ubicación extraordinariamente difícil en Irak, Santos convocó con calma y constancia sus fortalezas y talentos, organizando sus operaciones de asesoría y asistencia para las unidades del gobierno iraquí.</span>
+            </p>
+            <div class="voice-attribution">
+              <span class="voice-name">David Alegre</span>
+              <span class="voice-title">
+                <span data-lang="en">Served alongside in Iraq</span>
+                <span data-lang="es" hidden>Compañero de servicio en Irak</span>
+              </span>
+              <span class="voice-date">2014</span>
+            </div>
+          </article>
+
+          <article class="voice-card reveal reveal-delay-3">
+            <p class="voice-quote">
+              <span data-lang="en">Santos is an energetic, industrious, and dependable individual that has proven himself time after time to be a top performer. I found him to be an efficient organizer and a team player that provided valuable solutions to complex problems.</span>
+              <span data-lang="es" hidden>Santos es una persona enérgica, trabajadora y confiable que se ha demostrado una y otra vez como un alto desempeño. Lo encontré como un organizador eficiente y un jugador de equipo que proporcionó soluciones valiosas a problemas complejos.</span>
+            </p>
+            <div class="voice-attribution">
+              <span class="voice-name">Joseph Wicker</span>
+              <span class="voice-title">
+                <span data-lang="en">Air Defense Officer, U.S. Army</span>
+                <span data-lang="es" hidden>Oficial de Defensa Aérea, Ejército de EE. UU.</span>
+              </span>
+              <span class="voice-date">2014</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- ─────────── PERSONAL ─────────── -->
     <aside class="personal reveal">
       <div class="personal-inner">
@@ -1465,7 +1653,7 @@
         <div class="sect-header reveal">
           <div class="sect-meta">
             <span class="bar"></span>
-            <span>06 — <span data-lang="en">Get in Touch</span><span data-lang="es" hidden>Contacto</span></span>
+            <span>07 — <span data-lang="en">Get in Touch</span><span data-lang="es" hidden>Contacto</span></span>
           </div>
           <h2 class="sect-title">
             <span data-lang="en">Available for federal, defense, and <em>energy-sector</em> engagements.</span>
