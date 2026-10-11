@@ -562,6 +562,58 @@
       .project-wide-inner { grid-template-columns: 1fr; gap: 2rem; }
     }
 
+    /* linked preview image + action links inside a project card */
+    .preview-frame {
+      display: block;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--ink);
+      padding: 6px;
+      box-shadow: 0 24px 60px -22px rgba(22,20,15,0.45), inset 0 0 0 1px rgba(255,255,255,0.08);
+      transition: transform 0.3s ease;
+    }
+    .preview-frame:hover { transform: translateY(-3px); }
+    .preview-frame img { width: 100%; height: auto; display: block; border-radius: 6px; }
+    .project-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+    .project-links .btn { font-size: 0.72rem; padding: 0.7rem 1.1rem; }
+
+    /* document reader pop-up (view-only page images) */
+    button.btn { cursor: pointer; font: inherit; }
+    .doc-reader {
+      width: min(920px, 100vw);
+      height: min(92vh, 100dvh);
+      max-width: 100vw; max-height: 100dvh;
+      padding: 0; border: 1px solid var(--rule);
+      background: var(--bg-warm); color: var(--ink);
+      box-shadow: 0 30px 80px rgba(22,20,15,0.35);
+    }
+    .doc-reader[open] { display: flex; flex-direction: column; }
+    .doc-reader::backdrop { background: rgba(22,20,15,0.72); backdrop-filter: blur(3px); }
+    .doc-reader-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 0.85rem 1.25rem; background: var(--surface); border-bottom: 1px solid var(--rule);
+    }
+    .doc-reader-title { font-family: 'Fraunces', serif; font-size: 1.05rem; line-height: 1.25; }
+    .doc-reader-count {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); white-space: nowrap;
+    }
+    .doc-reader-close {
+      flex-shrink: 0; width: 2.25rem; height: 2.25rem; border: 1px solid var(--rule);
+      background: transparent; color: var(--ink); font-size: 1.25rem; line-height: 1; cursor: pointer;
+    }
+    .doc-reader-close:hover { background: var(--ink); color: var(--bg); }
+    .doc-reader-pages {
+      flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      -webkit-user-select: none; user-select: none;
+    }
+    .doc-reader-pages img {
+      width: 100%; max-width: 820px; height: auto; aspect-ratio: 1100 / 1424; display: block;
+      background: #fff; box-shadow: 0 6px 20px rgba(22,20,15,0.12);
+      -webkit-user-drag: none; pointer-events: none;
+    }
+    @media (max-width: 640px) { .doc-reader-pages { padding: 0.75rem; gap: 0.6rem; } .doc-reader-bar { padding: 0.7rem 0.9rem; } }
+
     /* phone-frame mockup for mobile app video */
     .phone-frame {
       position: relative;
@@ -1369,6 +1421,60 @@
               </div>
             </div>
           </article>
+
+          <article class="project-card project-card-wide reveal reveal-delay-1">
+            <div class="project-wide-inner">
+              <div>
+                <div class="project-meta">
+                  <span class="num">P/05</span>
+                  <span><span data-lang="en">Energy · OT/IT Cybersecurity Strategy</span><span data-lang="es" hidden>Energía · Estrategia de Ciberseguridad OT/IT</span></span>
+                </div>
+                <h3 class="project-title">
+                  <span data-lang="en">Enterprise Cybersecurity Strategy for CHM</span>
+                  <span data-lang="es" hidden>Estrategia de Ciberseguridad Empresarial para la CHM</span>
+                </h3>
+                <p class="project-org"><span data-lang="en">Texas A&amp;M University-Central Texas &nbsp;·&nbsp; CIS 5371 Enterprise Cybersecurity &nbsp;·&nbsp; April 2026</span><span data-lang="es" hidden>Texas A&amp;M University-Central Texas &nbsp;·&nbsp; CIS 5371 Ciberseguridad Empresarial &nbsp;·&nbsp; Abril 2026</span></p>
+
+                <div class="project-section">
+                  <span class="project-label"><span data-lang="en">Scope</span><span data-lang="es" hidden>Alcance</span></span>
+                  <p class="project-text" data-lang="en">Graduate team strategy for the Cooperativa Hidroeléctrica de la Montaña, Puerto Rico's first electric cooperative, which runs hydroelectric, solar PV, and battery storage assets across four mountain municipalities serving about 90,000 residents. The strategy uses NIST CSF 2.0 as the governing structure and NERC CIP as the prescriptive control layer, and reorders the CIA triad to put grid availability first.</p>
+                  <p class="project-text" data-lang="es" hidden>Estrategia de equipo de posgrado para la Cooperativa Hidroeléctrica de la Montaña, la primera cooperativa eléctrica de Puerto Rico, que opera activos hidroeléctricos, solares fotovoltaicos y de almacenamiento en baterías en cuatro municipios de la montaña con unos 90,000 residentes. La estrategia usa NIST CSF 2.0 como estructura de gobierno y NERC CIP como capa de controles prescriptivos, y reordena la tríada CIA para dar prioridad a la disponibilidad de la red.</p>
+                </div>
+
+                <div class="project-section">
+                  <span class="project-label"><span data-lang="en">Key Actions</span><span data-lang="es" hidden>Acciones Clave</span></span>
+                  <p class="project-text" data-lang="en">Co-authored a 51-page strategy with a three-person team. Built a STRIDE threat model and a 15-item risk register using NIST SP 800-30, categorized assets under NERC CIP-002, and mapped administrative, physical, and technical controls to all six CSF 2.0 functions. Designed Purdue Model IT/OT segmentation, a CIP-013 supply chain program with SBOM delivery and CVE scanning, and a 36-month roadmap that moves CHM from CSF Tier 1 to Tier 3. Published the strategy as an interactive web portal.</p>
+                  <p class="project-text" data-lang="es" hidden>Coautor de una estrategia de 51 páginas con un equipo de tres personas. Elaboró un modelo de amenazas STRIDE y un registro de 15 riesgos según NIST SP 800-30, categorizó los activos bajo NERC CIP-002 y asignó controles administrativos, físicos y técnicos a las seis funciones de CSF 2.0. Diseñó la segmentación IT/OT según el Modelo Purdue, un programa de cadena de suministro CIP-013 con entrega de SBOM y escaneo de CVE, y una hoja de ruta de 36 meses que lleva a la CHM del Nivel 1 al Nivel 3 de CSF. Publicó la estrategia como un portal web interactivo.</p>
+                </div>
+
+                <div class="project-section">
+                  <span class="project-label"><span data-lang="en">Frameworks</span><span data-lang="es" hidden>Marcos</span></span>
+                  <div class="project-outcomes">
+                    <span class="outcome-chip"><strong>NIST CSF 2.0</strong> <span data-lang="en">six functions</span><span data-lang="es" hidden>seis funciones</span></span>
+                    <span class="outcome-chip"><strong>NERC CIP</strong> <span data-lang="en">13 standards</span><span data-lang="es" hidden>13 estándares</span></span>
+                    <span class="outcome-chip"><strong>NIST SP 800-30</strong> <span data-lang="en">risk matrix</span><span data-lang="es" hidden>matriz de riesgo</span></span>
+                    <span class="outcome-chip"><strong>STRIDE</strong> <span data-lang="en">threat model</span><span data-lang="es" hidden>modelo de amenazas</span></span>
+                    <span class="outcome-chip"><strong>Purdue Model</strong> <span data-lang="en">IT/OT zones</span><span data-lang="es" hidden>zonas IT/OT</span></span>
+                  </div>
+                </div>
+
+                <div class="project-links">
+                  <a href="chm-strategy/" class="btn" target="_blank" rel="noopener"><span data-lang="en">Explore the strategy portal</span><span data-lang="es" hidden>Explorar el portal</span></a>
+                  <button type="button" class="btn btn-ghost" data-open-reader="chmReader"><span data-lang="en">Read the full strategy</span><span data-lang="es" hidden>Leer la estrategia completa</span></button>
+                </div>
+              </div>
+
+              <div>
+                <a href="chm-strategy/" class="preview-frame" target="_blank" rel="noopener" aria-label="Open the CHM cybersecurity strategy portal">
+                  <img src="chm-strategy-preview.jpg" alt="CHM Enterprise Cybersecurity Strategy portal: 90K residents, 39 MW hydro, 15 risks, 36-month roadmap, 13 NERC CIP standards, 4 municipalities" loading="lazy" />
+                </a>
+                <p class="phone-caption">
+                  <span data-lang="en">Interactive strategy portal</span>
+                  <span data-lang="es" hidden>Portal interactivo de la estrategia</span>
+                </p>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -1641,8 +1747,8 @@
           </h3>
         </div>
         <p>
-          <span data-lang="en">Santos has been married for more than thirty years to Marisol Ortiz López of Vega Alta, Puerto Rico. They have one son, Stefan. Outside work, he reads widely, rides long distances, and turns rough lumber into furniture in the garage — the same patience and precision he brings to every program he leads.</span>
-          <span data-lang="es" hidden>Santos lleva más de treinta años casado con Marisol Ortiz López, de Vega Alta, Puerto Rico. Tienen un hijo, Stefan. Fuera del trabajo, lee ampliamente, recorre largas distancias en bicicleta y convierte madera bruta en muebles en el garaje — la misma paciencia y precisión que aporta a cada programa que dirige.</span>
+          <span data-lang="en">Outside work, Santos reads widely, rides long distances, and turns rough lumber into furniture in the garage — the same patience and precision he brings to every program he leads.</span>
+          <span data-lang="es" hidden>Fuera del trabajo, Santos lee ampliamente, recorre largas distancias en bicicleta y convierte madera bruta en muebles en el garaje — la misma paciencia y precisión que aporta a cada programa que dirige.</span>
         </p>
       </div>
     </aside>
@@ -1694,6 +1800,17 @@
     </div>
   </footer>
 
+  <dialog class="doc-reader" id="chmReader" data-pages="51" data-path="chm-strategy/pages/" aria-labelledby="chmReaderTitle">
+    <div class="doc-reader-bar">
+      <div>
+        <div class="doc-reader-title" id="chmReaderTitle"><span data-lang="en">Enterprise Cybersecurity Strategy for CHM</span><span data-lang="es" hidden>Estrategia de Ciberseguridad Empresarial para la CHM</span></div>
+        <div class="doc-reader-count"><span data-lang="en">Page</span><span data-lang="es" hidden>Página</span> <span class="doc-reader-current">1</span> / 51</div>
+      </div>
+      <button type="button" class="doc-reader-close" aria-label="Close">&times;</button>
+    </div>
+    <div class="doc-reader-pages" tabindex="0"></div>
+  </dialog>
+
   <script>
     // ─── Language toggle ───
     const langToggle = document.getElementById('langToggle');
@@ -1732,6 +1849,36 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // view-only document reader
+    document.querySelectorAll('[data-open-reader]').forEach(btn => {
+      const dlg = document.getElementById(btn.dataset.openReader);
+      if (!dlg) return;
+      const box = dlg.querySelector('.doc-reader-pages');
+      const cur = dlg.querySelector('.doc-reader-current');
+      const n = +dlg.dataset.pages;
+      btn.addEventListener('click', () => {
+        if (!box.children.length) {
+          for (let i = 1; i <= n; i++) {
+            const img = document.createElement('img');
+            img.src = dlg.dataset.path + String(i).padStart(2, '0') + '.webp';
+            img.loading = 'lazy'; img.decoding = 'async'; img.draggable = false;
+            img.alt = 'Page ' + i; img.dataset.page = i;
+            box.appendChild(img);
+          }
+          const io = new IntersectionObserver(es => es.forEach(e => {
+            if (e.isIntersecting) cur.textContent = e.target.dataset.page;
+          }), { root: box, threshold: 0.5 });
+          box.querySelectorAll('img').forEach(im => io.observe(im));
+        }
+        dlg.showModal(); document.body.style.overflow = 'hidden'; box.focus();
+      });
+      dlg.querySelector('.doc-reader-close').addEventListener('click', () => dlg.close());
+      dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+      dlg.addEventListener('close', () => { document.body.style.overflow = ''; });
+      dlg.addEventListener('contextmenu', e => e.preventDefault());
+      dlg.addEventListener('dragstart', e => e.preventDefault());
+    });
   </script>
 </body>
 </html>
