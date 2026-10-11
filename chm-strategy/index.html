@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHM Enterprise Cybersecurity Strategy | Microrred de la Montaña</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep:     #070c18;
+    --bg-card:     #0c1525;
+    --bg-card2:    #101d33;
+    --border:      #1b2d4f;
+    --border-glow: #1e4080;
+    --cyan:        #00d4ff;
+    --cyan-dim:    rgba(0,212,255,0.12);
+    --cyan-mid:    rgba(0,212,255,0.25);
+    --orange:      #ff7043;
+    --orange-dim:  rgba(255,112,67,0.12);
+    --green:       #00e5a0;
+    --green-dim:   rgba(0,229,160,0.12);
+    --yellow:      #ffd54f;
+    --red:         #ff4d6d;
+    --red-dim:     rgba(255,77,109,0.12);
+    --text:        #dde8ff;
+    --text-muted:  #6a80a8;
+    --text-dim:    #3a4f72;
+    --font-head:   'Syne', sans-serif;
+    --font-body:   'DM Sans', sans-serif;
+    --font-mono:   'DM Mono', monospace;
+    --radius:      10px;
+    --shadow:      0 4px 32px rgba(0,0,0,0.5);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(7,12,24,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    gap: 16px;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .nav-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--cyan), #005f8f);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: #000;
+    letter-spacing: -0.5px;
+  }
+
+  .nav-title {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+
+  .nav-subtitle {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.5px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2px;
+    list-style: none;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover {
+    color: var(--cyan);
+    background: var(--cyan-dim);
+  }
+
+  .nav-tier {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--cyan);
+    background: var(--cyan-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── LAYOUT ── */
+  .wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  section { padding: 64px 0; }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--cyan);
+  }
+
+  .section-title {
+    font-family: var(--font-head);
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 12px;
+  }
+
+  .section-desc {
+    color: var(--text-muted);
+    max-width: 600px;
+    font-size: 14px;
+    margin-bottom: 40px;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    padding: 72px 0 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::after {
+    content: '';
+    position: absolute;
+    top: -120px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--cyan-dim);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--cyan);
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero-title {
+    font-family: var(--font-head);
+    font-size: clamp(30px, 4.5vw, 56px);
+    font-weight: 800;
+    line-height: 1.08;
+    color: #fff;
+    margin-bottom: 20px;
+    max-width: 780px;
+  }
+
+  .hero-title .accent { color: var(--cyan); }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 40px;
+    line-height: 1.75;
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 0;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .stat-card:hover {
+    border-color: var(--border-glow);
+    transform: translateY(-2px);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent, var(--cyan));
+  }
+
+  .stat-number {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--accent, var(--cyan));
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+    font-family: var(--font-mono);
+  }
+
+  /* ── CARDS GRID ── */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    border-color: var(--border-glow);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+    background: var(--accent-dim, var(--cyan-dim));
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .card-body {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .tab-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.3px;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+
+  .tab-btn.active {
+    color: var(--cyan);
+    background: var(--cyan-dim);
+    border: 1px solid rgba(0,212,255,0.2);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── RISK TABLE ── */
+  .risk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .risk-table th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+    white-space: nowrap;
+  }
+
+  .risk-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(27,45,79,0.6);
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .risk-table tr:hover td { background: rgba(0,212,255,0.03); }
+
+  .risk-id {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--cyan);
+    font-weight: 500;
+  }
+
+  .risk-title-cell { font-weight: 500; max-width: 200px; font-size: 13px; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .badge-red    { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,77,109,0.25); }
+  .badge-orange { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(255,112,67,0.25); }
+  .badge-yellow { background: rgba(255,213,79,0.1); color: var(--yellow); border: 1px solid rgba(255,213,79,0.25); }
+  .badge-green  { background: var(--green-dim); color: var(--green); border: 1px solid rgba(0,229,160,0.25); }
+  .badge-cyan   { background: var(--cyan-dim); color: var(--cyan); border: 1px solid rgba(0,212,255,0.25); }
+  .badge-blue   { background: rgba(64,120,255,0.12); color: #7aa0ff; border: 1px solid rgba(64,120,255,0.25); }
+
+  /* ── STRIDE GRID ── */
+  .stride-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  .stride-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    transition: all 0.3s;
+    border-left: 3px solid var(--s-color, var(--cyan));
+  }
+
+  .stride-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    border-color: var(--s-color, var(--cyan));
+    background: var(--bg-card2);
+  }
+
+  .stride-letter {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--s-color, var(--cyan));
+    line-height: 1;
+    margin-bottom: 6px;
+    opacity: 0.9;
+  }
+
+  .stride-name {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .stride-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+
+  .stride-nerc {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.3px;
+  }
+
+  /* ── CSF FUNCTIONS ── */
+  .csf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .csf-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .csf-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+
+  .csf-header {
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card2);
+  }
+
+  .csf-code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--csf-dim, var(--cyan-dim));
+    color: var(--csf-color, var(--cyan));
+    border: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+  }
+
+  .csf-name {
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .csf-body { padding: 20px 22px; }
+
+  .csf-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
+
+  .csf-controls {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .csf-controls li {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .csf-controls li::before {
+    content: '→';
+    color: var(--csf-color, var(--cyan));
+    font-family: var(--font-mono);
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 11px;
+  }
+
+  /* ── NERC STANDARDS TABLE ── */
+  .nerc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .nerc-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    transition: all 0.3s;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .nerc-card:hover { border-color: var(--border-glow); transform: translateY(-2px); }
+
+  .nerc-cip-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: var(--cyan-dim);
+    color: var(--cyan);
+    border: 1px solid rgba(0,212,255,0.2);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .nerc-info {}
+  .nerc-title { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .nerc-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+
+  /* ── ROADMAP ── */
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0;
+    position: relative;
+  }
+
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    top: 64px;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .phase-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phase-card:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+  .phase-card:last-child  { border-radius: 0 var(--radius) var(--radius) 0; }
+
+  @media (max-width: 768px) {
+    .phase-card { border-radius: 0 !important; }
+    .phase-card:first-child { border-radius: var(--radius) var(--radius) 0 0 !important; }
+    .phase-card:last-child  { border-radius: 0 0 var(--radius) var(--radius) !important; }
+  }
+
+  .phase-header {
+    background: var(--bg-card2);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 26px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .phase-num {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--ph-color, var(--cyan));
+    line-height: 1;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .phase-meta {}
+  .phase-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .phase-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .phase-timeline { font-family: var(--font-mono); font-size: 11px; color: var(--ph-color, var(--cyan)); }
+
+  .phase-body { padding: 22px 26px; }
+  .phase-tier {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+
+  .phase-tier .arrow { color: var(--ph-color, var(--cyan)); }
+
+  .phase-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .phase-items li {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+
+  .phase-items li::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ph-color, var(--cyan));
+    flex-shrink: 0;
+    margin-top: 6px;
+    opacity: 0.7;
+  }
+
+  /* ── SUPPLY CHAIN ── */
+  .supply-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) { .supply-grid { grid-template-columns: 1fr; } }
+
+  /* ── SEARCH ── */
+  .search-wrap {
+    position: relative;
+    max-width: 520px;
+    margin-bottom: 32px;
+  }
+
+  .search-input {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px 14px 48px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-input:focus { border-color: var(--cyan); }
+  .search-input::placeholder { color: var(--text-dim); }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 16px;
+    pointer-events: none;
+  }
+
+  .search-results { display: flex; flex-direction: column; gap: 8px; }
+
+  .search-result-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    text-decoration: none;
+  }
+
+  .search-result-item:hover { border-color: var(--cyan); background: var(--bg-card2); }
+
+  .search-result-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+  .search-result-section { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); white-space: nowrap; }
+
+  /* ── ASSET TABLE ── */
+  .asset-table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+
+  .asset-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    min-width: 700px;
+  }
+
+  .asset-table th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+    white-space: nowrap;
+  }
+
+  .asset-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(27,45,79,0.5);
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .asset-table tr:last-child td { border-bottom: none; }
+  .asset-table tr:hover td { background: rgba(0,212,255,0.025); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* ── INFO BANNER ── */
+  .info-banner {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--cyan);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+    line-height: 1.65;
+  }
+
+  .info-banner strong { color: var(--text); }
+
+  /* ── PROGRESS BARS ── */
+  .progress-group { display: flex; flex-direction: column; gap: 14px; }
+
+  .progress-item {}
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .progress-label span:last-child { color: var(--text); }
+
+  .progress-bar-bg {
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--pb-color, var(--cyan));
+    transition: width 1s ease;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    padding: 36px 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-brand { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: #fff; }
+  .footer-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); line-height: 1.7; }
+  .footer-links { display: flex; gap: 20px; }
+  .footer-links a { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--cyan); }
+
+  /* ── UTILITY ── */
+  .mt-8  { margin-top: 8px; }
+  .mt-16 { margin-top: 16px; }
+  .mt-24 { margin-top: 24px; }
+  .mt-32 { margin-top: 32px; }
+  .text-cyan   { color: var(--cyan); }
+  .text-green  { color: var(--green); }
+  .text-orange { color: var(--orange); }
+  .text-red    { color: var(--red); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } }
+
+  .scrollable-table { overflow-x: auto; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-title, .hero-desc, .hero-badge, .hero-stats { animation: fadeInUp 0.6s ease both; }
+  .hero-badge { animation-delay: 0.05s; }
+  .hero-title { animation-delay: 0.1s; }
+  .hero-desc  { animation-delay: 0.2s; }
+  .hero-stats { animation-delay: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 16px; }
+    .nav-links { display: none; }
+    .wrapper { padding: 0 16px; }
+    section { padding: 44px 0; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ────────────── NAVBAR ────────────── -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">CHM</div>
+    <div>
+      <div class="nav-title">Cybersecurity Strategy</div>
+      <div class="nav-subtitle">Microrred de la Montaña · CIS 5371-125</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#threats">Threats</a></li>
+    <li><a href="#risks">Risk Register</a></li>
+    <li><a href="#csf">NIST CSF 2.0</a></li>
+    <li><a href="#nerc">NERC CIP</a></li>
+    <li><a href="#supply">Supply Chain</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#assets">Assets</a></li>
+  </ul>
+  <div class="nav-tier">
+    <span style="font-size:8px;margin-right:4px;">▶</span> Target: Tier 1 → Tier 3
+  </div>
+</nav>
+
+<!-- ────────────── HERO ────────────── -->
+<section id="hero">
+  <div class="wrapper">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      NIST CSF 2.0 + NERC CIP · Puerto Rico Electric Cooperative
+    </div>
+    <h1 class="hero-title">
+      Enterprise Cybersecurity<br>
+      Strategy for <span class="accent">CHM</span>
+    </h1>
+    <p class="hero-desc">
+      A comprehensive cybersecurity program for the Cooperativa Hidroeléctrica de la Montaña — integrating NIST CSF 2.0 governance with NERC CIP technical controls to protect Puerto Rico's first inter-municipal microgrid across the Cordillera Central.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-card" style="--accent: var(--cyan);">
+        <div class="stat-number">90K</div>
+        <div class="stat-label">Residents Served</div>
+      </div>
+      <div class="stat-card" style="--accent: var(--green);">
+        <div class="stat-number">39 MW</div>
+        <div class="stat-label">Hydro Capacity</div>
+      </div>
+      <div class="stat-card" style="--accent: var(--orange);">
+        <div class="stat-number">15</div>
+        <div class="stat-label">Risk Register Items</div>
+      </div>
+      <div class="stat-card" style="--accent: #a78bfa);">
+        <div class="stat-number" style="color:#a78bfa;">36 mo</div>
+        <div class="stat-label">Implementation Window</div>
+      </div>
+      <div class="stat-card" style="--accent: var(--yellow);">
+        <div class="stat-number" style="color:var(--yellow);">13</div>
+        <div class="stat-label">NERC CIP Standards</div>
+      </div>
+      <div class="stat-card" style="--accent: var(--red);">
+        <div class="stat-number" style="color:var(--red);">4</div>
+        <div class="stat-label">Municipalities</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ────────────── OVERVIEW ────────────── -->
+<section id="overview">
+  <div class="wrapper">
+    <div class="section-label">Section 2 — Organizational Profile</div>
+    <h2 class="section-title">About the Cooperativa</h2>
+    <p class="section-desc">CHM manages distributed energy resources across four municipalities in Puerto Rico's Cordillera Central, operating hydroelectric, solar PV, and battery storage systems through three flagship projects.</p>
+
+    <div class="two-col">
+      <div>
+        <div class="grid-2" style="margin-bottom:20px;">
+          <div class="card">
+            <div class="card-icon" style="--accent-dim:rgba(0,212,255,0.12);">💧</div>
+            <div class="card-title">Hidroenergía Renace</div>
+            <div class="card-body">Rehabilitation of Caonillas-1 (20 MW), Caonillas-2 (4 MW), and Dos Bocas (15 MW) hydroelectric plants. Combined generation: ~81K MWh/yr.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="--accent-dim:rgba(255,213,79,0.1);">☀️</div>
+            <div class="card-title">ReEnFoCo</div>
+            <div class="card-body">Community solar PV + BESS at municipal substations in Adjuntas, Jayuya, Lares, and Utuado. SMA, Enphase, Fortress Power equipment.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="--accent-dim:rgba(0,229,160,0.12);">🔌</div>
+            <div class="card-title">Microrred de la Montaña</div>
+            <div class="card-body">First inter-municipal microgrid in Puerto Rico — 38 kV sub-transmission linking all plants, SCADA/EMS dispatch, islanding capability.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon" style="--accent-dim:rgba(255,112,67,0.12);">🏛️</div>
+            <div class="card-title">Customer Management</div>
+            <div class="card-body">Microsoft Dataverse cloud platform, DOE/USDA federal partnerships, member PII protected under Puerto Rico privacy regulations.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-title" style="margin-bottom:16px;">Cybersecurity Posture Baseline</div>
+          <div class="progress-group">
+            <div class="progress-item">
+              <div class="progress-label"><span>Governance & Policies</span><span>Tier 1 → 3</span></div>
+              <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:15%; --pb-color:var(--red);"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label"><span>Asset Inventory</span><span>Partial</span></div>
+              <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:30%; --pb-color:var(--orange);"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label"><span>Access Controls</span><span>Informal</span></div>
+              <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:20%; --pb-color:var(--orange);"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label"><span>Incident Response</span><span>Reactive</span></div>
+              <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:10%; --pb-color:var(--red);"></div></div>
+            </div>
+          </div>
+          <div style="margin-top:18px; padding-top:18px; border-top:1px solid var(--border);">
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);margin-bottom:8px;">CIA TRIAD PRIORITY (AIC Reorder)</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <span class="badge badge-red" style="font-size:12px;padding:5px 14px;">① Availability</span>
+              <span class="badge badge-orange" style="font-size:12px;padding:5px 14px;">② Integrity</span>
+              <span class="badge badge-cyan" style="font-size:12px;padding:5px 14px;">③ Confidentiality</span>
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:10px;">Grid uptime is CHM's highest protection priority — a cyber incident is a cyber-physical threat to community health and safety.</div>
+          </div>
+        </div>
+        <div class="info-banner">
+          <strong>Architecture:</strong> CHM follows the <strong>Purdue Model</strong> for IT/OT segmentation — field devices, control systems, site operations, enterprise IT, and external communications in distinct firewall-enforced zones with an industrial DMZ (iDMZ) air gap boundary.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ────────────── THREAT LANDSCAPE ────────────── -->
+<section id="threats">
+  <div class="wrapper">
+    <div class="section-label">Section 3 — Threat Analysis</div>
+    <h2 class="section-title">Threat Landscape</h2>
+    <p class="section-desc">CHM faces four primary threat categories, each mapped to STRIDE, NERC CIP mitigating controls, and specific CHM assets. The 2026 NERC CIP Roadmap identified supply chain attacks, physical attacks, phishing, and ransomware as the top four BPS risks.</p>
+
+    <div class="grid-4" style="margin-bottom:40px;">
+      <div class="card" style="border-top:2px solid var(--red);">
+        <div class="card-icon">🌀</div>
+        <div class="card-title">Natural & Environmental</div>
+        <div class="card-body">Category 4–5 hurricanes; STRIDE: <strong style="color:var(--text);">Denial of Service</strong> at physical layer. Hurricane Maria 2017 left parts of the island without power for nearly a year.</div>
+      </div>
+      <div class="card" style="border-top:2px solid var(--orange);">
+        <div class="card-icon">🌐</div>
+        <div class="card-title">Nation-State APTs</div>
+        <div class="card-body"><strong style="color:var(--orange);">Volt Typhoon</strong> targets low-impact BES via weak VPN controls. <strong style="color:var(--orange);">Salt Typhoon</strong> intercepts unencrypted DNP3/Modbus over carrier telecom links.</div>
+      </div>
+      <div class="card" style="border-top:2px solid var(--yellow);">
+        <div class="card-icon">💻</div>
+        <div class="card-title">Cybercriminal</div>
+        <div class="card-body">Ransomware ranked #5 of 22 BPS risks with likelihood score <strong style="color:var(--text);">4.25/5.0</strong>. Phishing into billing systems can pivot to OT turbine controls.</div>
+      </div>
+      <div class="card" style="border-top:2px solid var(--green);">
+        <div class="card-icon">👥</div>
+        <div class="card-title">Insider Threats</div>
+        <div class="card-body">Ranked #4 in NERC 2026 survey with impact score <strong style="color:var(--text);">4.67/5.0</strong> — joint-highest. Spans intentional, negligent, and accidental categories.</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:8px;">STRIDE Threat Model — CHM OT/IT Infrastructure</div>
+    <div style="font-size:13px;color:var(--text-muted);margin-bottom:24px;max-width:580px;">Mapped to NERC CIP-002 asset categories and NIST CSF 2.0 functions. Each category targets specific CHM systems.</div>
+
+    <div class="stride-grid">
+      <div class="stride-card" style="--s-color:#ff4d6d;">
+        <div class="stride-letter">S</div>
+        <div class="stride-name">Spoofing</div>
+        <div class="stride-desc">Fake operator commands to SCADA/HMI via DNP3. Adversary impersonates legitimate control signals.</div>
+        <div class="stride-nerc">NERC CIP-005, CIP-007</div>
+      </div>
+      <div class="stride-card" style="--s-color:#ff7043;">
+        <div class="stride-letter">T</div>
+        <div class="stride-name">Tampering</div>
+        <div class="stride-desc">Alter PLC logic or battery inverter setpoints. Ransomware data encryption (IT → OT crossover).</div>
+        <div class="stride-nerc">NERC CIP-007, CIP-010</div>
+      </div>
+      <div class="stride-card" style="--s-color:#ffd54f;">
+        <div class="stride-letter">R</div>
+        <div class="stride-name">Repudiation</div>
+        <div class="stride-desc">Delete audit logs; deny unauthorized configuration changes. Volt Typhoon clears evidence to maintain persistence.</div>
+        <div class="stride-nerc">NERC CIP-007, CIP-011</div>
+      </div>
+      <div class="stride-card" style="--s-color:#7aa0ff;">
+        <div class="stride-letter">I</div>
+        <div class="stride-name">Info Disclosure</div>
+        <div class="stride-desc">Exfiltrate BCS information, one-line diagrams, member PII. Unencrypted DNP3/Modbus over carrier links.</div>
+        <div class="stride-nerc">NERC CIP-011, CIP-012</div>
+      </div>
+      <div class="stride-card" style="--s-color:#00d4ff;">
+        <div class="stride-letter">D</div>
+        <div class="stride-name">Denial of Service</div>
+        <div class="stride-desc">DDoS DIGI IX10 gateways; disable islanding control. Loss of EMS dispatch halts renewable generation.</div>
+        <div class="stride-nerc">NERC CIP-007, CIP-008</div>
+      </div>
+      <div class="stride-card" style="--s-color:#00e5a0;">
+        <div class="stride-letter">E</div>
+        <div class="stride-name">Elevation of Privilege</div>
+        <div class="stride-desc">Lateral movement from IT to OT via unpatched VPN. Phishing on billing laptop → pivot to Caonillas turbine PLCs.</div>
+        <div class="stride-nerc">NERC CIP-004, CIP-005</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ────────────── RISK REGISTER ────────────── -->
+<section id="risks">
+  <div class="wrapper">
+    <div class="section-label">Section 5 — Risk Assessment</div>
+    <h2 class="section-title">Risk Register</h2>
+    <p class="section-desc">15 primary cyber-physical risks drawn from the NERC 2026 Industry Risk Survey and CHM's specific operational equipment profile. Very High and High risks are prioritized in Phase 1 of the roadmap.</p>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px;align-items:center;">
+      <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);margin-right:4px;">FILTER:</div>
+      <button class="tab-btn active" onclick="filterRisk('all', this)">All (15)</button>
+      <button class="tab-btn" onclick="filterRisk('very-high', this)">Very High (4)</button>
+      <button class="tab-btn" onclick="filterRisk('high', this)">High (4)</button>
+      <button class="tab-btn" onclick="filterRisk('moderate', this)">Moderate (7)</button>
+    </div>
+
+    <div class="scrollable-table">
+      <table class="risk-table" id="riskTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Risk Title</th>
+            <th>Threat Source</th>
+            <th>Likelihood</th>
+            <th>Impact</th>
+            <th>Risk Level</th>
+            <th>NERC CIP</th>
+            <th>Residual</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-level="very-high">
+            <td><span class="risk-id">RR-01</span></td>
+            <td class="risk-title-cell">Nation-State APT (Volt Typhoon / Salt Typhoon)</td>
+            <td><span class="badge badge-orange">State APT</span></td>
+            <td><span class="badge badge-red">Very High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-red">Very High</span></td>
+            <td><span class="badge badge-cyan">003 005 007</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+          </tr>
+          <tr data-level="very-high">
+            <td><span class="risk-id">RR-02</span></td>
+            <td class="risk-title-cell">Grid Frequency Sabotage via DNP3 Tampering</td>
+            <td><span class="badge badge-orange">External / Insider</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-red">Very High</span></td>
+            <td><span class="badge badge-red">Very High</span></td>
+            <td><span class="badge badge-cyan">007 012</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+          </tr>
+          <tr data-level="high">
+            <td><span class="risk-id">RR-03</span></td>
+            <td class="risk-title-cell">Ransomware / Malware Crossover (IT to OT)</td>
+            <td><span class="badge badge-orange">Cybercriminal</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-cyan">007 009 010</span></td>
+            <td><span class="badge badge-green">Low</span></td>
+          </tr>
+          <tr data-level="very-high">
+            <td><span class="risk-id">RR-04</span></td>
+            <td class="risk-title-cell">Phishing and Social Engineering</td>
+            <td><span class="badge badge-orange">Cybercriminal / APT</span></td>
+            <td><span class="badge badge-red">Very High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-red">Very High</span></td>
+            <td><span class="badge badge-cyan">004</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+          </tr>
+          <tr data-level="high">
+            <td><span class="risk-id">RR-05</span></td>
+            <td class="risk-title-cell">Supply Chain Compromise (Firmware / Software)</td>
+            <td><span class="badge badge-orange">Third-Party Vendor</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-cyan">013</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+          </tr>
+          <tr data-level="high">
+            <td><span class="risk-id">RR-06</span></td>
+            <td class="risk-title-cell">Loss of Islanding Capability (DoS on DIGI IX10)</td>
+            <td><span class="badge badge-orange">Cybercriminal / Weather</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-red">Very High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-cyan">007 008</span></td>
+            <td><span class="badge badge-green">Low</span></td>
+          </tr>
+          <tr data-level="moderate">
+            <td><span class="risk-id">RR-07</span></td>
+            <td class="risk-title-cell">BMS Thermal Runaway (Unauthorized Access)</td>
+            <td><span class="badge badge-orange">Insider / Adversary</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-cyan">005 006</span></td>
+            <td><span class="badge badge-green">Low</span></td>
+          </tr>
+          <tr data-level="high">
+            <td><span class="risk-id">RR-08</span></td>
+            <td class="risk-title-cell">Insider Threat (Intentional / Negligent)</td>
+            <td><span class="badge badge-orange">Employees / Contractors</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-cyan">004 006</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+          </tr>
+          <tr data-level="very-high">
+            <td><span class="risk-id">RR-09</span></td>
+            <td class="risk-title-cell">Physical Attack on Generation Infrastructure</td>
+            <td><span class="badge badge-orange">Physical / Weather</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-red">Very High</span></td>
+            <td><span class="badge badge-red">Very High</span></td>
+            <td><span class="badge badge-cyan">006 014</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+          </tr>
+          <tr data-level="moderate">
+            <td><span class="risk-id">RR-10</span></td>
+            <td class="risk-title-cell">End-of-Life Systems (Unpatched OT)</td>
+            <td><span class="badge badge-orange">Any Threat Actor</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-cyan">007 010</span></td>
+            <td><span class="badge badge-green">Low</span></td>
+          </tr>
+          <tr data-level="high">
+            <td><span class="risk-id">RR-11</span></td>
+            <td class="risk-title-cell">Exploitation of Unencrypted Public Telecom</td>
+            <td><span class="badge badge-orange">Nation-State / APT</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-cyan">012</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+          </tr>
+          <tr data-level="moderate">
+            <td><span class="risk-id">RR-12</span></td>
+            <td class="risk-title-cell">Member PII Exposure (Cloud Misconfiguration)</td>
+            <td><span class="badge badge-orange">Cybercriminal / Accidental</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-cyan">011</span></td>
+            <td><span class="badge badge-green">Low</span></td>
+          </tr>
+          <tr data-level="moderate">
+            <td><span class="risk-id">RR-13</span></td>
+            <td class="risk-title-cell">Weaponized Drone Attack on Plant Equipment</td>
+            <td><span class="badge badge-orange">Physical Adversary</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-cyan">006</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+          </tr>
+          <tr data-level="moderate">
+            <td><span class="risk-id">RR-14</span></td>
+            <td class="risk-title-cell">Cloud Environment Compromise (XENDEE/INL)</td>
+            <td><span class="badge badge-orange">Cybercriminal / APT</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-cyan">013</span></td>
+            <td><span class="badge badge-green">Low</span></td>
+          </tr>
+          <tr data-level="moderate">
+            <td><span class="risk-id">RR-15</span></td>
+            <td class="risk-title-cell">Compromise of BYOD Mobile Devices</td>
+            <td><span class="badge badge-orange">Cybercriminal / Insider</span></td>
+            <td><span class="badge badge-orange">High</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-yellow">Moderate</span></td>
+            <td><span class="badge badge-cyan">004</span></td>
+            <td><span class="badge badge-green">Low</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ────────────── NIST CSF 2.0 ────────────── -->
+<section id="csf">
+  <div class="wrapper">
+    <div class="section-label">Section 6 — NIST CSF 2.0</div>
+    <h2 class="section-title">Cybersecurity Strategy by Function</h2>
+    <p class="section-desc">NIST CSF 2.0 released February 26, 2024 adds a sixth function — <strong style="color:var(--cyan);">Govern</strong> — to the original five. All controls are organized into Administrative, Physical, and Technical/Logical categories. Every control traces back to a NERC CIP requirement.</p>
+
+    <div class="csf-grid">
+      <div class="csf-card">
+        <div class="csf-header">
+          <span class="csf-code" style="--csf-color:#a78bfa;--csf-dim:rgba(167,139,250,0.12);">GV</span>
+          <div class="csf-name">Govern</div>
+        </div>
+        <div class="csf-body">
+          <div class="csf-desc">Establishes organizational context and accountability. Added in CSF 2.0 — governance failures are the most common root cause of security program breakdowns.</div>
+          <ul class="csf-controls" style="--csf-color:#a78bfa;">
+            <li>Board-approved cybersecurity risk strategy reviewed annually</li>
+            <li>Cybersecurity Program Lead reports to executive director</li>
+            <li>Three foundational documents: Policy, Risk Appetite Statement, Program Plan</li>
+            <li>NERC CIP-003 senior management accountability requirement</li>
+            <li>Quarterly board metrics: policy review rate, open exceptions, vendor contract coverage</li>
+            <li>Read-only, tamper-evident document management system</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="csf-card">
+        <div class="csf-header">
+          <span class="csf-code" style="--csf-color:#60a5fa;--csf-dim:rgba(96,165,250,0.12);">ID</span>
+          <div class="csf-name">Identify</div>
+        </div>
+        <div class="csf-body">
+          <div class="csf-desc">Gives CHM a clear picture of the cyber-physical environment. Protective resources flow to the highest-risk assets first.</div>
+          <ul class="csf-controls" style="--csf-color:#60a5fa;">
+            <li>Comprehensive asset register — updated within 30 days of any change</li>
+            <li>NERC CIP-002 BCS categorization for all equipment</li>
+            <li>2.9 MW critical load mapping: food, medical, water, emergency services</li>
+            <li>Quarterly physical walkthroughs to verify asset register accuracy</li>
+            <li>Monthly automated network discovery vs. approved baseline</li>
+            <li>Rogue device alert to Program Lead within 24 hours</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="csf-card">
+        <div class="csf-header">
+          <span class="csf-code" style="--csf-color:#34d399;--csf-dim:rgba(52,211,153,0.12);">PR</span>
+          <div class="csf-name">Protect</div>
+        </div>
+        <div class="csf-body">
+          <div class="csf-desc">Safeguards that reduce likelihood and impact of a cybersecurity event: IAM, data security, network architecture, and awareness training.</div>
+          <ul class="csf-controls" style="--csf-color:#34d399;">
+            <li>Role-based access control (RBAC) — 4 roles: read-only, plant operator, sys admin, sec admin</li>
+            <li>MFA on all remote BCS access — #1 impact control per NERC 2026</li>
+            <li>CIP-007 patch management: critical ≤35 days, high ≤90 days</li>
+            <li>3-2-1 backup rule; golden-image offline backups in fireproof safes</li>
+            <li>Purdue Model NGFW with DPI; all inter-zone traffic denied by default</li>
+            <li>TLS 1.3 tunnels over all carrier-provided links (DNP3, Modbus)</li>
+            <li>WPA3-AES on all TP-Link Wi-Fi; DIGI TrustFence secure boot + signed firmware</li>
+            <li>Annual CIP-004 security training + 2x/yr phishing simulations</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="csf-card">
+        <div class="csf-header">
+          <span class="csf-code" style="--csf-color:#fbbf24;--csf-dim:rgba(251,191,36,0.12);">DE</span>
+          <div class="csf-name">Detect</div>
+        </div>
+        <div class="csf-body">
+          <div class="csf-desc">Continuous monitoring to identify anomalous events before they escalate. 24-hour detection across all unmanned generation sites.</div>
+          <ul class="csf-controls" style="--csf-color:#fbbf24;">
+            <li>SIEM aggregating logs from firewalls, SCADA, RTUs, auth systems</li>
+            <li>CIP-015 Internal Network Security Monitoring (INSM) within ESPs</li>
+            <li>Anomaly detection: failed logins, off-hours config changes, unusual SCADA volumes</li>
+            <li>Detection rules updated quarterly; 90-day log retention</li>
+            <li>CCTV at all High Security Zone entry points; tamper-evident seals</li>
+            <li>Third-party SOC for after-hours 24/7 monitoring</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="csf-card">
+        <div class="csf-header">
+          <span class="csf-code" style="--csf-color:#f87171;--csf-dim:rgba(248,113,113,0.12);">RS</span>
+          <div class="csf-name">Respond</div>
+        </div>
+        <div class="csf-body">
+          <div class="csf-desc">Structured incident response capability meeting NERC CIP-008 requirements. Rapid escalation to E-ISAC, NERC, and CISA.</div>
+          <ul class="csf-controls" style="--csf-color:#f87171;">
+            <li>CSIRP with designated Incident Response Team (IRT) — 5 roles</li>
+            <li>E-ISAC notification within 1 hour; NERC formal report within 24 hours</li>
+            <li>SIEM auto-tickets for High+ severity events; IRT acknowledgment ≤15 min</li>
+            <li>SCADA Triage Checklist: verify → sever iDMZ link → switch to manual control</li>
+            <li>NAC auto-quarantine of endpoints failing posture assessment</li>
+            <li>2x/yr tabletop exercises; exercise findings incorporated within 30 days</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="csf-card">
+        <div class="csf-header">
+          <span class="csf-code" style="--csf-color:#00d4ff;--csf-dim:rgba(0,212,255,0.12);">RC</span>
+          <div class="csf-name">Recover</div>
+        </div>
+        <div class="csf-body">
+          <div class="csf-desc">Prioritized recovery mapped to community lifeline services. RTOs ensure grid-critical systems are restored before administrative systems.</div>
+          <ul class="csf-controls" style="--csf-color:#00d4ff;">
+            <li>Priority 1: EMS (RTO 4 hr) → Priority 2: Hydro plant controls (RTO 8 hr)</li>
+            <li>Priority 3: BESS/Solar inverters → Priority 4: Billing & customer systems</li>
+            <li>Golden-image backups on encrypted offline USB; hash-verified monthly</li>
+            <li>Pre-positioned spare DIGI IX10, TP-Link hardware at each plant site</li>
+            <li>8-hour battery backup for control room equipment during islanding events</li>
+            <li>CIP-009: documented, tested recovery plans reviewed every 15 calendar months</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ────────────── NERC CIP ────────────── -->
+<section id="nerc">
+  <div class="wrapper">
+    <div class="section-label">Section 7 — Regulatory Framework</div>
+    <h2 class="section-title">NERC CIP Standards Integration</h2>
+    <p class="section-desc">13 active NERC CIP standards form the technical control backbone. CHM's combined Caonillas-Dos Bocas system at 39 MW connected to the 38 kV network qualifies as Low Impact BES Cyber Systems under CIP-002.</p>
+
+    <div class="info-banner">
+      <strong>Framework Integration:</strong> NIST CSF 2.0 serves as the governance architecture; NERC CIP provides the prescriptive technical control library. Using both gives CHM an approach that satisfies regulatory auditors and communicates security posture clearly to community leaders and funding agencies.
+    </div>
+
+    <div class="nerc-grid">
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-002</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Asset Categorization</div>
+          <div class="nerc-desc">CHM categorizes the combined Caonillas-Dos Bocas system as Low Impact BCS under Criterion 2.6. Initial categorization within 30 days of operational control; annual review.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-003</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Security Management Controls</div>
+          <div class="nerc-desc">Documents electronic access, physical security, monitoring, and incident response for low-impact BCS. CIP-003-11 (proposed) adds MFA + malicious communication detection.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-004</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Personnel and Training</div>
+          <div class="nerc-desc">Background checks, drug screening, and employment verification for all OT-adjacent roles. Annual security training before access granted and each calendar year thereafter.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-005</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Electronic Security Perimeters</div>
+          <div class="nerc-desc">Defines ESP around BES Cyber Systems. All External Routable Connectivity identified and controlled. MFA required for all interactive remote access.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-006</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Physical Security</div>
+          <div class="nerc-desc">Badge + PIN at Caonillas and Dos Bocas High Security Zone entry points. CCTV, motion lighting, tamper-evident seals, cabinet locks on all DIN-rail enclosures.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-007</div>
+        <div class="nerc-info">
+          <div class="nerc-title">System Security Management</div>
+          <div class="nerc-desc">Ports/services minimized per function. 35-day patch review cycle. SIEM event monitoring; 90-day log retention. All unauthorized ports disabled and sealed.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-008</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Incident Reporting</div>
+          <div class="nerc-desc">CSIRP satisfies CIP-008. E-ISAC notification ≤1 hour; NERC formal report ≤24 hours. IRT documented with 5 designated roles. Tested via tabletop exercises 2x/yr.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-009</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Recovery Plans</div>
+          <div class="nerc-desc">Documented RTOs: EMS (4 hr), hydro controls (8 hr). Recovery plans tested every 15 calendar months. Lessons-learned reviews within 2 weeks of any incident.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-010</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Configuration Management</div>
+          <div class="nerc-desc">Baseline configuration docs for all BES Cyber Assets. Unauthorized changes detected within 35 days. Automated tools generate and compare baselines every monitoring cycle.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-011</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Information Protection</div>
+          <div class="nerc-desc">BES Cyber System Information protected in storage, transit, and disposal. AES-256 encryption. Physical media destroyed per CIP-011 at decommission.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-012</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Communications Security</div>
+          <div class="nerc-desc">Protects real-time monitoring and control data between control center and LUMA Energy dispatch. TLS 1.3 tunnels over all carrier-provided fiber, copper, and cellular links.</div>
+        </div>
+      </div>
+      <div class="nerc-card">
+        <div class="nerc-cip-badge">CIP-013</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Supply Chain Risk Management</div>
+          <div class="nerc-desc">Mandatory for ICS hardware, software, and services vendors. SBOM required for all BCS software. Vendors must notify CHM within 24 hours of breach or vulnerability discovery.</div>
+        </div>
+      </div>
+      <div class="nerc-card" style="border-color:rgba(0,212,255,0.3);">
+        <div class="nerc-cip-badge" style="background:linear-gradient(135deg,var(--cyan-dim),rgba(0,100,150,0.2));border-color:rgba(0,212,255,0.3);">CIP-015 ★</div>
+        <div class="nerc-info">
+          <div class="nerc-title">Internal Network Security Monitoring</div>
+          <div class="nerc-desc">Adopted May 9, 2024. INSM within ESPs of applicable high/medium BCS. Passive network taps feed packet capture to SIEM. Directly counters Volt Typhoon lateral movement.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ────────────── SUPPLY CHAIN ────────────── -->
+<section id="supply">
+  <div class="wrapper">
+    <div class="section-label">Section 8 — Supply Chain Risk Management</div>
+    <h2 class="section-title">Supply Chain Risk Program</h2>
+    <p class="section-desc">NERC 2026 ranked supply chain attacks #1 of 22 BPS risks with the highest composite weighted score of 10.3. CHM's Microrred depends on dozens of vendors across inverters, routers, BESS, and analytics platforms.</p>
+
+    <div class="supply-grid">
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-title" style="margin-bottom:16px;">Vendor Lifecycle Controls</div>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="min-width:28px;height:28px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--cyan);flex-shrink:0;">1</div>
+              <div>
+                <div style="font-size:13px;color:#fff;font-weight:500;margin-bottom:3px;">Selection</div>
+                <div style="font-size:12px;color:var(--text-muted);">Mandatory cybersecurity questionnaire: certifications, vulnerability disclosure, patch support timelines. Vendors without foundational controls are ineligible for BCS-adjacent contracts.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="min-width:28px;height:28px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--cyan);flex-shrink:0;">2</div>
+              <div>
+                <div style="font-size:13px;color:#fff;font-weight:500;margin-bottom:3px;">Contract Requirements</div>
+                <div style="font-size:12px;color:var(--text-muted);">4 mandatory CIP-013 provisions: 24-hr vulnerability notification, 24-hr breach notification, SBOM delivery, and remote access termination rights.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="min-width:28px;height:28px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--cyan);flex-shrink:0;">3</div>
+              <div>
+                <div style="font-size:13px;color:#fff;font-weight:500;margin-bottom:3px;">SBOM & CVE Scanning</div>
+                <div style="font-size:12px;color:var(--text-muted);">SBOM documents every library, OSS package, and module. Automated CVE scanning identifies affected components within hours of CVE publication — not weeks.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <div style="min-width:28px;height:28px;border-radius:50%;background:var(--cyan-dim);border:1px solid rgba(0,212,255,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--cyan);flex-shrink:0;">4</div>
+              <div>
+                <div style="font-size:13px;color:#fff;font-weight:500;margin-bottom:3px;">Ongoing Monitoring</div>
+                <div style="font-size:12px;color:var(--text-muted);">Annual questionnaire reviews. Vendor breach activates vendor CSIRP: isolate access → assess exposure → notify regulators → update risk register within 5 business days.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <div class="card-title" style="margin-bottom:14px;">Key Vendors in Scope (CIP-013)</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg-card2);border-radius:7px;border:1px solid var(--border);">
+              <span style="font-size:13px;color:var(--text);">SMA Solar</span>
+              <div style="display:flex;gap:6px;"><span class="badge badge-orange">Inverters</span><span class="badge badge-cyan">Data Manager</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg-card2);border-radius:7px;border:1px solid var(--border);">
+              <span style="font-size:13px;color:var(--text);">Enphase Energy</span>
+              <span class="badge badge-cyan">Micro-Inverters (IQ8)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg-card2);border-radius:7px;border:1px solid var(--border);">
+              <span style="font-size:13px;color:var(--text);">Fortress Power</span>
+              <div style="display:flex;gap:6px;"><span class="badge badge-cyan">BESS</span><span class="badge badge-orange">BMS Software</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg-card2);border-radius:7px;border:1px solid var(--border);">
+              <span style="font-size:13px;color:var(--text);">DIGI International</span>
+              <span class="badge badge-red">Industrial Routers (IX10)</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg-card2);border-radius:7px;border:1px solid var(--border);">
+              <span style="font-size:13px;color:var(--text);">XENDEE / INL</span>
+              <span class="badge badge-yellow">Energy Analytics</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:var(--bg-card2);border-radius:7px;border:1px solid var(--border);">
+              <span style="font-size:13px;color:var(--text);">Microsoft</span>
+              <span class="badge badge-blue">Dataverse / 365</span>
+            </div>
+          </div>
+        </div>
+        <div class="info-banner">
+          <strong>NERC 2026 Finding:</strong> Supply chain risk has the highest mitigation tally of any single risk category — 12 of 16 possible control categories apply, including configuration management, MFA, and IAM.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ────────────── ROADMAP ────────────── -->
+<section id="roadmap">
+  <div class="wrapper">
+    <div class="section-label">Section 9 — Implementation</div>
+    <h2 class="section-title">36-Month Implementation Roadmap</h2>
+    <p class="section-desc">Three phases aligned with Microrred de la Montaña operational stages: ReEnFoCo solar/storage, Hidroenergia Renace hydro rehabilitation, and full microgrid integration. Each phase advances CHM one NIST CSF tier.</p>
+
+    <div class="roadmap">
+      <div class="phase-card" style="--ph-color:var(--orange);">
+        <div class="phase-header">
+          <div class="phase-num">01</div>
+          <div class="phase-meta">
+            <div class="phase-label">Phase 1 · Foundation</div>
+            <div class="phase-title">Governance & Identification</div>
+            <div class="phase-timeline">Months 1–12</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-tier">Tier 1 <span class="arrow">→</span> Tier 2 (Risk Informed)</div>
+          <ul class="phase-items">
+            <li>Appoint Cybersecurity Program Lead; create Cybersecurity Policy, Risk Appetite Statement, and Program Plan</li>
+            <li>Complete initial BES Cyber Asset inventory and CIP-002 categorization (Table 5-1)</li>
+            <li>Implement MFA + least-privilege RBAC on all BCS-adjacent systems including SCADA and DIGI IX10 gateways</li>
+            <li>Deploy SIEM with baseline correlation rules; integrate all existing log sources</li>
+            <li>Conduct first CIP-004 security awareness training + first phishing simulation</li>
+            <li>Complete CSIRP; assign IRT roles; run first tabletop (hurricane comms-loss scenario)</li>
+            <li>Complete vendor assessments for SMA, Enphase, Fortress Power, DIGI, XENDEE</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase-card" style="--ph-color:var(--cyan); border-left:1px solid var(--border); border-right:1px solid var(--border);">
+        <div class="phase-header" style="border-left:none;">
+          <div class="phase-num">02</div>
+          <div class="phase-meta">
+            <div class="phase-label">Phase 2 · Hardening</div>
+            <div class="phase-title">OT Network Security</div>
+            <div class="phase-timeline">Months 13–24</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-tier">Tier 2 <span class="arrow">→</span> Tier 3 (Repeatable)</div>
+          <ul class="phase-items">
+            <li>Deploy industrial-grade NGFWs at each plant site; configure Purdue Model segmentation</li>
+            <li>Activate INSM sensors (CIP-015) within OT process control network zones</li>
+            <li>Expand SIEM log sources from plant-level systems; begin behavioral baselines</li>
+            <li>Formalize CIP-007 patch management; activate CIP-010 automated config monitoring</li>
+            <li>Encrypt all SCADA data over 38 kV links via TLS 1.3 tunnels (CIP-012)</li>
+            <li>Hire/contract OT security specialist for OT network monitoring and maintenance</li>
+            <li>CIP-003-11 controls live before 38 kV interconnection energizes</li>
+          </ul>
+        </div>
+      </div>
+      <div class="phase-card" style="--ph-color:var(--green);">
+        <div class="phase-header">
+          <div class="phase-num">03</div>
+          <div class="phase-meta">
+            <div class="phase-label">Phase 3 · Optimization</div>
+            <div class="phase-title">Unified Security Operations</div>
+            <div class="phase-timeline">Months 25–36</div>
+          </div>
+        </div>
+        <div class="phase-body">
+          <div class="phase-tier">Sustain <span class="arrow">→</span> Tier 3 (Validated)</div>
+          <ul class="phase-items">
+            <li>Third-party SOC contract activated for 24-hour monitoring at all sites</li>
+            <li>Automated CVE scanning vs. SBOM inventory; weekly patch prioritization reports</li>
+            <li>First NERC CIP compliance self-assessment; preparation for Regional Entity audit</li>
+            <li>Annual cybersecurity risk assessment comparing prior-year risk profile</li>
+            <li>Updated Target Organizational Profile with new 3-year security targets</li>
+            <li>Validated Tier 3 positions CHM for DOE CESER and USDA rural cooperative cybersecurity grant funding</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ────────────── ASSETS ────────────── -->
+<section id="assets">
+  <div class="wrapper">
+    <div class="section-label">Section 5.1 — Asset Inventory</div>
+    <h2 class="section-title">Equipment Inventory (NERC CIP-002)</h2>
+    <p class="section-desc">All CHM equipment organized by NERC CIP-002 asset category. Categories determine which NERC CIP requirements apply to each asset and drive protection priorities.</p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+      <span class="badge badge-red" style="font-size:11px;padding:5px 14px;">Low Impact BCS</span>
+      <span class="badge badge-orange" style="font-size:11px;padding:5px 14px;">Protected Cyber Asset (PCA)</span>
+      <span class="badge badge-yellow" style="font-size:11px;padding:5px 14px;">EACMS</span>
+      <span class="badge badge-blue" style="font-size:11px;padding:5px 14px;">Non-BES IT Asset</span>
+    </div>
+
+    <div class="asset-table-wrap">
+      <table class="asset-table">
+        <thead>
+          <tr>
+            <th>Brand / Model</th>
+            <th>Equipment Name</th>
+            <th>NERC CIP-002 Category</th>
+            <th>Location</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">Generic PLC/Governor</td><td>Turbine Controller (Caonillas / Dos Bocas)</td><td><span class="badge badge-red">LI-BCS</span></td><td>Hydroelectric Plants</td><td><span class="badge badge-blue">Planned</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">SMA Sunny Boy 5.0/7.0/7.7</td><td>Residential/Commercial Solar Inverter</td><td><span class="badge badge-red">LI-BCS</span></td><td>Castañer Microrredes</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">SMA Sunny Island</td><td>Lead Inverter / Grid-Former</td><td><span class="badge badge-red">LI-BCS</span></td><td>Castañer Microrredes</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">Enphase IQ8</td><td>Micro-Inverter (Solar)</td><td><span class="badge badge-red">LI-BCS</span></td><td>PV Panel Strings</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">Fortress Power eVault Max 18.5</td><td>Lithium Battery System</td><td><span class="badge badge-red">LI-BCS</span></td><td>Castañer Microrredes</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">Fortress Power eForce 9.6 / Envy Duo 21</td><td>Battery System / Inverter</td><td><span class="badge badge-red">LI-BCS</span></td><td>ReEnFoCo Phase 2</td><td><span class="badge badge-yellow">Selected</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">SunPower Maxeon 3 / P17</td><td>Photovoltaic Panel</td><td><span class="badge badge-red">LI-BCS</span></td><td>Castañer Microrredes</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">SEG 580</td><td>Photovoltaic Panel</td><td><span class="badge badge-red">LI-BCS</span></td><td>ReEnFoCo Phase 2</td><td><span class="badge badge-yellow">Selected</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">SMA Data Manager</td><td>Data Logger / Plant Monitor</td><td><span class="badge badge-orange">PCA</span></td><td>Castañer Microrredes</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">WattsOn Mark II</td><td>Grid Power Meter</td><td><span class="badge badge-orange">PCA</span></td><td>Castañer Microrredes</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">EKM Push3</td><td>Internet Gateway / Meter Bus</td><td><span class="badge badge-orange">PCA</span></td><td>Castañer Microrredes</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">eGauge 4015 / 4215</td><td>Electrical Measurement Instrument</td><td><span class="badge badge-orange">PCA</span></td><td>ReEnFoCo Phase 2</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">DIGI IX10</td><td>Industrial Cellular Router</td><td><span class="badge badge-yellow">EACMS</span></td><td>Castañer Microrredes</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">TP-Link RE230 / TL-WR802N</td><td>Wi-Fi Extender / Nano-Router</td><td><span class="badge badge-yellow">EACMS</span></td><td>Castañer / Phase 2</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">Lenovo P15V / P16</td><td>Workstation / Laptop</td><td><span class="badge badge-blue">Non-BES IT</span></td><td>CHM Staff</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">BYOD Mobile Phones</td><td>Employee Mobile Device</td><td><span class="badge badge-blue">Non-BES IT</span></td><td>CHM Staff</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">Parrot ANAFI USA</td><td>Small UAS (Drone)</td><td><span class="badge badge-blue">Non-BES IT</span></td><td>CHM Office (Utuado)</td><td><span class="badge badge-green">Existing</span></td></tr>
+          <tr><td style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);">Baofeng UV-5RTP</td><td>HAM Radio</td><td><span class="badge badge-blue">Non-BES IT</span></td><td>Community Coordinators</td><td><span class="badge badge-green">Existing</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ────────────── QUICK REFERENCE ────────────── -->
+<section id="search-section">
+  <div class="wrapper">
+    <div class="section-label">Quick Reference</div>
+    <h2 class="section-title">Strategy Quick-Find</h2>
+    <p class="section-desc">Jump directly to key topics, requirements, and controls from the strategy document.</p>
+
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search: MFA, ransomware, STRIDE, Volt Typhoon, islanding..." oninput="filterSearch(this.value)">
+    </div>
+
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</section>
+
+<!-- ────────────── FOOTER ────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">CHM Cybersecurity Strategy Portal</div>
+      <div class="footer-meta">
+        Cooperativa Hidroeléctrica de la Montaña · Adjuntas, Puerto Rico<br>
+        CIS 5371-125 Enterprise Cybersecurity · Zero-Trust Guardians (Group 2)<br>
+        NIST CSF 2.0 + NERC CIP · April 2026
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div class="footer-meta" style="margin-bottom:8px;">
+        <strong style="color:var(--text);">Authors:</strong> S. Arroyo, M. Yusuf, M. Fevrier<br>
+        Professor: Dr. Anitha Chennamaneni<br>
+        MSIS — Master of Science in Information Systems
+      </div>
+      <div class="footer-links">
+        <a href="#hero">Top</a>
+        <a href="#threats">Threats</a>
+        <a href="#risks">Risks</a>
+        <a href="#roadmap">Roadmap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ── RISK FILTER ── */
+  function filterRisk(level, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const rows = document.querySelectorAll('#riskTable tbody tr');
+    rows.forEach(row => {
+      if (level === 'all' || row.dataset.level === level) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  /* ── SEARCH DATA ── */
+  const searchData = [
+    { text: "MFA — Multi-Factor Authentication: #1 impactful control per NERC 2026. Required for all remote BCS access per CIP-005.", section: "§6.3 Protect", anchor: "#csf" },
+    { text: "Volt Typhoon: State-sponsored APT exploiting weak VPN controls and remote admin tools in low-impact BES utilities.", section: "§3.2 Nation-State", anchor: "#threats" },
+    { text: "Salt Typhoon: Compromises carrier telecom to intercept unencrypted DNP3 and Modbus traffic over SCADA links.", section: "§3.2 Nation-State", anchor: "#threats" },
+    { text: "Ransomware: Ranked #5 of 22 BPS risks, likelihood 4.25/5.0. IT→OT crossover via iDMZ. Mitigated by offline golden-image backups.", section: "§3.3 Cybercriminal", anchor: "#threats" },
+    { text: "Islanding Capability: Microrred de la Montaña can island from PREPA grid. Loss of islanding = RR-06 (High risk).", section: "§3.3 / §5.3", anchor: "#risks" },
+    { text: "STRIDE: Spoofing, Tampering, Repudiation, Info Disclosure, Denial of Service, Elevation of Privilege threat model applied to CHM OT/IT.", section: "§3 / §5.4", anchor: "#threats" },
+    { text: "Phishing: Very High likelihood, High impact = Very High risk (RR-04). Mitigation: 2x/yr simulation + annual CIP-004 training.", section: "§5.3 RR-04", anchor: "#risks" },
+    { text: "Supply Chain: NERC 2026 #1 risk, composite score 10.3. SBOM required; 24-hr vendor notification; CVE automated scanning.", section: "§8 Supply Chain", anchor: "#supply" },
+    { text: "SBOM (Software Bill of Materials): Required for all BCS software vendors under CIP-013. Enables hours-not-weeks CVE response.", section: "§8 Supply Chain", anchor: "#supply" },
+    { text: "Purdue Model: IT/OT network segmentation model. Level 0 (field devices) through Level 5 (internet). iDMZ air gap enforces separation.", section: "§2.1 Infrastructure", anchor: "#overview" },
+    { text: "CIP-015: Internal Network Security Monitoring (INSM). Adopted May 9, 2024. Passive taps inside ESPs feeding SIEM.", section: "§7 NERC CIP", anchor: "#nerc" },
+    { text: "AIC Triad: CHM reorders CIA to Availability > Integrity > Confidentiality because grid uptime = community survival.", section: "§1 Introduction", anchor: "#overview" },
+    { text: "DIGI IX10: Industrial cellular router classified as EACMS. Uses TrustFence secure boot, signed firmware, WPA3-AES encryption.", section: "§5.1 Assets / §6.3", anchor: "#assets" },
+    { text: "SIEM: Security Information and Event Management. 90-day log retention (CIP-007). Aggregates firewalls, SCADA, RTUs, auth systems.", section: "§6.4 Detect", anchor: "#csf" },
+    { text: "Patch Management (CIP-007): 35-day review cycle. Critical patches ≤35 days, high ≤90 days, medium/low next quarterly window.", section: "§6.3 Protect", anchor: "#csf" },
+    { text: "Recovery Time Objectives: EMS = 4 hours, Hydroelectric plant controls = 8 hours (CIP-009).", section: "§6.6 Recover", anchor: "#csf" },
+    { text: "Caonillas-1: 20 MW (2×10 MW units), ~50,636 MWh/yr net generation. Caonillas-2: 4 MW rehabilitation. Dos Bocas: 15 MW (3×5 MW).", section: "§2.1 Infrastructure", anchor: "#overview" },
+    { text: "CSIRP: Cyber Security Incident Response Plan. E-ISAC notification ≤1 hr; NERC formal report ≤24 hrs. IRT = 5 designated roles.", section: "§6.5 Respond", anchor: "#csf" },
+    { text: "CIP-002: Asset categorization. Caonillas-Dos Bocas at 39 MW = Low Impact BES Cyber System under Criterion 2.6.", section: "§7 NERC CIP", anchor: "#nerc" },
+    { text: "RBAC: Role-based access control. 4 roles: Read-only operator, Plant operator, System admin, Security admin. Reviewed every 90 days.", section: "§6.3 Protect", anchor: "#csf" },
+    { text: "3-2-1 Backup Rule: 3 copies, 2 media types, 1 copy offsite outside hurricane impact zone. Verified monthly via hash comparison.", section: "§6.3 Protect", anchor: "#csf" },
+    { text: "Golden Image: Offline encrypted backups of system configurations and control logic stored in fireproof safes at each plant site.", section: "§6.6 Recover", anchor: "#csf" },
+    { text: "CIP-003-11 (Proposed): Adds MFA for remote users and detection of malicious communications for low-impact BCS. CHM adopts prospectively.", section: "§7 NERC CIP", anchor: "#nerc" },
+    { text: "Insider Threats: NERC 2026 #4 risk, impact score 4.67/5.0 (joint highest). Three categories: intentional, negligent, accidental.", section: "§3.4 Insider", anchor: "#threats" },
+    { text: "DNP3 / Modbus: SCADA protocols. Must be wrapped in TLS 1.3 tunnels over carrier-provided links to mitigate Salt Typhoon interception.", section: "§3.2 / §6.3", anchor: "#threats" },
+    { text: "E-ISAC: Electricity Information Sharing and Analysis Center. CHM joins E-ISAC information sharing community and participates in GridEx.", section: "§7 / §6.5", anchor: "#nerc" },
+    { text: "Defense-in-Depth: Layering independent security controls so failure of one does not expose entire system. Primary engineering response to IT/OT convergence.", section: "§3.5 IT/OT", anchor: "#threats" },
+    { text: "38 kV Sub-Transmission: Links hydroelectric plants to each municipal substation. Conductors: 0.054 Ω/km resistance, 1,520A ampacity.", section: "§2.1 Infrastructure", anchor: "#overview" },
+    { text: "DOE CESER: Office of Cybersecurity, Energy Security, and Emergency Response. Validated Tier 3 positions CHM for grant funding.", section: "§9 Roadmap Ph.3", anchor: "#roadmap" },
+    { text: "Fortress Power: BESS vendor. eVault Max (Phase 1), eForce 9.6 kWh + Envy Duo 21 (Phase 2). BMS controllers = LI-BCS.", section: "§2.1 / §5.1", anchor: "#assets" },
+  ];
+
+  function filterSearch(q) {
+    const container = document.getElementById('searchResults');
+    if (!q.trim()) { container.innerHTML = ''; return; }
+    const lower = q.toLowerCase();
+    const matches = searchData.filter(d => d.text.toLowerCase().includes(lower) || d.section.toLowerCase().includes(lower));
+    if (!matches.length) {
+      container.innerHTML = '<div style="font-size:13px;color:var(--text-muted);padding:12px 0;">No results found. Try: MFA, ransomware, STRIDE, islanding, DIGI IX10…</div>';
+      return;
+    }
+    container.innerHTML = matches.slice(0, 8).map(d => `
+      <a class="search-result-item" href="${d.anchor}">
+        <div class="search-result-text">${highlightMatch(d.text, q)}</div>
+        <div class="search-result-section">${d.section}</div>
+      </a>
+    `).join('');
+  }
+
+  function highlightMatch(text, q) {
+    if (!q) return text;
+    const regex = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return text.replace(regex, '<mark style="background:rgba(0,212,255,0.2);color:var(--cyan);border-radius:3px;padding:0 2px;">$1</mark>');
+  }
+
+  /* ── SMOOTH ANCHOR SCROLL ── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>
