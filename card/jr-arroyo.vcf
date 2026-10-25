@@ -1,1 +1,20 @@
-
+BEGIN:VCARD
+VERSION:3.0
+N:Arroyo Claudio;Santos;H.;;MPA,MSIS,PMP,CBAP
+FN:Santos H. Arroyo Claudio
+NICKNAME:JR
+ORG:Major Business Solutions\, LLC
+TITLE:Founder
+TEL;TYPE=CELL:+12543686850
+TEL;TYPE=WORK,VOICE:+15129674254
+EMAIL;TYPE=INTERNET,WORK:sarroyo@major-businesssolutions.com
+URL:https://major-businesssolutions.com/en
+ADR;TYPE=WORK:;;;Killeen;TX;;USA
+item1.URL:https://majorcompliance.major-businesssolutions.com/welcome
+item1.X-ABLabel:MajorCompliance
+item2.URL:https://sarroyoclaudio.github.io
+item2.X-ABLabel:Portfolio
+item3.URL:https://www.linkedin.com/in/santos-arroyo-claudio
+item3.X-ABLabel:LinkedIn
+X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/santos-arroyo-claudio
+END:VCARD
