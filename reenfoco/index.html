@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHM ReEnFoCo · Field Data to Microgrid · 3D Animation</title>
+<meta name="description" content="Interactive 3D animation of how field data captured with Power Platform feeds rooftop solar and battery microgrid design for CHM's ReEnFoCo program in Puerto Rico. Illustrative.">
+<meta property="og:title" content="CHM ReEnFoCo · Field Data to Microgrid · 3D Animation">
+<meta property="og:description" content="From a Power Apps field survey to a microgrid that keeps local businesses open during an outage. Animation only.">
+<meta property="og:image" content="https://sarroyoclaudio.github.io/reenfoco/preview.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>
+
+:root{
+  --green:#2E4636;--green-d:#1E2E24;--green-l:#86948A;
+  --gold:#C39A3E;--gold-l:#DCC48F;--gold-ll:#EEE3C9;
+  --blue:#2C5C7F;--blue-d:#1D3D54;--blue-l:#85A0B5;
+  --gun:#23282A;--gun-d:#171A1C;--sand:#E4DAC6;--bone:#FAF7F1;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--gun-d);font-family:var(--sans);color:var(--bone)}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#c.hot{cursor:pointer}
+.panel{position:fixed;background:rgba(23,26,28,.82);border:1.5px solid rgba(195,154,62,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.mono{font-family:var(--mono)}
+/* header */
+#top{position:fixed;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 16px;pointer-events:none}
+#brand{pointer-events:auto;background:var(--green);border:2px solid var(--gun);padding:10px 14px;max-width:min(560px,70vw)}
+#brand .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+#brand h1{font-size:clamp(17px,2.2vw,22px);font-weight:800;line-height:1.15;margin-top:3px}
+#brand .sub{font-family:var(--mono);font-size:11px;color:var(--sand);margin-top:3px;letter-spacing:.04em}
+#tag{display:inline-block;margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;background:var(--gold);color:var(--gun);padding:3px 7px;font-weight:700}
+#ctl{pointer-events:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+button{font:inherit;cursor:pointer}
+.btn{background:rgba(23,26,28,.85);color:var(--bone);border:1.5px solid var(--gold);padding:7px 11px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em}
+.btn:hover{background:var(--green)}
+.btn.on{background:var(--gold);color:var(--gun);font-weight:700}
+.seg{display:flex}
+.seg .btn+.btn{border-left:none}
+/* phase panel */
+#phase{left:16px;top:142px;width:330px;padding:14px 16px 12px}
+#phase .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+#phase h2{font-size:19px;line-height:1.2;margin:5px 0 7px;font-weight:800}
+#phase p{font-size:13.5px;line-height:1.5;color:var(--sand)}
+#tasks{list-style:none;margin-top:10px;border-top:1px solid rgba(228,218,198,.18);padding-top:8px}
+#tasks li{font-family:var(--mono);font-size:12px;padding:3px 0 3px 22px;position:relative;color:#A5A39F;transition:color .3s}
+#tasks li::before{content:"";position:absolute;left:2px;top:6px;width:11px;height:11px;border:1.5px solid #7F8283}
+#tasks li.done{color:var(--bone)}
+#tasks li.done::before{background:var(--gold);border-color:var(--gold)}
+#tasks li.done::after{content:"";position:absolute;left:5.5px;top:7px;width:4px;height:7px;border:solid var(--gun);border-width:0 2px 2px 0;transform:rotate(45deg)}
+/* kpi */
+#kpi{right:16px;top:142px;width:262px;padding:12px 14px;max-height:calc(100vh - 250px);overflow:auto}
+#kpi h3,#ops h3{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600}
+.row{margin:7px 0}
+.row .lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--sand)}
+.row .lbl b{font-family:var(--mono);color:var(--bone);font-weight:600}
+.bar{height:6px;background:#2a3133;margin-top:4px;position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--gold);width:0}
+.bar.blue i{background:var(--blue-l)}
+.bar.green i{background:var(--green-l)}
+.chips{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:6px}
+.chips button{font-family:var(--mono);font-size:10.5px;padding:3px 0;background:#2a3133;color:#7F8283;border:1px solid #3a4244;transition:all .3s}
+.chips button.on{background:var(--blue);color:var(--bone);border-color:var(--blue-l)}
+#ops{margin-top:12px;border-top:1px solid rgba(228,218,198,.18);padding-top:10px;display:none}
+#ops.show{display:block}
+.kv{display:flex;justify-content:space-between;align-items:baseline;margin:5px 0;font-size:12px;color:var(--sand)}
+.kv b{font-family:var(--mono);font-size:15px;color:var(--gold-l)}
+.live{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:6px;animation:bl 1.2s infinite}
+@keyframes bl{50%{opacity:.25}}
+/* card */
+#card{right:16px;bottom:96px;width:300px;padding:12px 14px;display:none}
+#card.show{display:block}
+#card h4{font-size:15px;margin-bottom:5px;padding-right:22px}
+#card p{font-size:13px;line-height:1.5;color:var(--sand)}
+#card .as{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gun);background:var(--sand);padding:2px 6px}
+#card .x{position:absolute;right:8px;top:6px;background:none;border:none;color:var(--sand);font-size:18px}
+/* toast */
+#toast{position:fixed;left:0;right:0;margin:0 auto;width:fit-content;top:24px;background:var(--gun);border:1.5px solid var(--gold);color:var(--bone);font-family:var(--mono);font-size:12.5px;padding:8px 14px;display:none;pointer-events:none;max-width:80vw;text-align:center}
+#toast.show{display:block}
+#toast.warn{border-color:#B4473A}
+#toast.ok{border-color:var(--green-l)}
+#hint{position:fixed;left:50%;bottom:98px;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--sand);background:rgba(23,26,28,.7);padding:5px 10px;pointer-events:none;white-space:nowrap;transition:opacity .5s}
+/* timeline */
+#tl{left:0;right:0;bottom:0;padding:10px 16px 8px;border-left:none;border-right:none;border-bottom:none}
+#tlrow{display:flex;align-items:center;gap:10px}
+#track{flex:1;height:26px;position:relative;display:flex;cursor:pointer;user-select:none}
+#track .sg{position:relative;height:100%;border-right:2px solid var(--gun-d);background:#2c3436;overflow:hidden}
+#track .sg span{position:absolute;left:5px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:10px;color:var(--sand);white-space:nowrap;pointer-events:none;z-index:2}
+#track .sg i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--green)}
+#track .sg.cur::after{content:"";position:absolute;inset:0;border:1.5px solid var(--gold);z-index:3;pointer-events:none}
+#head{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--gold);left:0;pointer-events:none;z-index:3}
+#time{font-family:var(--mono);font-size:11px;color:var(--sand);min-width:74px;text-align:right}
+#foot{display:flex;justify-content:space-between;gap:12px;margin-top:6px;font-size:10.5px;color:#A5A39F}
+#foot b{color:var(--gold-l);font-weight:600}
+/* about */
+#about{position:fixed;inset:0;background:rgba(10,12,13,.7);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+#about.show{display:flex}
+#about .box{background:var(--bone);color:var(--gun);max-width:640px;width:100%;max-height:86vh;overflow:auto;border:2px solid var(--gun)}
+#about .hd{background:var(--green);color:var(--bone);padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+#about .hd h3{font-size:18px}
+#about .bd{padding:14px 18px 18px;font-size:13.5px;line-height:1.55}
+#about .bd h5{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin:14px 0 6px;border-bottom:1.5px solid var(--gun);padding-bottom:4px}
+#about ul{padding-left:18px}
+#about a{color:var(--blue)}
+#about .x{background:var(--gold);color:var(--gun);border:none;padding:6px 10px;font-family:var(--mono);font-weight:700}
+@media (max-width:860px){
+  #kpi{display:none}
+  #phase{top:auto;bottom:100px;left:10px;right:10px;width:auto;padding:10px 12px}
+  #phase h2{font-size:16px}
+  #phase p{font-size:12.5px}
+  #tasks{display:none}
+  #card{left:10px;right:10px;width:auto;bottom:100px;z-index:5}
+  #toast{top:150px}
+  #hint{display:none}
+  #track .sg span{display:none}
+  #foot{flex-direction:column;gap:2px}
+  #brand{max-width:62vw}
+  #brand .eyebrow,#brand .sub{display:none}
+  #rstBtn,#spd,#time{display:none}
+  #track{min-width:120px}
+}
+
+#toast{top:128px}
+@media (max-width:860px){#toast{top:150px}}
+#kpi .mode{font-family:var(--mono);font-size:12px;padding:1px 6px;border:1px solid var(--blue-l);color:var(--blue-l)}
+#kpi .mode.isl{border-color:var(--gold);color:var(--gold)}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="top">
+  <div id="brand">
+    <div class="eyebrow" data-i="eyebrow"></div>
+    <h1 data-i="title"></h1>
+    <div class="sub" data-i="sub"></div>
+    <div id="tag" data-i="tag"></div>
+  </div>
+  <div id="ctl">
+    <div class="seg"><button class="btn" id="lenBtn">EN</button><button class="btn" id="lesBtn">ES</button></div>
+    <button class="btn" id="camBtn"></button>
+    <button class="btn" id="aboutBtn" data-i="about"></button>
+    <a class="btn" id="homeBtn" href="../#projects" data-i="home" style="text-decoration:none"></a>
+  </div>
+</div>
+
+<aside id="phase" class="panel">
+  <div class="eyebrow" id="phEy"></div>
+  <h2 id="phT"></h2>
+  <p id="phD"></p>
+  <ul id="tasks"></ul>
+</aside>
+
+<aside id="kpi" class="panel">
+  <h3 data-i="tracker"></h3>
+  <div class="row"><div class="lbl"><span data-i="kSurv"></span><b id="kSurv"></b></div><div class="bar"><i id="bSurv"></i></div></div>
+  <div class="row"><div class="lbl"><span data-i="kSize"></span><b id="kSize"></b></div><div class="bar blue"><i id="bSize"></i></div></div>
+  <div class="row"><div class="lbl"><span data-i="kPv"></span><b id="kPv"></b></div><div class="bar"><i id="bPv"></i></div></div>
+  <div class="row"><div class="lbl"><span data-i="kBat"></span><b id="kBat"></b></div><div class="bar blue"><i id="bBat"></i></div></div>
+  <div class="row"><div class="lbl"><span data-i="kMode"></span><span class="mode" id="kMode">—</span></div></div>
+  <div id="ops">
+    <h3><span class="live"></span><span data-i="ops"></span></h3>
+    <div class="kv"><span data-i="kHrs"></span><b id="kHrs"></b></div>
+    <div class="kv"><span data-i="kOpen"></span><b id="kOpen"></b></div>
+    <div class="kv"><span data-i="kHome"></span><b id="kHome"></b></div>
+  </div>
+</aside>
+
+<div id="card" class="panel"><button class="x" id="cardX" aria-label="Close">×</button><h4 id="cT"></h4><p id="cB"></p><span class="as" id="cA" data-i="assumption"></span></div>
+<div id="toast"></div>
+<div id="hint" data-i="hint"></div>
+
+<footer id="tl" class="panel">
+  <div id="tlrow">
+    <button class="btn" id="playBtn"></button>
+    <button class="btn" id="rstBtn" data-i="restart"></button>
+    <div class="seg" id="spd"><button class="btn" data-sp="1">1x</button><button class="btn" data-sp="2">2x</button></div>
+    <div id="track"><div id="head"></div></div>
+    <div id="time"></div>
+  </div>
+  <div id="foot"><span data-i="foot"></span><span><b data-i="credit"></b></span></div>
+</footer>
+
+<div id="about"><div class="box">
+  <div class="hd"><h3 data-i="aboutH"></h3><button class="x" id="aboutX" data-i="close"></button></div>
+  <div class="bd" id="aboutBody"></div>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+"use strict";
+const D=Math.PI/180,TAU=Math.PI*2;
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const smooth=x=>x*x*(3-2*x);
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);};
+const frac=x=>x-Math.floor(x);
+const lerp=(a,b,u)=>a+(b-a)*u;
+const $=id=>document.getElementById(id);
+const C={green:0x2E4636,greenD:0x1E2E24,greenL:0x86948A,gold:0xC39A3E,goldL:0xDCC48F,goldLL:0xEEE3C9,blue:0x2C5C7F,blueD:0x1D3D54,blueL:0x85A0B5,blueLL:0xC4D1DB,gun:0x23282A,sand:0xE4DAC6,sandD:0xC0B7A6,bone:0xFAF7F1,steel:0x7F8283,red:0xB4473A};
+
+/* ---------- timeline ---------- */
+const PH=[{s:0,e:6},{s:6,e:16},{s:16,e:26},{s:26,e:40},{s:40,e:50},{s:50,e:62},{s:62,e:76},{s:76,e:84},{s:84,e:100},{s:100,e:112}];
+const T=112;
+const BIZ=[ // x, height, depth, wall color, monthly kWh, PV kW, battery kWh (survey and sizing values are assumed)
+ {x:-24,h:4.4,d:8,col:0xEEE3C9,kwh:1800,pv:12,bat:30},
+ {x:-12,h:4.8,d:8,col:0xC4D1DB,kwh:1500,pv:10,bat:25},
+ {x:0,h:4.4,d:8,col:0xE4DAC6,kwh:2600,pv:18,bat:45},
+ {x:12,h:6.6,d:8,col:0xC4CBC7,kwh:1300,pv:9,bat:22},
+ {x:24,h:5.4,d:10,col:0xFAF7F1,kwh:4200,pv:28,bat:70}
+];
+const BZ=-10; // business row center z
+const SUBMIT=BIZ.map((_,i)=>27.2+i*2.6+1.3);
+const SIZED=BIZ.map((_,i)=>52.5+i*1.6);
+const PVS=BIZ.map((_,i)=>63+i*1.9); const PVD=2.2;
+const BATS=BIZ.map((_,i)=>66.5+i*1.5);
+const TOT_PV=BIZ.reduce((a,b)=>a+b.pv,0),TOT_BAT=BIZ.reduce((a,b)=>a+b.bat,0);
+const GRID_DOWN=87,ISLAND=88,SUNRISE=96,RESTORE=102;
+
+/* ---------- text ---------- */
+const I18N={
+en:{
+ eyebrow:'Case study · Power Platform and energy resilience',
+ title:'CHM ReEnFoCo: field data to microgrid',
+ sub:'Cooperativa Hidroeléctrica de la Montaña · Puerto Rico',
+ tag:'Animation only · Illustrative',
+ play:'▶ Play',pause:'❚❚ Pause',restart:'↺ Restart',guided:'● Guided camera',free:'○ Free camera · return to guided',about:'About',home:'← Portfolio',
+ hint:'Drag to orbit · Scroll or pinch to zoom · Click a part for details',
+ step:'Step',
+ tracker:'Program tracker',kSurv:'Surveys synced',kSize:'Sites sized',kPv:'Solar installed',kBat:'Storage installed',kMode:'Microgrid mode',
+ modeNone:'Not built',modeTied:'Grid-tied',modeIsl:'Islanded',
+ ops:'Outage test',kHrs:'Hours on microgrid (simulated)',kOpen:'Businesses open',kHome:'Homes with power',
+ foot:'Animation only. Not to scale. Built from public CHM information and stated assumptions. Not affiliated with or endorsed by CHM.',
+ credit:'Visualization: Major Business Solutions, LLC',
+ close:'Close',assumption:'Assumption',aboutH:'About this animation',
+ short:['Kickoff','Data','App','Survey','Automate','Size','Install','Commission','Outage','Report'],
+ ph:[
+  {t:'Program kickoff',d:'CHM\'s ReEnFoCo program builds rooftop solar and battery microgrids so local businesses keep running during outages. The first step is to learn each business\'s energy needs.',k:['Program goals set','Target businesses listed','Field survey planned']},
+  {t:'Design the data model',d:'A Dataverse schema links each business, site, meter, survey, and load profile so field data lands in one place.',k:['Tables and relationships','Choice lists and validation','Security roles']},
+  {t:'Build the field app',d:'A Power Apps canvas app guides agents through the business profile, GPS location, appliance loads, a utility bill photo, and critical loads. A model-driven app serves office staff.',k:['Canvas app for field agents','Model-driven app for staff','Field testing with agents']},
+  {t:'Field survey',d:'An agent visits five local businesses with the app. Each survey syncs to Dataverse on submit.',k:['Colmado (corner grocery)','Pharmacy','Bakery','Laboratory','Supermarket']},
+  {t:'Automate the workflow',d:'Power Automate checks each survey, builds a load profile, and routes it to an engineer for approval.',k:['Validate survey data','Calculate load profile','Engineer review and approval']},
+  {t:'Analyze and size',d:'Power BI dashboards compare daily loads and critical needs, then size the solar array and battery for each site.',k:['Load profiles compared','Critical loads ranked','Solar and battery sized per site']},
+  {t:'Install the microgrids',d:'Crews mount solar panels on each roof and set an inverter and battery cabinet beside each business. A controller ties the sites together.',k:['Rooftop solar arrays','Inverters and batteries','Microgrid controller']},
+  {t:'Commission',d:'Solar charges the batteries and serves each business while the grid stays connected. Install status flows back to Dataverse.',k:['Energy flow verified','Grid interconnection','Install records updated']},
+  {t:'Outage test',d:'A storm knocks out the grid at night. The microgrids island and keep the five businesses open. Homes without a microgrid go dark.',k:['Grid outage detected','Microgrids island','Critical services stay open','Sunrise recharges batteries']},
+  {t:'Operate and report',d:'The grid returns and the microgrids reconnect. Executive dashboards track uptime, energy served, and community impact.',k:['Grid restored','Executive dashboard live','Next sites queued']}
+ ],
+ biz:['Colmado','Pharmacy','Bakery','Laboratory','Supermarket'],
+ toasts:{survey:'The field agent starts the survey route',storm:'Storm approaching',out:'Grid outage · microgrids island automatically',open:'Five businesses stay open · homes without a microgrid go dark',sun:'Sunrise · solar recharges the batteries',back:'Grid restored · microgrids reconnect'},
+ panel:{dm:'DATAVERSE · DATA MODEL',app:'POWER APPS · FIELD APP',surv:'FIELD SURVEYS · DATAVERSE',flow:'POWER AUTOMATE · SURVEY FLOW',bi:'POWER BI · LOAD AND SIZING',inst:'INSTALLATION TRACKER',mg:'MICROGRID STATUS',exec:'PROGRAM DASHBOARD',
+  ent:[['Business','Name','Type','Owner','Phone'],['Site','Address','GPS','Roof area'],['Meter','Account','kWh/month','Rate'],['Survey','Date','Agent','Status','Photos'],['Load profile','Daily kWh','Peak kW','Critical kW']],
+  screens:['Business profile','Location (GPS)','Appliances and loads','Utility bill photo','Critical loads','Review and submit'],
+  cols:['Business','kWh/month','Status'],synced:'Synced',
+  steps:['Survey submitted','Validate data','Build load profile','Notify engineer','Approve','Update Dataverse'],runs:'Runs',
+  daily:'Daily load (kWh)',size:'Sizing',pv:'Solar',bat:'Battery',
+  grid:'GRID',online:'ONLINE',offline:'OFFLINE',mode:'MODE',tied:'GRID-TIED',isl:'ISLANDED',soc:'Battery charge',crit:'Critical loads: ON',
+  sites:'Sites',solar:'Solar',storage:'Storage',hours:'Outage hours served',open:'Businesses kept open',
+  model:'+ Model-driven app for office staff',submitted:'SUBMITTED',surveyOf:'Survey'},
+ info:{
+  biz0:['Colmado (corner grocery)','Refrigeration keeps food safe during outages. Survey and sizing values are assumed.',1],
+  biz1:['Pharmacy','Keeps medicine cold and prescriptions flowing when the grid fails. Values are assumed.',1],
+  biz2:['Bakery','Ovens and mixers make it a large daytime load in this example. Values are assumed.',1],
+  biz3:['Laboratory','Clinical tests and sample storage need steady power. Values are assumed.',1],
+  biz4:['Supermarket','The largest site, with walk-in coolers and lighting. Values are assumed.',1],
+  house:['Home without a microgrid','Loses power with the grid during the outage. Shown for contrast.',1],
+  pole:['Utility grid','The overhead distribution line. When it fails, the microgrids island.',1],
+  pv:['Rooftop solar array','Sized in Power BI from each site\'s survey data.',1],
+  batt:['Inverter and battery','Stores midday solar for nights and outages. The light bar shows charge.',1],
+  ctrl:['Microgrid controller','Detects a grid outage, opens the grid connection, and runs the sites in island mode.',1],
+  cable:['Microgrid cabling','Ties each site\'s battery to the controller.',1],
+  agent:['CHM field agent','Captures business profiles and energy data on site with the Power Apps canvas app.',0],
+  ent:['Dataverse table','Part of the data model behind the field and office apps.',0],
+  phone:['Power Apps field app','Canvas app screens: business profile, GPS location, appliance loads, bill photo, critical loads, review and submit.',0],
+  panel:['Power Platform workspace','Shows the data model, app, flows, and Power BI dashboards as the project moves forward.',0],
+  packet:['Survey record','A submitted survey syncing to Dataverse.',0]
+ },
+ aboutHtml:`<p>This interactive 3D animation shows how field data captured with Microsoft Power Platform can feed the design of rooftop solar and battery microgrids for small businesses in Puerto Rico's mountain region. It is a portfolio visualization of an illustrative town, not a real site.</p>
+<h5>Public facts used</h5>
+<ul>
+<li>Cooperativa Hidroeléctrica de la Montaña (CHM) formed in 2019 as Puerto Rico's first electric power cooperative.</li>
+<li>ReEnFoCo (Resiliencia Energética Fotovoltaica Comunitaria) installs rooftop solar with battery storage configured as microgrids.</li>
+<li>CHM inaugurated the Castañer microgrid, ReEnFoCo Phase 1(A), on May 26, 2022.</li>
+<li>Phase 2 develops Community Energy Resilience Hubs (CERH).</li>
+<li>The program serves local businesses, community centers, and some homes in Adjuntas, Jayuya, Lares, and Utuado.</li>
+</ul>
+<h5>Project facts</h5>
+<ul><li>Santos "JR" Arroyo Claudio architected the Power Platform solution: Power Apps canvas and model-driven apps, the Dataverse schema, Power Automate workflows, and Power BI dashboards for field data capture and microgrid sizing.</li></ul>
+<h5>Assumptions</h5>
+<ul>
+<li>The town, buildings, and street are generic and illustrative.</li>
+<li>Survey values, load figures, solar kW, and battery kWh per site.</li>
+<li>App screens, table fields, and flow steps are representative.</li>
+<li>The storm, the outage length, and the hours served are simulated.</li>
+</ul>
+<h5>Sources</h5>
+<ul>
+<li><a href="https://cooperativahidroelectrica.coop/en/reenfoco/index.html" target="_blank" rel="noopener">CHM · ReEnFoCo program page</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Cooperativa_Hidroel%C3%A9ctrica_de_la_Monta%C3%B1a" target="_blank" rel="noopener">Wikipedia · Cooperativa Hidroeléctrica de la Montaña</a></li>
+<li><a href="https://www.metro.pr/noticias/2026/02/10/fundacion-de-orlando-bravo-financia-microrredes-comunitarias-en-la-cordillera-central/" target="_blank" rel="noopener">Metro Puerto Rico, Feb 10, 2026</a></li>
+</ul>
+<p style="margin-top:12px;font-size:12px;color:#7F8283">This independent animation is not affiliated with or endorsed by CHM. Visualization by Major Business Solutions, LLC.</p>`
+},
+es:{
+ eyebrow:'Caso de estudio · Power Platform y resiliencia energética',
+ title:'ReEnFoCo de la CHM: de los datos de campo a la microrred',
+ sub:'Cooperativa Hidroeléctrica de la Montaña · Puerto Rico',
+ tag:'Solo animación · Ilustrativo',
+ play:'▶ Reproducir',pause:'❚❚ Pausa',restart:'↺ Reiniciar',guided:'● Cámara guiada',free:'○ Cámara libre · volver a guiada',about:'Acerca de',home:'← Portafolio',
+ hint:'Arrastre para girar · Desplace o pellizque para acercar · Haga clic en una pieza para ver detalles',
+ step:'Paso',
+ tracker:'Seguimiento del programa',kSurv:'Encuestas sincronizadas',kSize:'Sitios dimensionados',kPv:'Solar instalada',kBat:'Almacenamiento instalado',kMode:'Modo de la microrred',
+ modeNone:'Sin construir',modeTied:'Conectada',modeIsl:'En isla',
+ ops:'Prueba de apagón',kHrs:'Horas en microrred (simulado)',kOpen:'Comercios abiertos',kHome:'Casas con energía',
+ foot:'Solo animación. No está a escala. Basada en información pública de la CHM y supuestos declarados. Sin afiliación ni respaldo de la CHM.',
+ credit:'Visualización: Major Business Solutions, LLC',
+ close:'Cerrar',assumption:'Supuesto',aboutH:'Acerca de esta animación',
+ short:['Inicio','Datos','App','Encuesta','Flujo','Dimens.','Instalar','Puesta','Apagón','Informe'],
+ ph:[
+  {t:'Inicio del programa',d:'El programa ReEnFoCo de la CHM instala microrredes solares con baterías en techos para que los comercios locales sigan operando durante apagones. El primer paso es conocer las necesidades energéticas de cada comercio.',k:['Metas del programa','Comercios identificados','Encuesta de campo planificada']},
+  {t:'Diseño del modelo de datos',d:'Un esquema en Dataverse vincula cada comercio, sitio, medidor, encuesta y perfil de carga para que los datos de campo lleguen a un solo lugar.',k:['Tablas y relaciones','Listas de opciones y validación','Roles de seguridad']},
+  {t:'Desarrollo de la app de campo',d:'Una app canvas de Power Apps guía a los agentes por el perfil del comercio, la ubicación GPS, las cargas de equipos, una foto de la factura y las cargas críticas. Una app model-driven atiende al personal de oficina.',k:['App canvas para agentes','App model-driven para personal','Pruebas de campo con agentes']},
+  {t:'Encuesta de campo',d:'Un agente visita cinco comercios locales con la app. Cada encuesta se sincroniza con Dataverse al enviarla.',k:['Colmado','Farmacia','Panadería','Laboratorio','Supermercado']},
+  {t:'Automatización del flujo',d:'Power Automate revisa cada encuesta, genera un perfil de carga y la envía a un ingeniero para aprobación.',k:['Validar datos','Calcular perfil de carga','Revisión y aprobación del ingeniero']},
+  {t:'Análisis y dimensionamiento',d:'Los dashboards de Power BI comparan cargas diarias y necesidades críticas, y dimensionan el arreglo solar y la batería de cada sitio.',k:['Perfiles de carga comparados','Cargas críticas priorizadas','Solar y batería por sitio']},
+  {t:'Instalación de las microrredes',d:'Las cuadrillas montan paneles solares en cada techo y colocan un gabinete de inversor y batería junto a cada comercio. Un controlador une los sitios.',k:['Arreglos solares en techo','Inversores y baterías','Controlador de microrred']},
+  {t:'Puesta en servicio',d:'La energía solar carga las baterías y alimenta cada comercio mientras la red sigue conectada. El estado de la instalación regresa a Dataverse.',k:['Flujo de energía verificado','Interconexión con la red','Registros de instalación actualizados']},
+  {t:'Prueba de apagón',d:'Una tormenta tumba la red de noche. Las microrredes se aíslan y mantienen abiertos los cinco comercios. Las casas sin microrred quedan a oscuras.',k:['Apagón detectado','Microrredes en isla','Servicios críticos abiertos','El amanecer recarga las baterías']},
+  {t:'Operación e informes',d:'La red regresa y las microrredes se reconectan. Los dashboards ejecutivos dan seguimiento a la disponibilidad, la energía servida y el impacto en la comunidad.',k:['Red restablecida','Dashboard ejecutivo activo','Próximos sitios en cola']}
+ ],
+ biz:['Colmado','Farmacia','Panadería','Laboratorio','Supermercado'],
+ toasts:{survey:'El agente de campo inicia la ruta de encuestas',storm:'Se acerca una tormenta',out:'Apagón · las microrredes pasan a isla',open:'Cinco comercios siguen abiertos · las casas sin microrred quedan a oscuras',sun:'Amanecer · la energía solar recarga las baterías',back:'Red restablecida · las microrredes se reconectan'},
+ panel:{dm:'DATAVERSE · MODELO DE DATOS',app:'POWER APPS · APP DE CAMPO',surv:'ENCUESTAS DE CAMPO · DATAVERSE',flow:'POWER AUTOMATE · FLUJO DE ENCUESTA',bi:'POWER BI · CARGA Y DIMENSIONAMIENTO',inst:'SEGUIMIENTO DE INSTALACIÓN',mg:'ESTADO DE LA MICRORRED',exec:'DASHBOARD DEL PROGRAMA',
+  ent:[['Comercio','Nombre','Tipo','Dueño','Teléfono'],['Sitio','Dirección','GPS','Área de techo'],['Medidor','Cuenta','kWh/mes','Tarifa'],['Encuesta','Fecha','Agente','Estado','Fotos'],['Perfil de carga','kWh diario','kW pico','kW crítico']],
+  screens:['Perfil del comercio','Ubicación (GPS)','Equipos y cargas','Foto de la factura','Cargas críticas','Revisar y enviar'],
+  cols:['Comercio','kWh/mes','Estado'],synced:'Sincronizada',
+  steps:['Encuesta enviada','Validar datos','Perfil de carga','Avisar al ingeniero','Aprobar','Actualizar Dataverse'],runs:'Ejecuciones',
+  daily:'Carga diaria (kWh)',size:'Dimensionamiento',pv:'Solar',bat:'Batería',
+  grid:'RED',online:'EN LÍNEA',offline:'FUERA DE SERVICIO',mode:'MODO',tied:'CONECTADA',isl:'EN ISLA',soc:'Carga de batería',crit:'Cargas críticas: ENCENDIDAS',
+  sites:'Sitios',solar:'Solar',storage:'Almacenamiento',hours:'Horas de apagón cubiertas',open:'Comercios abiertos',
+  model:'+ App model-driven para la oficina',submitted:'ENVIADA',surveyOf:'Encuesta'},
+ info:{
+  biz0:['Colmado','La refrigeración mantiene los alimentos seguros durante apagones. Los valores de encuesta y dimensionamiento son supuestos.',1],
+  biz1:['Farmacia','Mantiene los medicamentos fríos y las recetas disponibles cuando falla la red. Valores supuestos.',1],
+  biz2:['Panadería','Hornos y batidoras la hacen una carga diurna grande en este ejemplo. Valores supuestos.',1],
+  biz3:['Laboratorio','Las pruebas clínicas y el almacenamiento de muestras necesitan energía estable. Valores supuestos.',1],
+  biz4:['Supermercado','El sitio más grande, con cuartos fríos e iluminación. Valores supuestos.',1],
+  house:['Casa sin microrred','Pierde la energía con la red durante el apagón. Se muestra como contraste.',1],
+  pole:['Red eléctrica','La línea aérea de distribución. Cuando falla, las microrredes pasan a isla.',1],
+  pv:['Arreglo solar en techo','Dimensionado en Power BI con los datos de la encuesta de cada sitio.',1],
+  batt:['Inversor y batería','Guarda la energía solar del mediodía para la noche y los apagones. La barra de luz muestra la carga.',1],
+  ctrl:['Controlador de microrred','Detecta el apagón, abre la conexión con la red y opera los sitios en isla.',1],
+  cable:['Cableado de la microrred','Une la batería de cada sitio con el controlador.',1],
+  agent:['Agente de campo de la CHM','Captura perfiles de comercios y datos de energía en sitio con la app canvas de Power Apps.',0],
+  ent:['Tabla de Dataverse','Parte del modelo de datos de las apps de campo y de oficina.',0],
+  phone:['App de campo en Power Apps','Pantallas de la app canvas: perfil del comercio, ubicación GPS, cargas de equipos, foto de la factura, cargas críticas, revisar y enviar.',0],
+  panel:['Espacio de Power Platform','Muestra el modelo de datos, la app, los flujos y los dashboards de Power BI según avanza el proyecto.',0],
+  packet:['Registro de encuesta','Una encuesta enviada que se sincroniza con Dataverse.',0]
+ },
+ aboutHtml:`<p>Esta animación 3D interactiva muestra cómo los datos de campo capturados con Microsoft Power Platform pueden alimentar el diseño de microrredes solares con baterías en techos para pequeños comercios de la montaña de Puerto Rico. Es una visualización de portafolio de un pueblo ilustrativo, no de un sitio real.</p>
+<h5>Datos públicos usados</h5>
+<ul>
+<li>La Cooperativa Hidroeléctrica de la Montaña (CHM) se formó en 2019 como la primera cooperativa de energía eléctrica de Puerto Rico.</li>
+<li>ReEnFoCo (Resiliencia Energética Fotovoltaica Comunitaria) instala energía solar en techos con baterías configuradas como microrredes.</li>
+<li>La CHM inauguró la microrred de Castañer, Fase 1(A) de ReEnFoCo, el 26 de mayo de 2022.</li>
+<li>La Fase 2 desarrolla Centros Comunitarios de Resiliencia Energética (CERH).</li>
+<li>El programa sirve a comercios locales, centros comunitarios y algunas residencias en Adjuntas, Jayuya, Lares y Utuado.</li>
+</ul>
+<h5>Datos del proyecto</h5>
+<ul><li>Santos "JR" Arroyo Claudio diseñó la solución en Power Platform: apps canvas y model-driven en Power Apps, el esquema de Dataverse, flujos de Power Automate y dashboards de Power BI para la captura de datos de campo y el dimensionamiento de microrredes.</li></ul>
+<h5>Supuestos</h5>
+<ul>
+<li>El pueblo, los edificios y la calle son genéricos e ilustrativos.</li>
+<li>Valores de encuesta, cargas, kW solares y kWh de batería por sitio.</li>
+<li>Las pantallas de la app, los campos de las tablas y los pasos del flujo son representativos.</li>
+<li>La tormenta, la duración del apagón y las horas cubiertas son simuladas.</li>
+</ul>
+<h5>Fuentes</h5>
+<ul>
+<li><a href="https://cooperativahidroelectrica.coop/en/reenfoco/index.html" target="_blank" rel="noopener">CHM · Página del programa ReEnFoCo</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Cooperativa_Hidroel%C3%A9ctrica_de_la_Monta%C3%B1a" target="_blank" rel="noopener">Wikipedia · Cooperativa Hidroeléctrica de la Montaña</a></li>
+<li><a href="https://www.metro.pr/noticias/2026/02/10/fundacion-de-orlando-bravo-financia-microrredes-comunitarias-en-la-cordillera-central/" target="_blank" rel="noopener">Metro Puerto Rico, 10 feb 2026</a></li>
+</ul>
+<p style="margin-top:12px;font-size:12px;color:#7F8283">Esta animación independiente no tiene afiliación ni respaldo de la CHM. Visualización de Major Business Solutions, LLC.</p>`
+}};
+let lang='en';
+try{const s=localStorage.getItem('reenfoco-lang');if(s==='es'||s==='en')lang=s;}catch(e){}
+if(location.hash==='#es')lang='es';else if(location.hash==='#en')lang='en';
+const L=()=>I18N[lang];
+
+/* ---------- renderer ---------- */
+const canvas=$('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();
+const SKY_DAY=new THREE.Color(0x5d7a8c),SKY_NIGHT=new THREE.Color(0x0f1417),SKY=new THREE.Color();
+scene.background=SKY;scene.fog=new THREE.Fog(0x5d7a8c,120,300);
+const camera=new THREE.PerspectiveCamera(45,1,.1,700);
+const controls=new THREE.OrbitControls(camera,canvas);
+controls.enableDamping=true;controls.dampingFactor=.08;controls.maxPolarAngle=Math.PI*.49;controls.minDistance=4;controls.maxDistance=180;
+const hemi=new THREE.HemisphereLight(0xFAF7F1,0x1E2E24,.65);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff0d8,.95);sun.position.set(40,60,30);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-50,right:50,top:40,bottom:-40,near:1,far:200});sun.shadow.bias=-.0006;scene.add(sun);
+const moon=new THREE.DirectionalLight(0x85A0B5,0);moon.position.set(-30,40,20);scene.add(moon);
+
+const mat=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.85,metalness:.05},o));
+const M={road:mat(0x2b3033,{roughness:1}),walk:mat(0xC0B7A6),gun:mat(C.gun,{roughness:.6}),steel:mat(C.steel,{metalness:.5,roughness:.45}),
+ gold:mat(C.gold,{emissive:C.gold,emissiveIntensity:.3}),panel:mat(0x1D3D54,{metalness:.4,roughness:.25,emissive:0x0a1a2a}),
+ winB:mat(0x3a4448,{emissive:C.goldL,emissiveIntensity:.15}),winH:mat(0x3a4448,{emissive:C.goldL,emissiveIntensity:.15}),
+ lamp:mat(0x555555,{emissive:C.goldLL,emissiveIntensity:0}),led:mat(C.gold,{emissive:C.gold,emissiveIntensity:1}),
+ trunk:mat(0x5a4632),crown:mat(0x2E4636),crown2:mat(0x3d5a46),door:mat(0x2a2f31)};
+function box(w,h,d,m,x,y,z){const g=new THREE.BoxGeometry(w,h,d);g.translate(0,h/2,0);const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;return o;}
+function cyl(rt,rb,h,m,seg=12){const g=new THREE.CylinderGeometry(rt,rb,h,seg);g.translate(0,h/2,0);const o=new THREE.Mesh(g,m);o.castShadow=true;return o;}
+
+const anims=[];
+function anim(obj,t0,dur,type='grow',o={}){obj.userData.base={p:obj.position.clone(),s:obj.scale.clone()};anims.push({obj,t0,dur,type,out:o.out,outDur:o.outDur||1.2,h:o.h||6,fn:o.fn});return obj;}
+function applyAnims(t){for(const a of anims){const p=clamp((t-a.t0)/a.dur);let k=1;if(a.out!=null)k=1-ease(clamp((t-a.out)/a.outDur));
+ const vis=p>0&&k>.001;a.obj.visible=vis;if(!vis)continue;const b=a.obj.userData.base,e=ease(p);a.obj.position.copy(b.p);a.obj.scale.copy(b.s);
+ switch(a.type){case'grow':a.obj.scale.y=b.s.y*Math.max(e*k,.001);break;case'pop':a.obj.scale.multiplyScalar(Math.max(back(p)*k,.001));break;
+  case'drop':a.obj.position.y=b.p.y+(1-e)*a.h+(1-k)*a.h;break;case'fn':a.fn(p,e,k);break;}}}
+const clickables=[];function key(o,k){o.userData.key=k;clickables.push(o);return o;}
+
+const labels=[];
+function makeLabel(getText,w=6,color='#FAF7F1',border='#C39A3E',onTop=false){
+ const c=document.createElement('canvas');c.width=1024;c.height=192;const tex=new THREE.CanvasTexture(c);tex.minFilter=THREE.LinearFilter;
+ const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false,depthTest:!onTop}));if(onTop)sp.renderOrder=10;
+ sp.scale.set(w,w*192/1024,1);
+ sp.userData.draw=()=>{const x=c.getContext('2d');x.clearRect(0,0,1024,192);let fs=70;x.font='700 70px ui-monospace, Menlo, Consolas, monospace';const txt=getText();
+  while(fs>34&&x.measureText(txt).width>930){fs-=4;x.font='700 '+fs+'px ui-monospace, Menlo, Consolas, monospace';}
+  const tw=Math.min(1000,x.measureText(txt).width+60),lx=(1024-tw)/2;x.fillStyle='rgba(23,26,28,.86)';x.fillRect(lx,40,tw,112);x.strokeStyle=border;x.lineWidth=5;x.strokeRect(lx,40,tw,112);
+  x.fillStyle=color;x.textAlign='center';x.textBaseline='middle';x.fillText(txt,512,98);tex.needsUpdate=true;};
+ sp.userData.draw();labels.push(sp);return sp;}
+
+/* ---------- terrain: flat town in a mountain valley ---------- */
+function H(x,z){const d=Math.hypot(x*.75,(z+6)*1.1);const s=smooth(clamp((d-40)/55));return s*(12+9*Math.sin(x*.045+1)*Math.cos(z*.05)+5*Math.sin(x*.12+z*.09)+(d-40)*.14);}
+{const g=new THREE.PlaneGeometry(420,420,140,140);g.rotateX(-Math.PI/2);const pos=g.attributes.position,col=[];const c1=new THREE.Color(0x3a5a45),c2=new THREE.Color(0x2E4636),c3=new THREE.Color(0x4f6b4f);
+ for(let i=0;i<pos.count;i++){const x=pos.getX(i),z=pos.getZ(i);const y=H(x,z);pos.setY(i,y);const c=c1.clone().lerp(y>14?c2:c3,clamp(y/26));col.push(c.r,c.g,c.b);}
+ g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));g.computeVertexNormals();
+ const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({vertexColors:true,roughness:1}));m.receiveShadow=true;scene.add(m);}
+{let seed=11;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;const N=150;
+ const tg=new THREE.CylinderGeometry(.25,.35,2.2,6);tg.translate(0,1.1,0);const cg=new THREE.SphereGeometry(1.6,8,6);cg.translate(0,3,0);
+ const tr=new THREE.InstancedMesh(tg,M.trunk,N),cr=new THREE.InstancedMesh(cg,M.crown,N),m4=new THREE.Matrix4();let n=0;
+ for(let i=0;i<2000&&n<N;i++){const x=(r()-.5)*200,z=(r()-.5)*170-10;const d=Math.hypot(x*.75,(z+6)*1.1);if(d<44)continue;const s=.8+r()*.9;
+  m4.makeScale(s,s,s);m4.setPosition(x,H(x,z)-.2,z);tr.setMatrixAt(n,m4);cr.setMatrixAt(n,m4);n++;}
+ tr.count=cr.count=n;cr.castShadow=true;scene.add(tr);scene.add(cr);}
+scene.add(box(110,.06,6,M.road,0,0,0));scene.add(box(110,.12,1.6,M.walk,0,0,-3.8));scene.add(box(110,.12,1.6,M.walk,0,0,3.8));
+for(let i=-10;i<11;i++)scene.add(box(1.6,.07,.16,M.gold,i*5,0,0));
+
+/* ---------- buildings ---------- */
+const bizG=[],bizLbl=[],winBiz=[];
+BIZ.forEach((b,i)=>{const g=new THREE.Group();g.position.set(b.x,0,BZ);
+ g.add(box(9,b.h,b.d,mat(b.col),0,0,0));g.add(box(9.3,.35,b.d+.3,mat(C.sandD),0,b.h,0));
+ const fz=b.d/2+.02;g.add(box(1.6,2.4,.1,M.door,0,0,fz));
+ [-3,3].forEach(wx=>{g.add(box(2.2,1.5,.08,M.winB,wx,1,fz));});
+ if(b.h>6)[-3,0,3].forEach(wx=>g.add(box(2,1.3,.08,M.winB,wx,3.9,fz)));
+ g.add(box(9,.25,1.4,mat(i%2?C.blue:C.green),0,2.8,fz+.6));
+ key(g,'biz'+i);scene.add(g);bizG.push(g);
+ const lb=makeLabel(()=>L().biz[i],4.6,'#EEE3C9','#C39A3E',true);lb.position.set(b.x,b.h+4.4,BZ+1.5);scene.add(anim(lb,.6+i*.25,.8,'pop'));bizLbl.push(lb);});
+const HOUSES=[-30,-21,-12,-3,6,15,24,33];
+HOUSES.forEach((x,i)=>{const g=new THREE.Group();g.position.set(x,0,12);const h=3.4+(i%3)*.5;
+ g.add(box(6.4,h,6,mat([0xEFEADE,0xC4CBC7,0xDCC48F,0xC4D1DB][i%4]),0,0,0));g.add(box(6.7,.3,6.3,mat(C.sandD),0,h,0));
+ g.add(box(1.2,2.1,.1,M.door,1.6,0,-3.02));g.add(box(1.8,1.2,.08,M.winH,-1.5,1,-3.02));key(g,'house');scene.add(g);});
+// utility poles and lines
+const POLES=[];for(let x=-45;x<=45;x+=10)POLES.push(x);
+const wireMat=new THREE.LineBasicMaterial({color:0x1d2223});
+POLES.forEach(x=>{const p=new THREE.Group();p.position.set(x,0,5.2);p.add(cyl(.14,.18,8,mat(0x6b5a46)));p.add(box(2.4,.14,.14,M.steel,0,7.6,0));
+ const arm=box(.12,.08,1.6,M.steel,0,6.6,-.8);p.add(arm);const lamp=box(.6,.18,.4,M.lamp,0,6.5,-1.6);p.add(lamp);key(p,'pole');scene.add(p);});
+{const pts=[];for(let i=0;i<POLES.length-1;i++)[-1,0,1].forEach(o=>{const a=new THREE.Vector3(POLES[i],7.75,5.2+o*.0),b=new THREE.Vector3(POLES[i+1],7.75,5.2);
+ for(let s=0;s<8;s++){const u1=s/8,u2=(s+1)/8;const sag=u=>-.5*Math.sin(Math.PI*u);pts.push(new THREE.Vector3(lerp(a.x,b.x,u1)+o*.0,7.75+sag(u1),5.2+o*.9),new THREE.Vector3(lerp(a.x,b.x,u2),7.75+sag(u2),5.2+o*.9));}});
+ scene.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts),wireMat));}
+
+/* ---------- data layer: Dataverse tables, phone hologram, workspace panel ---------- */
+const ENTPOS=[[-11,29.5,-24],[-5.5,32,-23],[0,29.5,-22],[5.5,32,-23],[11,29.5,-24]];
+const entMat=new THREE.MeshStandardMaterial({color:C.blue,emissive:C.blueD,emissiveIntensity:.6,transparent:true,opacity:.92});
+const ents=new THREE.Group();scene.add(ents);
+ENTPOS.forEach((p,i)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(2.6,2.6,2.6),entMat);m.position.set(...p);key(m,'ent');
+ const e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2.62,2.62,2.62)),new THREE.LineBasicMaterial({color:C.goldL}));m.add(e);
+ const lb=makeLabel(()=>L().panel.ent[i][0],4.2,'#FAF7F1','#85A0B5',true);lb.position.set(0,2.4,0);m.add(lb);
+ ents.add(anim(m,7+i*.7,.9,'pop',{out:26,outDur:1}));});
+const REL=[[0,1],[1,2],[0,3],[3,4],[2,4]];
+REL.forEach(([a,b],i)=>{const pa=new THREE.Vector3(...ENTPOS[a]),pb=new THREE.Vector3(...ENTPOS[b]);const mid=pa.clone().add(pb).multiplyScalar(.5);mid.z+=2;
+ const g=new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(pa,mid,pb),24,.08,6,false);const n=g.index.count;const m=new THREE.Mesh(g,new THREE.MeshBasicMaterial({color:C.gold}));
+ ents.add(anim(m,10.5+i*.5,1,'fn',{fn:(p)=>g.setDrawRange(0,Math.floor(p*n/3)*3),out:26,outDur:1}));});
+// workspace panel
+const PW=1024,PHt=512;const pc=document.createElement('canvas');pc.width=PW;pc.height=PHt;const px=pc.getContext('2d');const ptex=new THREE.CanvasTexture(pc);ptex.minFilter=THREE.LinearFilter;
+const panelG=new THREE.Group();panelG.position.set(0,19,-28);scene.add(panelG);
+const pscreen=new THREE.Mesh(new THREE.PlaneGeometry(26,13),new THREE.MeshBasicMaterial({map:ptex,transparent:true,opacity:.96}));panelG.add(pscreen);key(pscreen,'panel');
+panelG.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(26.4,13.4)),new THREE.LineBasicMaterial({color:C.gold})));
+const stem=new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,12,6),new THREE.MeshBasicMaterial({color:C.gold,transparent:true,opacity:.4}));stem.position.y=-12.5;panelG.add(stem);
+anim(panelG,6.2,1.4,'fn',{fn:(p,e)=>{panelG.scale.set(Math.max(e,.01),Math.max(e,.01),1);}});
+// phone hologram
+const phc=document.createElement('canvas');phc.width=360;phc.height=720;const phx=phc.getContext('2d');const phtex=new THREE.CanvasTexture(phc);phtex.minFilter=THREE.LinearFilter;
+const phone=new THREE.Mesh(new THREE.PlaneGeometry(5.6,11.2),new THREE.MeshBasicMaterial({map:phtex,transparent:true}));phone.position.set(19,16,-17);phone.rotation.y=-.45;key(phone,'phone');scene.add(anim(phone,16.4,1.2,'pop',{out:40.5,outDur:1}));
+
+/* ---------- field agent ---------- */
+const agent=new THREE.Group();const ab=cyl(.32,.38,1.1,mat(C.green));ab.position.y=.9;agent.add(ab);const ah=new THREE.Mesh(new THREE.SphereGeometry(.28,12,10),mat(0xC9A27E));ah.position.y=2.3;agent.add(ah);
+agent.add(cyl(.12,.12,.9,mat(C.gun)).translateX(-.15));agent.add(cyl(.12,.12,.9,mat(C.gun)).translateX(.15));
+const cap=new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,.12,12),mat(C.gold));cap.position.y=2.55;agent.add(cap);
+const aph=box(.22,.36,.04,mat(0x111,{emissive:C.blueL,emissiveIntensity:1}),.35,1.55,.3);agent.add(aph);
+key(agent,'agent');scene.add(agent);
+const STOPZ=-4.9;
+function agentPos(t,out){if(t<26){out.set(-38,0,-3.6);return 0;}
+ let x=-38,z=-3.6;let prevT=26,prevX=-38;
+ for(let i=0;i<5;i++){const arrive=27.2+i*2.6,leave=arrive+1.4,bx=BIZ[i].x-1.8;
+  if(t<arrive){const u=smooth(clamp((t-prevT)/(arrive-prevT)));out.set(lerp(prevX,bx,u),0,lerp(-3.6,STOPZ,u>0.85?(u-.85)/.15:0));return 1;}
+  if(t<leave){out.set(bx,0,STOPZ);return 2;}prevT=leave;prevX=bx;}
+ const u=clamp((t-prevT)/3);out.set(lerp(prevX,46,u),0,-3.6);return 1;}
+const packets=SUBMIT.map(()=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.38,12,10),new THREE.MeshBasicMaterial({color:C.goldL}));key(m,'packet');scene.add(m);return m;});
+
+/* ---------- install: PV, batteries, controller, cables ---------- */
+const pvGroups=[],batts=[],socBars=[];
+BIZ.forEach((b,i)=>{const g=new THREE.Group();g.position.set(b.x,b.h+.35,BZ);key(g,'pv');scene.add(g);pvGroups.push(g);
+ const cols=4,rows=b.d>8?4:3;let k=0;
+ for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const p=new THREE.Mesh(new THREE.BoxGeometry(1.8,.08,1.15),M.panel);p.castShadow=true;p.position.set(-3+c*2,.45,-b.d/2+1.4+r*1.7);p.rotation.x=-.22;
+  const leg=box(.08,.4,.08,M.steel,-3+c*2,0,-b.d/2+1.4+r*1.7);g.add(leg);anim(leg,PVS[i]+k*(PVD/(rows*cols)),.3,'grow');
+  g.add(anim(p,PVS[i]+k*(PVD/(rows*cols)),.5,'drop',{h:4}));k++;}
+ const bt=new THREE.Group();bt.position.set(b.x+6,0,BZ+1.5);bt.add(box(1.5,2.2,1.2,M.gun,0,0,0));bt.add(box(1.5,.1,1.4,M.steel,0,2.2,0));
+ const sb=box(1,.18,.05,M.led,0,1.6,.62);sb.geometry.translate(.5,0,0);sb.position.x=-.5;bt.add(sb);socBars.push(sb);
+ key(bt,'batt');scene.add(anim(bt,BATS[i],1,'pop'));batts.push(bt);});
+const ctrl=new THREE.Group();ctrl.position.set(0,0,-18.5);ctrl.add(box(2.4,2.6,1.6,mat(C.green),0,0,0));ctrl.add(box(.9,.5,.05,M.led,0,1.8,.82));key(ctrl,'ctrl');scene.add(anim(ctrl,72.5,1,'pop'));
+const cableMat=new THREE.MeshBasicMaterial({color:C.gold});
+BIZ.forEach((b,i)=>{const path=new THREE.CurvePath();const p0=new THREE.Vector3(b.x+6,.1,BZ+.9),p1=new THREE.Vector3(b.x+6,.1,-16.5),p2=new THREE.Vector3(0,.1,-16.5),p3=new THREE.Vector3(0,.1,-17.7);
+ path.add(new THREE.LineCurve3(p0,p1));path.add(new THREE.LineCurve3(p1,p2));path.add(new THREE.LineCurve3(p2,p3));
+ const g=new THREE.TubeGeometry(path,40,.07,5,false);const n=g.index.count;const m=new THREE.Mesh(g,cableMat);key(m,'cable');
+ scene.add(anim(m,73.4+i*.35,1.2,'fn',{fn:p=>g.setDrawRange(0,Math.floor(p*n/3)*3)}));});
+// energy particles
+const flows=BIZ.map((b,i)=>{const roof=new THREE.Vector3(b.x,b.h+1,BZ),bat=new THREE.Vector3(b.x+6,2.4,BZ+1.5),door=new THREE.Vector3(b.x+1.5,1.4,BZ+b.d/2+.4);
+ const ps=[0,1,2].map(()=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.18,8,6),new THREE.MeshBasicMaterial({color:C.goldL}));scene.add(m);return m;});return {roof,bat,door,ps};});
+// telemetry packets to panel
+const tele=BIZ.map(()=>{const m=new THREE.Mesh(new THREE.SphereGeometry(.22,8,6),new THREE.MeshBasicMaterial({color:C.blueL}));scene.add(m);return m;});
+// rain
+const RAIN=500;const rainGeo=new THREE.BufferGeometry();const rainPos=new Float32Array(RAIN*6);rainGeo.setAttribute('position',new THREE.BufferAttribute(rainPos,3));
+const rain=new THREE.LineSegments(rainGeo,new THREE.LineBasicMaterial({color:0x9fb3c2,transparent:true,opacity:.45}));scene.add(rain);
+const rainSeed=[];{let s=5;const r=()=>(s=(s*16807)%2147483647)/2147483647;for(let i=0;i<RAIN;i++)rainSeed.push([(r()-.5)*90,(r()-.5)*60,r()]);}
+
+/* ---------- workspace panel content ---------- */
+function hdr(t,col){px.fillStyle='rgba(15,20,22,.94)';px.fillRect(0,0,PW,PHt);px.fillStyle='#1d2a30';px.fillRect(0,0,PW,50);px.fillStyle=col||'#C39A3E';px.font='700 24px ui-monospace,Menlo,monospace';px.textAlign='left';px.textBaseline='middle';px.fillText(t,22,26);
+ px.fillStyle='#86948A';px.textAlign='right';px.font='17px ui-monospace,Menlo,monospace';px.fillText('CHM · ReEnFoCo',PW-22,26);px.textAlign='left';}
+const ok=(x,y)=>{px.fillStyle='#9fd0a8';px.font='700 22px ui-monospace,Menlo,monospace';px.fillText('✓',x,y);};
+function bar(x,y,w,h,u,col){px.fillStyle='#2a3133';px.fillRect(x,y,w,h);px.fillStyle=col;px.fillRect(x,y,w*clamp(u),h);}
+function soc(i,t){if(t<78)return clamp((t-BATS[i])/4)*.95;if(t<ISLAND)return .97;if(t<SUNRISE)return .97-(t-ISLAND)/(SUNRISE-ISLAND)*(.42+i*.03);const lo=.55-i*.03;if(t<RESTORE)return lo+(t-SUNRISE)/(RESTORE-SUNRISE)*.2;return Math.min(.98,lo+.2+(t-RESTORE)*.03);}
+function drawPanel(t,amb){const P=L().panel;px.textBaseline='middle';
+ if(t<16){hdr(P.dm);P.ent.forEach((e,i)=>{const ts=7+i*.7;if(t<ts)return;const bx=40+i*196,by=95;px.strokeStyle='#85A0B5';px.lineWidth=2;px.fillStyle='#1D3D54';px.fillRect(bx,by,176,40+e.length*30);px.strokeRect(bx,by,176,40+e.length*30);
+  px.fillStyle='#EEE3C9';px.font='700 19px ui-monospace,Menlo,monospace';px.fillText(e[0],bx+10,by+22);px.font='16px ui-monospace,Menlo,monospace';px.fillStyle='#C4D1DB';e.slice(1).forEach((f,k)=>px.fillText('· '+f,bx+12,by+56+k*30));});
+  if(t>11){px.strokeStyle='#C39A3E';px.lineWidth=2;[[0,1],[1,2],[0,3],[3,4]].forEach(([a,b],k)=>{if(t<10.5+k*.5)return;px.beginPath();px.moveTo(40+a*196+176,120);px.lineTo(40+b*196,120);px.stroke();});}
+  if(t>13){px.fillStyle='#DCC48F';px.font='18px ui-monospace,Menlo,monospace';px.fillText(lang==='es'?'Roles: Agente · Ingeniero · Gerente':'Roles: Agent · Engineer · Manager',40,440);}}
+ else if(t<26){hdr(P.app);P.screens.forEach((sname,i)=>{const ts=17+i*1.3;const y=90+i*52;px.fillStyle=t>=ts?'#EEE3C9':'#555';px.font='20px ui-monospace,Menlo,monospace';px.fillText((i+1)+'. '+sname,40,y);if(t>=ts+.6)ok(480,y);});
+  if(t>23){px.fillStyle='#85A0B5';px.font='19px ui-monospace,Menlo,monospace';px.fillText(P.model,40,420);}
+  drawMini(600,80,380,380,t);}
+ else if(t<40){hdr(P.surv);px.font='700 18px ui-monospace,Menlo,monospace';px.fillStyle='#86948A';px.fillText(P.cols[0],40,90);px.fillText(P.cols[1],420,90);px.fillText(P.cols[2],640,90);
+  BIZ.forEach((b,i)=>{if(t<SUBMIT[i]+.9)return;const y=140+i*58;px.fillStyle='#EEE3C9';px.font='21px ui-monospace,Menlo,monospace';px.fillText(L().biz[i],40,y);px.fillText(b.kwh.toLocaleString('en-US'),420,y);px.fillStyle='#9fd0a8';px.fillText('✓ '+P.synced,640,y);});}
+ else if(t<50){hdr(P.flow);const n=P.steps.length;const run=Math.floor(clamp((t-40.5)/1.6,0,5));
+  P.steps.forEach((s,i)=>{const x=30+i*165,y=170;const done=t>=41+i*1.2;px.fillStyle=done?'#2E4636':'#2a3133';px.fillRect(x,y,150,90);px.strokeStyle=done?'#86948A':'#555';px.strokeRect(x,y,150,90);
+   px.fillStyle='#EEE3C9';px.font='16px ui-monospace,Menlo,monospace';wrap(s,x+10,y+30,132,22);if(i<n-1){px.fillStyle='#C39A3E';px.fillRect(x+150,y+43,15,4);}});
+  const u=frac(amb*.35);const dx=30+u*(n*165-15);px.fillStyle='#DCC48F';px.beginPath();px.arc(dx,300,9,0,TAU);px.fill();
+  px.fillStyle='#E4DAC6';px.font='20px ui-monospace,Menlo,monospace';px.fillText(P.runs+': '+Math.min(5,1+Math.floor(clamp((t-41)/1.6)*1)+run),30,380);}
+ else if(t<62){hdr(P.bi);px.fillStyle='#E4DAC6';px.font='18px ui-monospace,Menlo,monospace';px.fillText(P.daily,40,80);
+  const g=clamp((t-50.5)/3.5);BIZ.forEach((b,i)=>{const v=b.kwh/30,hh=v/150*260*ease(g);const x=50+i*85;px.fillStyle=['#C39A3E','#85A0B5','#DCC48F','#86948A','#C4D1DB'][i];px.fillRect(x,420-hh,60,hh);
+   px.fillStyle='#E4DAC6';px.font='14px ui-monospace,Menlo,monospace';px.fillText(L().biz[i].slice(0,7),x,445);if(g>.95)px.fillText(Math.round(v),x+8,410-hh);});
+  px.fillStyle='#E4DAC6';px.font='700 18px ui-monospace,Menlo,monospace';px.fillText(P.size,520,80);px.fillStyle='#86948A';px.font='16px ui-monospace,Menlo,monospace';px.fillText(P.pv+' kW',800,80);px.fillText(P.bat+' kWh',900,80);
+  BIZ.forEach((b,i)=>{if(t<SIZED[i])return;const y=130+i*56;px.fillStyle='#EEE3C9';px.font='19px ui-monospace,Menlo,monospace';px.fillText(L().biz[i],520,y);px.fillStyle='#DCC48F';px.fillText(b.pv,810,y);px.fillStyle='#85A0B5';px.fillText(b.bat,910,y);});}
+ else if(t<84){hdr(P.inst);px.font='16px ui-monospace,Menlo,monospace';px.fillStyle='#86948A';px.fillText(P.pv,330,80);px.fillText(P.bat,590,80);
+  BIZ.forEach((b,i)=>{const y=130+i*58;px.fillStyle='#EEE3C9';px.font='19px ui-monospace,Menlo,monospace';px.fillText(L().biz[i],40,y);bar(330,y-9,220,18,(t-PVS[i])/PVD,'#C39A3E');bar(590,y-9,220,18,(t-BATS[i])/1,'#85A0B5');if(t>=BATS[i]+1&&t>=PVS[i]+PVD)ok(840,y);});
+  if(t>=74){px.fillStyle=t>=78?'#9fd0a8':'#DCC48F';px.font='19px ui-monospace,Menlo,monospace';px.fillText((lang==='es'?'Controlador: ':'Controller: ')+(t>=78?'OK':'...'),40,440);}}
+ else if(t<RESTORE){hdr(P.mg,t>=GRID_DOWN?'#DCC48F':'#C39A3E');const down=t>=GRID_DOWN;
+  px.font='700 26px ui-monospace,Menlo,monospace';px.fillStyle='#E4DAC6';px.fillText(P.grid+':',40,100);px.fillStyle=down?'#B4473A':'#9fd0a8';px.fillText(down?P.offline:P.online,180,100);
+  px.fillStyle='#E4DAC6';px.fillText(P.mode+':',40,150);px.fillStyle=t>=ISLAND?'#C39A3E':'#85A0B5';px.fillText(t>=ISLAND?P.isl:P.tied,180,150);
+  px.fillStyle='#86948A';px.font='17px ui-monospace,Menlo,monospace';px.fillText(P.soc,40,205);
+  BIZ.forEach((b,i)=>{const y=245+i*44;px.fillStyle='#EEE3C9';px.font='18px ui-monospace,Menlo,monospace';px.fillText(L().biz[i],40,y);const s=soc(i,t);bar(260,y-9,300,18,s,s<.5?'#DCC48F':'#86948A');px.fillStyle='#E4DAC6';px.fillText(Math.round(s*100)+'%',580,y);});
+  if(t>=ISLAND){px.fillStyle='#9fd0a8';px.font='700 20px ui-monospace,Menlo,monospace';px.fillText(P.crit,660,150);}}
+ else{hdr(P.exec,'#DCC48F');const tiles=[[P.sites,'5 / 5'],[P.solar,TOT_PV+' kW'],[P.storage,TOT_BAT+' kWh'],[P.hours,'12 h'],[P.open,'5 / 5']];
+  tiles.forEach(([k,v],i)=>{const x=30+(i%3)*325,y=80+Math.floor(i/3)*190;px.fillStyle='#1d2a30';px.fillRect(x,y,305,165);px.fillStyle='#86948A';px.font='17px ui-monospace,Menlo,monospace';wrap(k,x+16,y+30,270,22);
+   px.fillStyle='#C39A3E';px.font='700 46px ui-monospace,Menlo,monospace';px.fillText(v,x+16,y+115);});}
+ ptex.needsUpdate=true;}
+function wrap(s,x,y,w,lh){const words=s.split(' ');let line='',yy=y;for(const wd of words){const tst=line?line+' '+wd:wd;if(px.measureText(tst).width>w&&line){px.fillText(line,x,yy);line=wd;yy+=lh;}else line=tst;}px.fillText(line,x,yy);}
+function drawMini(x,y,w,h,t){px.strokeStyle='#C39A3E';px.lineWidth=2;px.strokeRect(x,y,w,h);px.fillStyle='#86948A';px.font='16px ui-monospace,Menlo,monospace';px.fillText('Power Apps Studio',x+12,y+22);
+ const n=Math.min(6,Math.floor(clamp((t-17)/1.3,0,6))+(t>=17?1:0));for(let i=0;i<6;i++){const cx=x+16+(i%3)*120,cy=y+44+Math.floor(i/3)*165;px.fillStyle=i<n?'#1D3D54':'#222';px.fillRect(cx,cy,104,150);if(i<n){px.fillStyle='#C4D1DB';for(let k=0;k<4;k++)px.fillRect(cx+10,cy+20+k*28,84-(k%2)*20,8);px.fillStyle='#C39A3E';px.fillRect(cx+10,cy+128,84,12);}}}
+function drawPhone(t){const P=L().panel;const x=phx;x.clearRect(0,0,360,720);x.fillStyle='#171A1C';roundRect(x,6,6,348,708,40);x.fill();x.strokeStyle='#C39A3E';x.lineWidth=4;x.stroke();
+ x.fillStyle='#2E4636';x.fillRect(22,56,316,64);x.fillStyle='#FAF7F1';x.font='700 22px ui-monospace,Menlo,monospace';x.textBaseline='middle';x.fillText('ReEnFoCo',38,88);
+ let title,fields=4,prog=0,submitted=false;
+ if(t<26){const i=Math.min(5,Math.max(0,Math.floor((t-17)/1.3)));title=P.screens[i];prog=(i+1)/6;}
+ else{let i=0;for(let k=0;k<5;k++)if(t>=27.2+k*2.6-1)i=k;title=P.surveyOf+' '+(i+1)+'/5 · '+L().biz[i];const a=27.2+i*2.6;prog=clamp((t-a)/1.3);submitted=t>=SUBMIT[i]&&t<SUBMIT[i]+1.3;}
+ x.fillStyle='#EEE3C9';x.font='700 19px ui-monospace,Menlo,monospace';wrapC(x,title,30,160,300,24);
+ for(let k=0;k<6;k++){const y=230+k*62;x.fillStyle='#2a3133';x.fillRect(30,y,300,40);if(prog*6>k){x.fillStyle='#85A0B5';x.fillRect(30,y,300*Math.min(1,prog*6-k),40);}}
+ x.fillStyle=submitted?'#9fd0a8':'#C39A3E';x.fillRect(30,620,300,56);x.fillStyle='#171A1C';x.font='700 20px ui-monospace,Menlo,monospace';x.textAlign='center';x.fillText(submitted?'✓ '+P.submitted:(lang==='es'?'Enviar':'Submit'),180,648);x.textAlign='left';
+ phtex.needsUpdate=true;}
+function roundRect(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();}
+function wrapC(x,s,a,b,w,lh){const words=s.split(' ');let line='',y=b;for(const wd of words){const tst=line?line+' '+wd:wd;if(x.measureText(tst).width>w&&line){x.fillText(line,a,y);line=wd;y+=lh;}else line=tst;}x.fillText(line,a,y);}
+
+/* ---------- camera ---------- */
+const CAM=[
+ [0,[62,42,74],[0,6,-8]],[5.5,[40,32,52],[0,10,-10]],
+ [7,[22,28,32],[0,23,-20]],[15,[18,29,34],[0,23,-22]],
+ [17,[34,21,20],[16,16,-17]],[25,[31,21,22],[14,16,-17]],
+ [27,[-36,8,16],[-26,2.5,-6]],[39.5,[34,8,16],[24,2.5,-6]],
+ [41.5,[6,22,16],[0,19,-28]],[61,[4,22,17],[0,19,-28]],
+ [63.5,[42,26,24],[0,4,-10]],[75.5,[-40,26,24],[0,4,-10]],
+ [77.5,[-26,12,22],[-8,3,-9]],[83.5,[-20,13,24],[-6,3,-9]],
+ [85.5,[0,26,56],[0,8,-6]],[99,[12,24,54],[0,8,-6]],
+ [101.5,[34,30,48],[0,14,-16]],[112,[44,34,58],[0,14,-16]]
+].map(([t,p,g])=>({t,p:new THREE.Vector3(...p),g:new THREE.Vector3(...g)}));
+const cp=new THREE.Vector3(),cg=new THREE.Vector3();
+function camAt(t){let i=0;while(i<CAM.length-1&&CAM[i+1].t<=t)i++;const a=CAM[i],b=CAM[Math.min(i+1,CAM.length-1)];
+ const u=b===a?0:smooth(clamp((t-a.t)/(b.t-a.t)));cp.lerpVectors(a.p,b.p,u);cg.lerpVectors(a.g,b.g,u);
+ const asp=camera.aspect;if(asp<1){const m=Math.max(1,Math.tan(27.5*D)/(Math.tan(camera.fov*D/2)*asp));cp.sub(cg).multiplyScalar(m).add(cg);}}
+
+/* ---------- state + update ---------- */
+let t=0,playing=true,speed=1,guided=true,amb=0,last=performance.now(),curPh=-1;
+const TOASTS=[[26.2,29.5,'survey',''],[84.2,86.8,'storm','warn'],[GRID_DOWN,90.5,'out','warn'],[90.5,95.5,'open','ok'],[SUNRISE,99.5,'sun',''],[RESTORE,106,'back','ok']];
+const ticks=PH.map((p,i)=>i===3?SUBMIT:i===5?[54,56,SIZED[4]+.2]:i===8?[GRID_DOWN,ISLAND,90.5,SUNRISE+.5]:L().ph[i].k.map((_,k,a)=>p.s+(k+1)/(a.length+1)*(p.e-p.s)));
+function night(t){if(t<84)return 0;if(t<86.5)return smooth((t-84)/2.5);if(t<SUNRISE)return 1;if(t<SUNRISE+3)return 1-smooth((t-SUNRISE)/3);return 0;}
+const tmpV=new THREE.Vector3(),fogC=new THREE.Color();
+function lpath(pts,u,out){const n=pts.length-1;const f=clamp(u)*n;const i=Math.min(n-1,Math.floor(f));out.lerpVectors(pts[i],pts[i+1],f-i);return out;}
+function update(t){
+ applyAnims(t);
+ const nf=night(t);const flash=(t>86.1&&t<86.25)||(t>86.8&&t<86.9)||(t>89.4&&t<89.5);
+ SKY.copy(SKY_DAY).lerp(SKY_NIGHT,nf);if(flash)SKY.set(0xc8d4dc);scene.fog.color.copy(SKY);
+ hemi.intensity=.65-.5*nf;sun.intensity=.95*(1-nf);moon.intensity=.35*nf;
+ const gridUp=!(t>=GRID_DOWN&&t<RESTORE);
+ M.winB.emissiveIntensity=.15+.95*nf;M.winH.emissiveIntensity=gridUp?.15+.85*nf:0;M.lamp.emissiveIntensity=gridUp?1.2*nf:0;
+ wireMat.color.setHex(gridUp?0x1d2223:0x3a2020);
+ M.led.emissiveIntensity=.6+.4*Math.sin(amb*3);
+ // agent
+ const st=agentPos(t,tmpV);agent.position.copy(tmpV);agent.visible=t>=26&&t<41;agent.rotation.y=st===2?Math.PI:Math.PI/2;agent.position.y=st===1?Math.abs(Math.sin(amb*9))*.08:0;
+ const pTop=new THREE.Vector3(0,15,-27.5);
+ packets.forEach((m,i)=>{const p=clamp((t-SUBMIT[i])/1.6);m.visible=p>0&&p<1;if(m.visible){const a=new THREE.Vector3(BIZ[i].x-1.8,2.4,STOPZ),mid=a.clone().lerp(pTop,.5);mid.y+=6;
+  const q=new THREE.QuadraticBezierCurve3(a,mid,pTop);m.position.copy(q.getPoint(ease(p)));}});
+ // soc bars
+ socBars.forEach((b,i)=>{b.scale.x=Math.max(.02,soc(i,t));});
+ // energy flow
+ flows.forEach((f,i)=>{const on=t>=78;f.ps.forEach((m,k)=>{m.visible=on&&!(t>=GRID_DOWN&&t<ISLAND);if(!m.visible)return;const u=frac(amb*.45+k/3+i*.17);
+  if(nf<.5){lpath([f.roof,f.bat,f.door],u,m.position);m.material.color.setHex(C.goldL);}else{lpath([f.bat,f.door],u,m.position);m.material.color.setHex(C.blueL);}});});
+ tele.forEach((m,i)=>{m.visible=t>=78;if(!m.visible)return;const u=frac(amb*.25+i*.2);const a=new THREE.Vector3(BIZ[i].x+6,2.6,BZ+1.5);const mid=a.clone().lerp(pTop,.5);mid.y+=5;m.position.copy(new THREE.QuadraticBezierCurve3(a,mid,pTop).getPoint(u));});
+ // rain
+ const rv=t>=84.8&&t<93;rain.visible=rv;if(rv){for(let i=0;i<RAIN;i++){const [x,z,o]=rainSeed[i];const y=34-frac(amb*1.4+o)*34;rainPos.set([x,y,z,x-.3,y-1.6,z],i*6);}rainGeo.attributes.position.needsUpdate=true;}
+ if(panelG.visible)drawPanel(t,amb);if(phone.visible)drawPhone(t);
+ updateUI(t,gridUp);
+}
+
+/* ---------- UI ---------- */
+const track=$('track'),head=$('head');const segs=[];
+PH.forEach((p)=>{const s=document.createElement('div');s.className='sg';s.style.width=((p.e-p.s)/T*100)+'%';s.innerHTML='<i></i><span></span>';track.insertBefore(s,head);segs.push(s);});
+function applyLang(){document.documentElement.lang=lang;document.querySelectorAll('[data-i]').forEach(el=>{const v=L()[el.dataset.i];if(v!=null)el.textContent=v;});
+ $('aboutBody').innerHTML=L().aboutHtml;segs.forEach((s,i)=>{s.querySelector('span').textContent=(i+1)+' '+L().short[i];s.title=L().ph[i].t;});
+ $('lenBtn').classList.toggle('on',lang==='en');$('lesBtn').classList.toggle('on',lang==='es');labels.forEach(l=>l.userData.draw());curPh=-1;updBtns();if(cardKey)showCard(cardKey);
+ try{localStorage.setItem('reenfoco-lang',lang);}catch(e){}}
+function updBtns(){$('playBtn').textContent=playing?L().pause:L().play;const cb=$('camBtn');cb.textContent=guided?L().guided:L().free;cb.classList.toggle('on',!guided);document.querySelectorAll('[data-sp]').forEach(b=>b.classList.toggle('on',+b.dataset.sp===speed));}
+let lastK=0,toastKey=null;
+function updateUI(t,gridUp){let idx=0;for(let i=0;i<PH.length;i++)if(t>=PH[i].s)idx=i;
+ if(idx!==curPh){curPh=idx;const P=L().ph[idx];$('phEy').textContent=L().step+' '+String(idx+1).padStart(2,'0')+' / '+PH.length;$('phT').textContent=P.t;$('phD').textContent=P.d;$('tasks').innerHTML=P.k.map(k=>'<li>'+k+'</li>').join('');segs.forEach((s,i)=>s.classList.toggle('cur',i===idx));}
+ const lis=$('tasks').children;for(let k=0;k<lis.length;k++)lis[k].classList.toggle('done',t>=ticks[idx][k]);
+ segs.forEach((s,i)=>{s.firstChild.style.width=(clamp((t-PH[i].s)/(PH[i].e-PH[i].s))*100)+'%';});head.style.left='calc('+(t/T*100)+'% - 1.5px)';
+ $('time').textContent=Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0')+' / 1:52';
+ let tk=null;for(const x of TOASTS)if(t>=x[0]&&t<x[1])tk=x;const to=$('toast');
+ if(tk){if(toastKey!==tk[2]+lang){to.textContent=L().toasts[tk[2]];to.className='show '+tk[3];toastKey=tk[2]+lang;}}else if(toastKey){to.className='';toastKey=null;}
+ const now=performance.now();if(now-lastK<90)return;lastK=now;
+ const sv=SUBMIT.filter(x=>t>=x).length;$('kSurv').textContent=sv+' / 5';$('bSurv').style.width=sv*20+'%';
+ const sz=SIZED.filter(x=>t>=x).length;$('kSize').textContent=sz+' / 5';$('bSize').style.width=sz*20+'%';
+ const pv=BIZ.reduce((a,b,i)=>a+b.pv*clamp((t-PVS[i])/PVD),0),bt=BIZ.reduce((a,b,i)=>a+b.bat*clamp((t-BATS[i])/1),0);
+ $('kPv').textContent=Math.round(pv)+' / '+TOT_PV+' kW';$('bPv').style.width=pv/TOT_PV*100+'%';$('kBat').textContent=Math.round(bt)+' / '+TOT_BAT+' kWh';$('bBat').style.width=bt/TOT_BAT*100+'%';
+ const km=$('kMode');const isl=t>=ISLAND&&t<RESTORE;km.textContent=t<78?L().modeNone:isl?L().modeIsl:L().modeTied;km.classList.toggle('isl',isl);
+ $('ops').classList.toggle('show',t>=84);
+ if(t>=84){$('kHrs').textContent=(12*clamp((t-ISLAND)/(RESTORE-ISLAND))).toFixed(1)+' h';$('kOpen').textContent='5 / 5';$('kHome').textContent=(gridUp?8:0)+' / 8';}
+ $('hint').style.opacity=(t<8||!guided)?1:0;}
+let cardKey=null;
+function showCard(k){cardKey=k;const it=L().info[k];if(!it)return;$('cT').textContent=it[0];$('cB').textContent=it[1];$('cA').style.display=it[2]?'inline-block':'none';$('card').classList.add('show');}
+$('cardX').onclick=()=>{$('card').classList.remove('show');cardKey=null;};
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();const shown=o=>{while(o){if(!o.visible)return false;o=o.parent;}return true;};
+function pick(ev){const r=canvas.getBoundingClientRect();mouse.set((ev.clientX-r.left)/r.width*2-1,-(ev.clientY-r.top)/r.height*2+1);ray.setFromCamera(mouse,camera);
+ for(const h of ray.intersectObjects(clickables,true)){if(h.object.isSprite||!shown(h.object))continue;let o=h.object;while(o&&!o.userData.key)o=o.parent;if(o)return o.userData.key;}return null;}
+let down=null,hovT=0;
+canvas.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};});
+canvas.addEventListener('pointerup',e=>{if(down&&Math.hypot(e.clientX-down.x,e.clientY-down.y)<6){const k=pick(e);if(k)showCard(k);}down=null;});
+canvas.addEventListener('pointermove',e=>{if(e.buttons)return;const n=performance.now();if(n-hovT<80)return;hovT=n;canvas.classList.toggle('hot',!!pick(e));});
+controls.addEventListener('start',()=>{if(guided){guided=false;updBtns();}});
+$('playBtn').onclick=()=>{if(!playing&&t>=T)t=0;playing=!playing;updBtns();};
+$('rstBtn').onclick=()=>{t=0;playing=true;guided=true;updBtns();};
+$('camBtn').onclick=()=>{guided=!guided;updBtns();};
+document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{speed=+b.dataset.sp;updBtns();});
+$('lenBtn').onclick=()=>{lang='en';applyLang();};$('lesBtn').onclick=()=>{lang='es';applyLang();};
+$('aboutBtn').onclick=()=>$('about').classList.add('show');$('aboutX').onclick=()=>$('about').classList.remove('show');
+$('about').addEventListener('click',e=>{if(e.target.id==='about')$('about').classList.remove('show');});
+let drag=false;function seek(e){const r=track.getBoundingClientRect();t=clamp((e.clientX-r.left)/r.width)*T;guided=true;updBtns();}
+track.addEventListener('pointerdown',e=>{drag=true;track.setPointerCapture(e.pointerId);seek(e);});track.addEventListener('pointermove',e=>{if(drag)seek(e);});track.addEventListener('pointerup',()=>{drag=false;});
+window.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();$('playBtn').click();}
+ if(e.code==='ArrowRight'){let i=PH.findIndex(p=>p.s>t+.01);if(i<0)i=PH.length-1;t=PH[i].s+.01;guided=true;updBtns();}
+ if(e.code==='ArrowLeft'){let i=0;for(let j=0;j<PH.length;j++)if(PH[j].s<t-.6)i=j;t=PH[i].s+.01;guided=true;updBtns();}});
+function resize(){const w=window.innerWidth,h=window.innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=camera.aspect<1?Math.min(75,2*Math.atan(Math.tan(27.5*D)/camera.aspect)/D):45;camera.updateProjectionMatrix();}
+window.addEventListener('resize',resize);resize();applyLang();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;amb+=dt;if(playing){t+=dt*speed;if(t>=T){t=T;playing=false;updBtns();}}
+ update(t);if(guided){camAt(t);camera.position.copy(cp);controls.target.copy(cg);camera.lookAt(cg);}else controls.update();renderer.render(scene,camera);requestAnimationFrame(frame);}
+window.__rocc={seek:v=>{t=v;playing=false;updBtns();}};
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

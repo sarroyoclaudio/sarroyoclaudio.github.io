@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SunPower ROCC Build-Out · 3D Project Animation</title>
+<meta name="description" content="Interactive 3D animation of the $3M SunPower Remote Operations Control Center build-out (2015): construction, OT network, global WAN, NERC CIP v5, testing, and go-live. Illustrative.">
+<meta property="og:title" content="SunPower ROCC Build-Out · 3D Project Animation">
+<meta property="og:description" content="Interactive 3D walk-through of a $3M remote operations center build-out, from demolition to 24/7 operations. Animation only.">
+<meta property="og:image" content="https://sarroyoclaudio.github.io/rocc/preview.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>
+:root{
+  --green:#2E4636;--green-d:#1E2E24;--green-l:#86948A;
+  --gold:#C39A3E;--gold-l:#DCC48F;--gold-ll:#EEE3C9;
+  --blue:#2C5C7F;--blue-d:#1D3D54;--blue-l:#85A0B5;
+  --gun:#23282A;--gun-d:#171A1C;--sand:#E4DAC6;--bone:#FAF7F1;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+  --sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--gun-d);font-family:var(--sans);color:var(--bone)}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#c.hot{cursor:pointer}
+.panel{position:fixed;background:rgba(23,26,28,.82);border:1.5px solid rgba(195,154,62,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.mono{font-family:var(--mono)}
+/* header */
+#top{position:fixed;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 16px;pointer-events:none}
+#brand{pointer-events:auto;background:var(--green);border:2px solid var(--gun);padding:10px 14px;max-width:min(560px,70vw)}
+#brand .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
+#brand h1{font-size:clamp(17px,2.2vw,22px);font-weight:800;line-height:1.15;margin-top:3px}
+#brand .sub{font-family:var(--mono);font-size:11px;color:var(--sand);margin-top:3px;letter-spacing:.04em}
+#tag{display:inline-block;margin-top:7px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;background:var(--gold);color:var(--gun);padding:3px 7px;font-weight:700}
+#ctl{pointer-events:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+button{font:inherit;cursor:pointer}
+.btn{background:rgba(23,26,28,.85);color:var(--bone);border:1.5px solid var(--gold);padding:7px 11px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em}
+.btn:hover{background:var(--green)}
+.btn.on{background:var(--gold);color:var(--gun);font-weight:700}
+.seg{display:flex}
+.seg .btn+.btn{border-left:none}
+/* phase panel */
+#phase{left:16px;top:142px;width:330px;padding:14px 16px 12px}
+#phase .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+#phase h2{font-size:19px;line-height:1.2;margin:5px 0 7px;font-weight:800}
+#phase p{font-size:13.5px;line-height:1.5;color:var(--sand)}
+#tasks{list-style:none;margin-top:10px;border-top:1px solid rgba(228,218,198,.18);padding-top:8px}
+#tasks li{font-family:var(--mono);font-size:12px;padding:3px 0 3px 22px;position:relative;color:#A5A39F;transition:color .3s}
+#tasks li::before{content:"";position:absolute;left:2px;top:6px;width:11px;height:11px;border:1.5px solid #7F8283}
+#tasks li.done{color:var(--bone)}
+#tasks li.done::before{background:var(--gold);border-color:var(--gold)}
+#tasks li.done::after{content:"";position:absolute;left:5.5px;top:7px;width:4px;height:7px;border:solid var(--gun);border-width:0 2px 2px 0;transform:rotate(45deg)}
+/* kpi */
+#kpi{right:16px;top:142px;width:262px;padding:12px 14px;max-height:calc(100vh - 250px);overflow:auto}
+#kpi h3,#ops h3{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600}
+.row{margin:7px 0}
+.row .lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--sand)}
+.row .lbl b{font-family:var(--mono);color:var(--bone);font-weight:600}
+.bar{height:6px;background:#2a3133;margin-top:4px;position:relative;overflow:hidden}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--gold);width:0}
+.bar.blue i{background:var(--blue-l)}
+.bar.green i{background:var(--green-l)}
+.chips{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:6px}
+.chips button{font-family:var(--mono);font-size:10.5px;padding:3px 0;background:#2a3133;color:#7F8283;border:1px solid #3a4244;transition:all .3s}
+.chips button.on{background:var(--blue);color:var(--bone);border-color:var(--blue-l)}
+#ops{margin-top:12px;border-top:1px solid rgba(228,218,198,.18);padding-top:10px;display:none}
+#ops.show{display:block}
+.kv{display:flex;justify-content:space-between;align-items:baseline;margin:5px 0;font-size:12px;color:var(--sand)}
+.kv b{font-family:var(--mono);font-size:15px;color:var(--gold-l)}
+.live{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);margin-right:6px;animation:bl 1.2s infinite}
+@keyframes bl{50%{opacity:.25}}
+/* card */
+#card{right:16px;bottom:96px;width:300px;padding:12px 14px;display:none}
+#card.show{display:block}
+#card h4{font-size:15px;margin-bottom:5px;padding-right:22px}
+#card p{font-size:13px;line-height:1.5;color:var(--sand)}
+#card .as{display:inline-block;margin-top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gun);background:var(--sand);padding:2px 6px}
+#card .x{position:absolute;right:8px;top:6px;background:none;border:none;color:var(--sand);font-size:18px}
+/* toast */
+#toast{position:fixed;left:0;right:0;margin:0 auto;width:fit-content;top:24px;background:var(--gun);border:1.5px solid var(--gold);color:var(--bone);font-family:var(--mono);font-size:12.5px;padding:8px 14px;display:none;pointer-events:none;max-width:80vw;text-align:center}
+#toast.show{display:block}
+#toast.warn{border-color:#B4473A}
+#toast.ok{border-color:var(--green-l)}
+#hint{position:fixed;left:50%;bottom:98px;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--sand);background:rgba(23,26,28,.7);padding:5px 10px;pointer-events:none;white-space:nowrap;transition:opacity .5s}
+/* timeline */
+#tl{left:0;right:0;bottom:0;padding:10px 16px 8px;border-left:none;border-right:none;border-bottom:none}
+#tlrow{display:flex;align-items:center;gap:10px}
+#track{flex:1;height:26px;position:relative;display:flex;cursor:pointer;user-select:none}
+#track .sg{position:relative;height:100%;border-right:2px solid var(--gun-d);background:#2c3436;overflow:hidden}
+#track .sg span{position:absolute;left:5px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:10px;color:var(--sand);white-space:nowrap;pointer-events:none;z-index:2}
+#track .sg i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--green)}
+#track .sg.cur::after{content:"";position:absolute;inset:0;border:1.5px solid var(--gold);z-index:3;pointer-events:none}
+#head{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--gold);left:0;pointer-events:none;z-index:3}
+#time{font-family:var(--mono);font-size:11px;color:var(--sand);min-width:74px;text-align:right}
+#foot{display:flex;justify-content:space-between;gap:12px;margin-top:6px;font-size:10.5px;color:#A5A39F}
+#foot b{color:var(--gold-l);font-weight:600}
+/* about */
+#about{position:fixed;inset:0;background:rgba(10,12,13,.7);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+#about.show{display:flex}
+#about .box{background:var(--bone);color:var(--gun);max-width:640px;width:100%;max-height:86vh;overflow:auto;border:2px solid var(--gun)}
+#about .hd{background:var(--green);color:var(--bone);padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+#about .hd h3{font-size:18px}
+#about .bd{padding:14px 18px 18px;font-size:13.5px;line-height:1.55}
+#about .bd h5{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin:14px 0 6px;border-bottom:1.5px solid var(--gun);padding-bottom:4px}
+#about ul{padding-left:18px}
+#about a{color:var(--blue)}
+#about .x{background:var(--gold);color:var(--gun);border:none;padding:6px 10px;font-family:var(--mono);font-weight:700}
+@media (max-width:860px){
+  #kpi{display:none}
+  #phase{top:auto;bottom:100px;left:10px;right:10px;width:auto;padding:10px 12px}
+  #phase h2{font-size:16px}
+  #phase p{font-size:12.5px}
+  #tasks{display:none}
+  #card{left:10px;right:10px;width:auto;bottom:100px;z-index:5}
+  #toast{top:150px}
+  #hint{display:none}
+  #track .sg span{display:none}
+  #foot{flex-direction:column;gap:2px}
+  #brand{max-width:62vw}
+  #brand .eyebrow,#brand .sub{display:none}
+  #rstBtn,#spd,#time{display:none}
+  #track{min-width:120px}
+}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="top">
+  <div id="brand">
+    <div class="eyebrow" data-i="eyebrow">Case study · IT project management</div>
+    <h1 data-i="title">SunPower ROCC build-out</h1>
+    <div class="sub" data-i="sub">Remote Operations Control Center · Austin, Texas · 2015</div>
+    <div id="tag" data-i="tag">Animation only · Illustrative</div>
+  </div>
+  <div id="ctl">
+    <div class="seg"><button class="btn" id="lenBtn">EN</button><button class="btn" id="lesBtn">ES</button></div>
+    <button class="btn" id="camBtn"></button>
+    <button class="btn" id="aboutBtn" data-i="about">About</button>
+    <a class="btn" id="homeBtn" href="../#projects" data-i="home" style="text-decoration:none">← Portfolio</a>
+  </div>
+</div>
+
+<aside id="phase" class="panel">
+  <div class="eyebrow" id="phEy"></div>
+  <h2 id="phT"></h2>
+  <p id="phD"></p>
+  <ul id="tasks"></ul>
+</aside>
+
+<aside id="kpi" class="panel">
+  <h3 data-i="tracker">Project tracker</h3>
+  <div class="row"><div class="lbl"><span data-i="schedule"></span><b id="kSch"></b></div><div class="bar"><i id="bSch"></i></div></div>
+  <div class="row"><div class="lbl"><span data-i="budget"></span><b id="kBud"></b></div><div class="bar"><i id="bBud"></i></div></div>
+  <div class="row"><div class="lbl"><span data-i="plants"></span><b id="kPl"></b></div><div class="bar blue"><i id="bPl"></i></div></div>
+  <div class="row"><div class="lbl"><span data-i="zones"></span><b id="kZn"></b></div><div class="bar blue"><i id="bZn"></i></div></div>
+  <div class="row"><div class="lbl"><span data-i="tests"></span><b id="kTs"></b></div><div class="bar green"><i id="bTs"></i></div></div>
+  <div class="row"><div class="lbl"><span data-i="cip"></span><b id="kCip"></b></div><div class="chips" id="chips"></div></div>
+  <div id="ops">
+    <h3><span class="live"></span><span data-i="ops">Live operations</span></h3>
+    <div class="kv"><span data-i="fleet"></span><b id="kGw"></b></div>
+    <div class="kv"><span data-i="cover"></span><b data-i="coverV"></b></div>
+    <div class="kv"><span data-i="staff"></span><b>8</b></div>
+    <div class="kv"><span data-i="reach"></span><b data-i="reachV" style="font-size:12px"></b></div>
+    <div class="kv"><span data-i="clock"></span><b id="kClk"></b></div>
+  </div>
+</aside>
+
+<div id="card" class="panel"><button class="x" id="cardX" aria-label="Close">×</button><h4 id="cT"></h4><p id="cB"></p><span class="as" id="cA" data-i="assumption">Assumption</span></div>
+<div id="toast"></div>
+<div id="hint" data-i="hint"></div>
+
+<footer id="tl" class="panel">
+  <div id="tlrow">
+    <button class="btn" id="playBtn"></button>
+    <button class="btn" id="rstBtn" data-i="restart">Restart</button>
+    <div class="seg" id="spd"><button class="btn" data-sp="1">1x</button><button class="btn" data-sp="2">2x</button></div>
+    <div id="track"><div id="head"></div></div>
+    <div id="time"></div>
+  </div>
+  <div id="foot"><span data-i="foot"></span><span><b data-i="credit"></b></span></div>
+</footer>
+
+<div id="about"><div class="box">
+  <div class="hd"><h3 data-i="aboutH">About this animation</h3><button class="x" id="aboutX" data-i="close">Close</button></div>
+  <div class="bd" id="aboutBody"></div>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+"use strict";
+/* ---------- helpers ---------- */
+const D=Math.PI/180, TAU=Math.PI*2;
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const smooth=x=>x*x*(3-2*x);
+const back=x=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);};
+const frac=x=>x-Math.floor(x);
+const $=id=>document.getElementById(id);
+const C={green:0x2E4636,greenD:0x1E2E24,greenL:0x86948A,gold:0xC39A3E,goldL:0xDCC48F,blue:0x2C5C7F,blueD:0x1D3D54,blueL:0x85A0B5,gun:0x23282A,gunD:0x171A1C,sand:0xE4DAC6,sandD:0xC0B7A6,bone:0xFAF7F1,steel:0x7F8283,red:0xB4473A};
+
+/* ---------- content ---------- */
+const PH=[
+ {s:0,e:5},{s:5,e:15},{s:15,e:26},{s:26,e:36},{s:36,e:44},{s:44,e:56},
+ {s:56,e:66},{s:66,e:78},{s:78,e:90},{s:90,e:102},{s:102,e:118}
+];
+const T=118;
+const TICKS9=[91.5,93.5,95.2,99.2,100.8];
+const SITES=[
+ {n:['California (Mojave)','California (Mojave)'],lat:34.9,lon:-118.2,lo:[9,-12]},
+ {n:['California (Central Coast)','California (Costa Central)'],lat:35.6,lon:-120.4,nolabel:1},
+ {n:['Arizona','Arizona'],lat:33.2,lon:-112.6,nolabel:1},
+ {n:['West Texas','Oeste de Texas'],lat:31.0,lon:-102.3,nolabel:1},
+ {n:['Chile (Atacama)','Chile (Atacama)'],lat:-26.4,lon:-69.6},
+ {n:['Spain (Andalusia)','España (Andalucía)'],lat:37.4,lon:-5.6,lo:[-6,-10]},
+ {n:['Italy (Puglia)','Italia (Apulia)'],lat:40.8,lon:16.6,lo:[7,9]},
+ {n:['South Africa (Northern Cape)','Sudáfrica (Cabo Norte)'],lat:-29.7,lon:22.7},
+ {n:['Philippines (Luzon)','Filipinas (Luzón)'],lat:15.4,lon:120.6},
+ {n:['Australia (South)','Australia (Sur)'],lat:-34.4,lon:138.8}
+];
+const CHILE=4;
+const AUSTIN={lat:30.27,lon:-97.74};
+
+const I18N={
+en:{
+ eyebrow:'Case study · IT project management',
+ title:'SunPower ROCC build-out',
+ sub:'Remote Operations Control Center · Austin, Texas · 2015',
+ tag:'Animation only · Illustrative',
+ play:'▶ Play',pause:'❚❚ Pause',restart:'↺ Restart',guided:'● Guided camera',free:'○ Free camera · return to guided',about:'About',home:'← Portfolio',
+ hint:'Drag to orbit · Scroll or pinch to zoom · Click a part for details',
+ phase:'Phase',assumed:'assumed',
+ tracker:'Project tracker',schedule:'Schedule',budget:'Budget (assumed curve)',plants:'Plants linked',zones:'Security zones',tests:'Tests passed',
+ ops:'Live operations',fleet:'Fleet monitored',cover:'Coverage',coverV:'24/7/365',staff:'Operators per public reports',reach:'Reach',reachV:'U.S. + 5 continents',clock:'Shift clock',
+ gwPre:'~',gwPost:' GW by 2016',
+ foot:'Animation only. Not to scale. Built from public reports (Oct 2015) and stated assumptions. Not affiliated with or endorsed by SunPower.',
+ credit:'Visualization: Major Business Solutions, LLC',
+ close:'Close',assumption:'Assumption',aboutH:'About this animation',
+ ph:[
+  {t:'Initiate and plan',d:'SunPower needs one center to watch and control its utility-scale PV fleet around the clock. The team charters a $3M build-out inside its Austin, Texas office.',k:['Charter and budget approved','Scope and WBS baselined','BES Cyber System categorization (CIP-002)']},
+  {t:'Survey and demolition',d:'The ROCC goes inside SunPower\'s existing Austin office. Crews survey the space and clear the old cubicles down to the slab.',k:['Existing conditions surveyed','Cubicles and finishes removed','Space ready for build-out']},
+  {t:'Partition framing',d:'Metal studs frame a secure server room with one badge-controlled door. This room becomes the Physical Security Perimeter.',k:['Stud layout','Server room walls framed','Door opening set']},
+  {t:'Mechanical, electrical, and power',d:'Installers add precision cooling on the roof, a standby generator, UPS, fire suppression, and a new fiber entry. Every critical system gets a backup.',k:['N+1 cooling on the roof','Generator and UPS','Fiber entry trenched','Cable trays and suppression']},
+  {t:'Raised floor and finishes',d:'Installers lay the raised floor, close in the server room walls, and mount the door and badge reader.',k:['Raised floor','Server room walls closed','Door and badge reader']},
+  {t:'Control room fit-out',d:'Installers set the server racks, hang a 4x2 video wall, and place eight operator consoles. Badge access to the server room goes live.',k:['Server racks','Video wall','8 operator consoles','PSP access controls live (CIP-006)']},
+  {t:'Configure the OT network',d:'Engineers stage SCADA servers, the data historian, core switches, and firewalls. They harden each system and record its baseline configuration.',k:['IP plan and VLANs','SCADA and historian servers','Ports, services, and patching (CIP-007)','Baseline configurations (CIP-010)']},
+  {t:'Build the global WAN',d:'Primary and backup links connect the ROCC to PV plants in the U.S. and on five other continents.',k:['Primary links (MPLS and VPN)','Cellular and satellite backup','Plant gateways online']},
+  {t:'Cybersecurity and NERC CIP',d:'The team builds to NERC CIP version 5, due July 1, 2016, alongside IEC 62443 zones. An Electronic Security Perimeter, an industrial DMZ, and monitoring guard each boundary.',k:['Electronic Security Perimeter (CIP-005)','Security management controls (CIP-003)','Information protection (CIP-011)','Personnel and training (CIP-004)','Incident response plan (CIP-008)']},
+  {t:'Test and validate',d:'The team runs factory and site acceptance tests, point-to-point checks, and a failover drill that also exercises the recovery plan.',k:['Factory acceptance (FAT)','Site acceptance (SAT)','Point-to-point checkout','Failover and recovery drill (CIP-009)','Vulnerability assessment (CIP-010)']},
+  {t:'Go-live and 24/7 operations',d:'SunPower launches the ROCC on Oct 6, 2015. Eight staff monitor and control the fleet 24/7/365, about 1.3 GW by 2016.',k:['Cutover complete','Operators on shift','Live fleet telemetry']}
+ ],
+ months:['Jan 2015','Feb 2015','Mar 2015','Apr 2015','May 2015','Jun 2015','Jul 2015','Aug 2015','Aug to Sep 2015','Sep 2015','Oct 2015'],
+ short:['Plan','Demo','Frame','MEP','Floor','Fit-out','Config','WAN','CIP','Test','Live'],
+ toasts:{cut:'Cutaway view: roof shown transparent',threat:'ESP blocks unauthorized traffic · CIP-005',esp:'Electronic Security Perimeter up · CIP-005',down:'Drill: primary link to Chile taken down',bk:'Satellite backup path carries the traffic',pass:'Primary restored · Failover drill PASS',live:'ROCC live · October 6, 2015'},
+ vw:{check:'SYSTEM CHECK',stage:'OT NETWORK STAGING',links:'FLEET LINKS',online:'ONLINE',tests:'ACCEPTANCE TESTS',pass:'PASS',live:'LIVE · 24/7/365',out:'FLEET OUTPUT',alarms:'ALARMS',crit:'CRITICAL',warn:'WARNING',sites:'SITES'},
+ info:{
+  slab:['Existing slab','Part of the existing Austin office. Engineers check it for raised floor and UPS battery loads.',1],
+  steel:['Existing structure','Part of the existing office, shown stylized. A clear span over the operations floor keeps columns away from the video wall.',1],
+  cubicle:['Old cubicle space','Cleared to make room for the operations floor.',1],
+  dumpster:['Demolition debris','Hauled off site before framing starts.',1],
+  studs:['Metal stud framing','Frames the server room walls that form the Physical Security Perimeter.',1],
+  drywall:['Server room walls','Walls of the Physical Security Perimeter around the BES Cyber Systems. Shown translucent so you can see inside.',1],
+  badge:['Badge reader (CIP-006)','Controls and logs every entry into the Physical Security Perimeter. Only staff with authorized access and CIP-004 training get in.',1],
+  hvac:['Precision cooling (N+1)','Three rooftop units. Any one can fail and the room stays in range.',1],
+  gen:['Standby generator','Picks up the full load within seconds of a utility outage.',1],
+  ups:['UPS and switchgear','Carries racks and consoles until the generator takes over.',1],
+  fiber:['Fiber entry','Fiber from the street carries the primary WAN links.',1],
+  supp:['Fire suppression','A clean-agent system protects equipment without water damage.',1],
+  trays:['Cable trays','Overhead trays route power and data to every zone.',1],
+  wall:['Existing office enclosure','Part of the existing Austin office, shown stylized with the roof in cutaway.',1],
+  floor:['Raised floor','Hides power and data cabling and feeds cool air to equipment.',1],
+  server:['Secure server room','SCADA servers, the data historian, core switches, and firewalls sit inside the Physical Security Perimeter (CIP-006).',1],
+  vw:['Video wall (4x2)','Shows fleet status, alarms, weather, and grid events to the whole team at once.',1],
+  console:['Operator console','Eight positions match the eight ROCC staff in public reports. Each has multi-screen HMI access.',0],
+  op:['ROCC operator','Watches alarms, dispatches field crews, and handles utility curtailment requests 24/7/365.',0],
+  cable:['OT cabling','A dedicated OT network runs from the server room to every console.',1],
+  dish:['Satellite backup','Takes over when a primary link fails so no plant goes dark.',1],
+  mast:['Cellular backup','A second backup path for plant telemetry and remote control.',1],
+  globe:['Global PV fleet','U.S. plants plus plants on five other continents report to the ROCC. Plant locations here are representative.',1],
+  beam:['ROCC uplink','All fleet traffic enters through the ROCC network edge.',1],
+  hub:['ROCC hub · Austin, Texas','SunPower launched the ROCC in its Austin office on October 6, 2015.',0],
+  site:['Plant gateway','SCADA, inverter, tracker, weather station, and revenue meter data flow to the ROCC. Location is representative.',1],
+  ring0:['L3 · Electronic Security Perimeter (CIP-005)','Encloses the SCADA servers, historian, and operator HMIs. All traffic in or out passes an Electronic Access Point.',1],
+  ring1:['L3.5 · Industrial DMZ','Brokers data between OT and IT. Electronic Access Points enforce inbound and outbound rules.',1],
+  ring2:['L4 · Enterprise IT','Email, reporting, and business systems stay outside the OT zones.',1],
+  ring3:['WAN edge','Encrypted tunnels reach every plant. Only approved protocols pass.',1],
+  dome:['Defense in depth','Layered physical and electronic perimeters, system hardening, and incident response (CIP-005 to CIP-008).',1],
+  shield:['Plant ESP (L0 to L2)','Inverters, trackers, and plant controllers sit inside their own Electronic Security Perimeter.',1],
+  lock:['Secure conduit (CIP-005)','Encrypted link. Interactive remote access goes through an Intermediate System with multi-factor authentication.',1],
+  threat:['Blocked traffic','Illustrative. The ESP stops unauthorized traffic. Security events feed the incident response plan (CIP-008).',1]
+ },
+ rings:['L3 · ESP (CIP-005)','L3.5 · DMZ / EAP','L4 · Enterprise IT','WAN edge'],
+ cip:'NERC CIP v5 readiness',
+ cipN:['BES Cyber System Categorization','Security Management Controls','Personnel and Training','Electronic Security Perimeter(s)','Physical Security of BES Cyber Systems','System Security Management','Incident Reporting and Response Planning','Recovery Plans for BES Cyber Systems','Configuration Change Management and Vulnerability Assessments','Information Protection'],
+ cipD:['Identify BES Cyber Systems and rate each as high, medium, or low impact. Shown in planning.','Cyber security policies and a named CIP Senior Manager. Shown in the cybersecurity phase.','Security awareness, training, personnel risk assessments, and access management for staff.','An Electronic Security Perimeter with Electronic Access Points, plus controls on interactive remote access. Shown as the inner ring.','A Physical Security Perimeter with controlled, logged entry. Shown as the gold box around the server room.','Ports and services, patching, malware prevention, event logging, and access control on each system.','An incident response plan with reporting and testing. Shown when blocked traffic hits the perimeter.','Recovery plans with backups and exercises. Shown in the failover drill.','Baseline configurations, change control, and vulnerability assessments. Shown during network configuration and testing.','Protect BES Cyber System information in storage, in transit, and at disposal.'],
+ hubLabel:'ROCC · Austin',
+ aboutHtml:`<p>This interactive 3D animation shows how a project team could plan, build, connect, secure, test, and launch SunPower's Remote Operations Control Center (ROCC). It is a portfolio visualization. It does not show the real facility, network, or vendor designs.</p>
+<h5>Public facts used</h5>
+<ul>
+<li>SunPower launched the ROCC on October 6, 2015, in its Austin, Texas office.</li>
+<li>The ROCC monitors and controls SunPower-operated U.S. plants and monitors plants on five continents outside North America.</li>
+<li>Eight staff run it 24 hours a day, 7 days a week, 365 days a year.</li>
+<li>The fleet under watch was expected to reach about 1.3 GW by 2016.</li>
+</ul>
+<h5>Project facts</h5>
+<ul><li>Santos "JR" Arroyo Claudio, PMP, served as IT Project Manager / Project Coordinator for the $3M ROCC build-out and commissioning, January to October 2015.</li></ul>
+<h5>Assumptions</h5>
+<ul>
+<li>The existing Austin office appears as a stylized one-story shell.</li>
+<li>The ROCC is shown built to medium-impact CIP controls. Its actual impact rating is not public.</li>
+<li>Month-by-month schedule and the budget S-curve.</li>
+<li>Plant locations are representative regions, not actual plant sites.</li>
+<li>Equipment counts and layout: 3 cooling units, 8 racks, a 4x2 video wall, one server room door.</li>
+<li>Network design: MPLS and VPN primary links, cellular and satellite backup, IEC 62443 zones on a Purdue model, mapped to NERC CIP v5.</li>
+<li>Test sequence and the failover drill.</li>
+</ul>
+<h5>NERC CIP context</h5>
+<ul>
+<li>FERC Order No. 791 (November 2013) approved the CIP version 5 standards, CIP-002-5 through CIP-011-1.</li>
+<li>FERC later moved the compliance date to July 1, 2016, so a 2015 build would plan for version 5.</li>
+<li>Under CIP-002-5.1, a control center that performs Generator Operator duties for 1,500 MW or more in one Interconnection rates medium impact. Below that it rates low impact.</li>
+</ul>
+<h5>Sources</h5>
+<ul>
+<li><a href="https://newsroom.sunpower.com/2015-10-06-SunPower-Optimizing-U-S-Solar-Power-Plant-Production-with-Remote-Operations-Control-Center" target="_blank" rel="noopener">SunPower Newsroom, Oct 6, 2015</a></li>
+<li><a href="https://www.ferc.gov/sites/default/files/2020-04/E-5_7.pdf" target="_blank" rel="noopener">FERC Order No. 791-A (CIP version 5)</a></li>
+<li><a href="https://www.balch.com/insights/publications/2016/02/ferc-grants-extension-for-implementation-of-cip-ve" target="_blank" rel="noopener">FERC extends CIP v5 date to July 1, 2016 (Balch)</a></li>
+<li><a href="https://www.nerc.com/pa/Stand/Reliability%20Standards/CIP-002-5_1.pdf" target="_blank" rel="noopener">NERC CIP-002-5.1</a></li>
+<li><a href="https://www.pv-tech.org/sunpower_launches_new_remote_operations_center_to_monitor_us_projects" target="_blank" rel="noopener">PV Tech</a></li>
+<li><a href="https://www.solarpowerworldonline.com/2015/10/sunpower-launches-remote-operations-control-center-for-monitoring-solar-plants/" target="_blank" rel="noopener">Solar Power World</a></li>
+<li><a href="https://cleantechnica.com/2015/10/08/sunpower-launches-remote-operations-for-large-scale-solar/" target="_blank" rel="noopener">CleanTechnica</a></li>
+</ul>
+<p style="margin-top:12px;font-size:12px;color:#7F8283">SunPower is a trademark of its owner. This independent animation is not affiliated with or endorsed by SunPower. Visualization by Major Business Solutions, LLC.</p>`
+},
+es:{
+ eyebrow:'Caso de estudio · Gestión de proyectos de TI',
+ title:'Construcción del ROCC de SunPower',
+ sub:'Centro de Control de Operaciones Remotas · Austin, Texas · 2015',
+ tag:'Solo animación · Ilustrativo',
+ play:'▶ Reproducir',pause:'❚❚ Pausa',restart:'↺ Reiniciar',guided:'● Cámara guiada',free:'○ Cámara libre · volver a guiada',about:'Acerca de',home:'← Portafolio',
+ hint:'Arrastre para girar · Desplace o pellizque para acercar · Haga clic en una pieza para ver detalles',
+ phase:'Fase',assumed:'supuesto',
+ tracker:'Seguimiento del proyecto',schedule:'Cronograma',budget:'Presupuesto (curva supuesta)',plants:'Plantas conectadas',zones:'Zonas de seguridad',tests:'Pruebas aprobadas',
+ ops:'Operación en vivo',fleet:'Flota monitoreada',cover:'Cobertura',coverV:'24/7/365',staff:'Operadores según informes públicos',reach:'Alcance',reachV:'EE. UU. + 5 continentes',clock:'Reloj de turno',
+ gwPre:'~',gwPost:' GW para 2016',
+ foot:'Solo animación. No está a escala. Basada en informes públicos (oct 2015) y supuestos declarados. Sin afiliación ni respaldo de SunPower.',
+ credit:'Visualización: Major Business Solutions, LLC',
+ close:'Cerrar',assumption:'Supuesto',aboutH:'Acerca de esta animación',
+ ph:[
+  {t:'Inicio y planificación',d:'SunPower necesita un centro para vigilar y controlar su flota fotovoltaica a gran escala las 24 horas. El equipo aprueba una obra de $3M dentro de su oficina de Austin, Texas.',k:['Acta y presupuesto aprobados','Alcance y EDT definidos','Categorización de sistemas cibernéticos BES (CIP-002)']},
+  {t:'Inspección y demolición',d:'El ROCC se ubica dentro de la oficina existente de SunPower en Austin. Las cuadrillas inspeccionan el espacio y retiran los cubículos hasta la losa.',k:['Condiciones existentes inspeccionadas','Cubículos y acabados retirados','Espacio listo para la obra']},
+  {t:'Estructura de tabiques',d:'Perfiles metálicos forman un cuarto de servidores seguro con una sola puerta con control por tarjeta. Este cuarto será el Perímetro de Seguridad Física.',k:['Trazado de perfiles','Muros del cuarto de servidores','Vano de puerta']},
+  {t:'Mecánica, electricidad y energía',d:'Los instaladores agregan enfriamiento de precisión en el techo, generador de respaldo, UPS, supresión de incendios y una nueva entrada de fibra. Cada sistema crítico tiene respaldo.',k:['Enfriamiento N+1 en el techo','Generador y UPS','Zanja de fibra','Bandejas de cable y supresión']},
+  {t:'Piso técnico y acabados',d:'Los instaladores colocan el piso técnico, cierran los muros del cuarto de servidores y montan la puerta y el lector de tarjetas.',k:['Piso técnico','Muros del cuarto cerrados','Puerta y lector de tarjetas']},
+  {t:'Acondicionamiento de la sala de control',d:'Los instaladores colocan los racks, una pared de video 4x2 y ocho consolas de operador. Se activa el acceso por tarjeta al cuarto de servidores.',k:['Racks de servidores','Pared de video','8 consolas de operador','Control de acceso al PSP activo (CIP-006)']},
+  {t:'Configuración de la red OT',d:'Los ingenieros preparan servidores SCADA, el historiador de datos, switches centrales y firewalls. Refuerzan cada sistema y registran su configuración base.',k:['Plan IP y VLAN','Servidores SCADA e historiador','Puertos, servicios y parches (CIP-007)','Configuraciones base (CIP-010)']},
+  {t:'Construcción de la WAN global',d:'Enlaces primarios y de respaldo conectan el ROCC con plantas FV en EE. UU. y en otros cinco continentes.',k:['Enlaces primarios (MPLS y VPN)','Respaldo celular y satelital','Gateways de planta en línea']},
+  {t:'Ciberseguridad y NERC CIP',d:'El equipo construye conforme a NERC CIP versión 5, exigible el 1 de julio de 2016, junto con zonas IEC 62443. Un Perímetro de Seguridad Electrónica, una DMZ industrial y monitoreo protegen cada frontera.',k:['Perímetro de Seguridad Electrónica (CIP-005)','Controles de gestión de seguridad (CIP-003)','Protección de la información (CIP-011)','Personal y capacitación (CIP-004)','Plan de respuesta a incidentes (CIP-008)']},
+  {t:'Pruebas y validación',d:'El equipo ejecuta pruebas de aceptación en fábrica y en sitio, verificaciones punto a punto y un simulacro de conmutación que también pone a prueba el plan de recuperación.',k:['Aceptación en fábrica (FAT)','Aceptación en sitio (SAT)','Verificación punto a punto','Simulacro de conmutación y recuperación (CIP-009)','Evaluación de vulnerabilidades (CIP-010)']},
+  {t:'Puesta en marcha y operación 24/7',d:'SunPower inaugura el ROCC el 6 de octubre de 2015. Ocho empleados monitorean y controlan la flota 24/7/365, cerca de 1.3 GW para 2016.',k:['Transición completa','Operadores en turno','Telemetría de la flota en vivo']}
+ ],
+ months:['ene 2015','feb 2015','mar 2015','abr 2015','may 2015','jun 2015','jul 2015','ago 2015','ago a sep 2015','sep 2015','oct 2015'],
+ short:['Plan','Demol.','Tabiques','MEP','Piso','Interior','Config.','WAN','CIP','Pruebas','En vivo'],
+ toasts:{cut:'Vista en corte: techo transparente',threat:'El ESP bloquea tráfico no autorizado · CIP-005',esp:'Perímetro de Seguridad Electrónica activo · CIP-005',down:'Simulacro: se desconecta el enlace primario a Chile',bk:'La ruta satelital de respaldo lleva el tráfico',pass:'Enlace primario restaurado · Simulacro APROBADO',live:'ROCC en vivo · 6 de octubre de 2015'},
+ vw:{check:'VERIFICACIÓN DEL SISTEMA',stage:'PREPARACIÓN DE RED OT',links:'ENLACES DE FLOTA',online:'EN LÍNEA',tests:'PRUEBAS DE ACEPTACIÓN',pass:'APROBADO',live:'EN VIVO · 24/7/365',out:'PRODUCCIÓN DE FLOTA',alarms:'ALARMAS',crit:'CRÍTICAS',warn:'AVISOS',sites:'SITIOS'},
+ info:{
+  slab:['Losa existente','Parte de la oficina existente en Austin. Los ingenieros verifican la carga del piso técnico y de las baterías de UPS.',1],
+  steel:['Estructura existente','Parte de la oficina existente, estilizada. Un claro libre sobre la sala de operaciones aleja las columnas de la pared de video.',1],
+  cubicle:['Antiguos cubículos','Se retiran para dar espacio a la sala de operaciones.',1],
+  dumpster:['Escombros de demolición','Se retiran del sitio antes de levantar los tabiques.',1],
+  studs:['Perfiles metálicos','Forman los muros del cuarto de servidores que constituyen el Perímetro de Seguridad Física.',1],
+  drywall:['Muros del cuarto de servidores','Muros del Perímetro de Seguridad Física alrededor de los sistemas cibernéticos BES. Se muestran translúcidos para ver el interior.',1],
+  badge:['Lector de tarjetas (CIP-006)','Controla y registra cada entrada al Perímetro de Seguridad Física. Solo entra personal autorizado con capacitación CIP-004.',1],
+  hvac:['Enfriamiento de precisión (N+1)','Tres unidades en el techo. Si una falla, la sala sigue en rango.',1],
+  gen:['Generador de respaldo','Toma toda la carga segundos después de un corte eléctrico.',1],
+  ups:['UPS y tableros','Mantiene racks y consolas hasta que arranca el generador.',1],
+  fiber:['Entrada de fibra','La fibra desde la calle lleva los enlaces WAN primarios.',1],
+  supp:['Supresión de incendios','Un agente limpio protege los equipos sin daños por agua.',1],
+  trays:['Bandejas de cable','Bandejas aéreas llevan energía y datos a cada zona.',1],
+  wall:['Cerramiento existente','Parte de la oficina existente en Austin, estilizada y con el techo en corte.',1],
+  floor:['Piso técnico','Oculta el cableado de energía y datos y lleva aire frío a los equipos.',1],
+  server:['Cuarto de servidores seguro','Servidores SCADA, historiador de datos, switches centrales y firewalls dentro del Perímetro de Seguridad Física (CIP-006).',1],
+  vw:['Pared de video (4x2)','Muestra estado de la flota, alarmas, clima y eventos de la red a todo el equipo a la vez.',1],
+  console:['Consola de operador','Ocho puestos, igual que los ocho empleados del ROCC en informes públicos. Cada uno tiene acceso HMI con varias pantallas.',0],
+  op:['Operador del ROCC','Vigila alarmas, envía cuadrillas y atiende pedidos de reducción de la empresa eléctrica 24/7/365.',0],
+  cable:['Cableado OT','Una red OT dedicada va del cuarto de servidores a cada consola.',1],
+  dish:['Respaldo satelital','Entra en servicio cuando falla un enlace primario, así ninguna planta queda sin conexión.',1],
+  mast:['Respaldo celular','Una segunda ruta de respaldo para telemetría y control remoto.',1],
+  globe:['Flota FV global','Plantas en EE. UU. y en otros cinco continentes reportan al ROCC. Las ubicaciones son representativas.',1],
+  beam:['Enlace del ROCC','Todo el tráfico de la flota entra por el borde de red del ROCC.',1],
+  hub:['Centro ROCC · Austin, Texas','SunPower inauguró el ROCC en su oficina de Austin el 6 de octubre de 2015.',0],
+  site:['Gateway de planta','Datos de SCADA, inversores, seguidores, estación meteorológica y medidor llegan al ROCC. Ubicación representativa.',1],
+  ring0:['L3 · Perímetro de Seguridad Electrónica (CIP-005)','Encierra los servidores SCADA, el historiador y las HMI. Todo el tráfico pasa por un Punto de Acceso Electrónico.',1],
+  ring1:['L3.5 · DMZ industrial','Intercambia datos entre OT y TI. Los Puntos de Acceso Electrónico aplican reglas de entrada y salida.',1],
+  ring2:['L4 · TI empresarial','Correo, informes y sistemas de negocio quedan fuera de las zonas OT.',1],
+  ring3:['Borde WAN','Túneles cifrados llegan a cada planta. Solo pasan protocolos aprobados.',1],
+  dome:['Defensa en profundidad','Perímetros físicos y electrónicos, refuerzo de sistemas y respuesta a incidentes (CIP-005 a CIP-008).',1],
+  shield:['ESP de planta (L0 a L2)','Inversores, seguidores y controladores de planta están dentro de su propio Perímetro de Seguridad Electrónica.',1],
+  lock:['Conducto seguro (CIP-005)','Enlace cifrado. El acceso remoto interactivo pasa por un Sistema Intermedio con autenticación multifactor.',1],
+  threat:['Tráfico bloqueado','Ilustrativo. El ESP detiene el tráfico no autorizado. Los eventos alimentan el plan de respuesta a incidentes (CIP-008).',1]
+ },
+ rings:['L3 · ESP (CIP-005)','L3.5 · DMZ / EAP','L4 · TI empresarial','Borde WAN'],
+ cip:'Preparación NERC CIP v5',
+ cipN:['Categorización de sistemas cibernéticos BES','Controles de gestión de seguridad','Personal y capacitación','Perímetro(s) de Seguridad Electrónica','Seguridad física de sistemas cibernéticos BES','Gestión de seguridad de sistemas','Reporte y planificación de respuesta a incidentes','Planes de recuperación','Gestión de cambios de configuración y evaluación de vulnerabilidades','Protección de la información'],
+ cipD:['Identificar los sistemas cibernéticos BES y clasificar cada uno como de impacto alto, medio o bajo. Se muestra en la planificación.','Políticas de ciberseguridad y un Gerente Sénior CIP designado. Se muestra en la fase de ciberseguridad.','Concientización, capacitación, evaluación de riesgo del personal y gestión de accesos.','Un Perímetro de Seguridad Electrónica con Puntos de Acceso Electrónico y controles de acceso remoto interactivo. Se muestra como el anillo interior.','Un Perímetro de Seguridad Física con entrada controlada y registrada. Se muestra como la caja dorada del cuarto de servidores.','Puertos y servicios, parches, prevención de malware, registro de eventos y control de acceso en cada sistema.','Un plan de respuesta a incidentes con reportes y pruebas. Se muestra cuando el tráfico bloqueado llega al perímetro.','Planes de recuperación con respaldos y ejercicios. Se muestra en el simulacro de conmutación.','Configuraciones base, control de cambios y evaluación de vulnerabilidades. Se muestra en la configuración de red y en las pruebas.','Proteger la información de los sistemas cibernéticos BES en almacenamiento, tránsito y desecho.'],
+ hubLabel:'ROCC · Austin',
+ aboutHtml:`<p>Esta animación 3D interactiva muestra cómo un equipo de proyecto podría planificar, construir, conectar, proteger, probar e inaugurar el Centro de Control de Operaciones Remotas (ROCC) de SunPower. Es una visualización de portafolio. No muestra la instalación, la red ni los diseños reales de proveedores.</p>
+<h5>Datos públicos usados</h5>
+<ul>
+<li>SunPower inauguró el ROCC el 6 de octubre de 2015 en su oficina de Austin, Texas.</li>
+<li>El ROCC monitorea y controla plantas operadas por SunPower en EE. UU. y monitorea plantas en cinco continentes fuera de Norteamérica.</li>
+<li>Ocho empleados lo operan las 24 horas, los 7 días, los 365 días del año.</li>
+<li>Se esperaba que la flota monitoreada llegara a cerca de 1.3 GW para 2016.</li>
+</ul>
+<h5>Datos del proyecto</h5>
+<ul><li>Santos "JR" Arroyo Claudio, PMP, fue Gerente de Proyectos de TI / Coordinador del proyecto de $3M para construir y poner en marcha el ROCC, de enero a octubre de 2015.</li></ul>
+<h5>Supuestos</h5>
+<ul>
+<li>La oficina existente en Austin se muestra como un edificio estilizado de un piso.</li>
+<li>El ROCC se muestra con controles CIP de impacto medio. Su clasificación real no es pública.</li>
+<li>El cronograma mensual y la curva S del presupuesto.</li>
+<li>Las ubicaciones de plantas son regiones representativas, no sitios reales.</li>
+<li>Cantidad y disposición de equipos: 3 unidades de enfriamiento, 8 racks, pared de video 4x2.</li>
+<li>Diseño de red: enlaces primarios MPLS y VPN, respaldo celular y satelital, zonas IEC 62443 sobre un modelo Purdue, alineadas con NERC CIP v5.</li>
+<li>La secuencia de pruebas y el simulacro de conmutación.</li>
+</ul>
+<h5>Contexto NERC CIP</h5>
+<ul>
+<li>La Orden No. 791 de FERC (noviembre de 2013) aprobó las normas CIP versión 5, de CIP-002-5 a CIP-011-1.</li>
+<li>FERC luego movió la fecha de cumplimiento al 1 de julio de 2016, así que una obra en 2015 planificaría para la versión 5.</li>
+<li>Según CIP-002-5.1, un centro de control que cumple funciones de Operador de Generación para 1,500 MW o más en una Interconexión tiene impacto medio. Por debajo, tiene impacto bajo.</li>
+</ul>
+<h5>Fuentes</h5>
+<ul>
+<li><a href="https://newsroom.sunpower.com/2015-10-06-SunPower-Optimizing-U-S-Solar-Power-Plant-Production-with-Remote-Operations-Control-Center" target="_blank" rel="noopener">SunPower Newsroom, 6 oct 2015</a></li>
+<li><a href="https://www.ferc.gov/sites/default/files/2020-04/E-5_7.pdf" target="_blank" rel="noopener">FERC Orden No. 791-A (CIP versión 5)</a></li>
+<li><a href="https://www.balch.com/insights/publications/2016/02/ferc-grants-extension-for-implementation-of-cip-ve" target="_blank" rel="noopener">FERC extiende CIP v5 al 1 de julio de 2016 (Balch)</a></li>
+<li><a href="https://www.nerc.com/pa/Stand/Reliability%20Standards/CIP-002-5_1.pdf" target="_blank" rel="noopener">NERC CIP-002-5.1</a></li>
+<li><a href="https://www.pv-tech.org/sunpower_launches_new_remote_operations_center_to_monitor_us_projects" target="_blank" rel="noopener">PV Tech</a></li>
+<li><a href="https://www.solarpowerworldonline.com/2015/10/sunpower-launches-remote-operations-control-center-for-monitoring-solar-plants/" target="_blank" rel="noopener">Solar Power World</a></li>
+<li><a href="https://cleantechnica.com/2015/10/08/sunpower-launches-remote-operations-for-large-scale-solar/" target="_blank" rel="noopener">CleanTechnica</a></li>
+</ul>
+<p style="margin-top:12px;font-size:12px;color:#7F8283">SunPower es una marca de su propietario. Esta animación independiente no tiene afiliación ni respaldo de SunPower. Visualización de Major Business Solutions, LLC.</p>`
+}};
+let lang='en';
+try{const s=localStorage.getItem('rocc-lang');if(s==='es'||s==='en')lang=s;}catch(e){}
+if(location.hash==='#es')lang='es';else if(location.hash==='#en')lang='en';
+const L=()=>I18N[lang];
+
+/* land polygons [lon,lat,...] (coarse, illustrative) */
+const LAND=[
+ [-165,68,-140,70,-110,72,-85,70,-75,62,-62,58,-55,50,-65,45,-70,42,-76,38,-76,35,-81,31,-80,26,-82,29,-90,30,-97,27,-97,22,-94,18,-88,16,-83,10,-78,8,-80,9,-86,13,-92,15,-105,20,-110,24,-112,30,-117,33,-122,37,-124,42,-124,48,-130,55,-140,60,-152,58,-160,58,-165,62],
+ [-55,60,-45,60,-20,70,-20,80,-60,82,-70,77,-55,70],
+ [-78,8,-72,12,-62,10,-52,5,-35,-5,-38,-13,-41,-22,-48,-26,-53,-33,-58,-38,-65,-41,-66,-48,-70,-54,-74,-50,-73,-40,-71,-30,-70,-18,-76,-14,-81,-5,-80,0,-77,4],
+ [-10,36,-9,43,-2,44,-5,48,2,51,8,54,10,57,5,58,6,62,14,67,20,70,30,70,40,67,45,68,60,70,80,73,100,77,120,73,140,72,160,70,180,68,178,64,163,60,157,52,142,59,137,54,141,46,132,43,127,39,126,35,121,31,122,25,117,23,108,21,106,17,109,12,105,9,100,13,101,4,104,1,98,8,98,16,94,17,91,22,87,21,80,15,77,8,73,17,72,21,67,25,58,25,56,27,52,24,57,18,52,15,44,12,40,18,35,28,34,31,36,36,28,37,26,40,23,37,22,40,19,42,13,45,16,41,18,40,12,44,8,44,3,43,0,39,-5,36],
+ [-17,21,-16,13,-12,8,-7,4,5,5,9,4,10,-3,13,-12,12,-18,15,-27,18,-34,25,-34,32,-28,36,-20,40,-15,40,-5,44,0,51,11,43,12,38,18,33,28,32,31,20,32,10,37,-1,36,-6,35,-10,30,-15,27],
+ [114,-22,122,-18,130,-12,137,-12,142,-11,146,-19,153,-25,151,-34,145,-39,138,-35,131,-31,117,-35,115,-33],
+ [130,31,136,34,141,41,142,45,140,36,132,34],
+ [-5,50,1,51,-2,56,-5,58,-6,55],
+ [120,18,122,18,126,8,122,7,119,10],
+ [109,1,117,7,119,1,116,-4,110,-3],
+ [95,5,106,-6,103,-5,97,1],
+ [44,-25,50,-15,49,-12,44,-17]
+];
+function inPoly(x,y,p){let ins=false;for(let i=0,j=p.length-2;i<p.length;j=i,i+=2){const xi=p[i],yi=p[i+1],xj=p[j],yj=p[j+1];if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))ins=!ins;}return ins;}
+const isLand=(lon,lat)=>LAND.some(p=>inPoly(lon,lat,p));
+
+/* ---------- renderer / scene ---------- */
+const canvas=$('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:false});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();
+const SKY=new THREE.Color(0x1f2d36);
+scene.background=SKY;scene.fog=new THREE.Fog(0x1f2d36,110,260);
+const camera=new THREE.PerspectiveCamera(45,1,0.1,600);
+const controls=new THREE.OrbitControls(camera,canvas);
+controls.enableDamping=true;controls.dampingFactor=.08;controls.maxPolarAngle=Math.PI*.49;controls.minDistance=4;controls.maxDistance=150;
+
+scene.add(new THREE.HemisphereLight(0xFAF7F1,0x1E2E24,.62));
+const sun=new THREE.DirectionalLight(0xfff0d8,.95);
+sun.position.set(32,48,22);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-34,right:34,top:34,bottom:-34,near:1,far:140});
+sun.shadow.bias=-.0006;scene.add(sun);
+const fill=new THREE.DirectionalLight(0x85A0B5,.25);fill.position.set(-30,20,-25);scene.add(fill);
+
+const mat=(c,o={})=>new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.8,metalness:.05},o));
+const M={
+ ground:mat(0x2a3d30,{roughness:1}),soil:mat(0x4a3d2c,{roughness:1}),concrete:mat(0xC0B7A6,{roughness:.95}),
+ steel:mat(0x7F8283,{metalness:.55,roughness:.45}),wall:mat(C.sand),bone:mat(C.bone),gun:mat(C.gun,{roughness:.6}),
+ green:mat(C.green),glass:mat(0x85A0B5,{transparent:true,opacity:.16,depthWrite:false,roughness:.1,metalness:.2}),
+ roof:mat(0xD2CFCA,{transparent:true,opacity:1}),road:mat(0x2b3033,{roughness:1}),
+ gold:mat(C.gold,{emissive:C.gold,emissiveIntensity:.35,metalness:.3,roughness:.4}),
+ red:mat(0xA04030,{roughness:.6}),rack:mat(0x1d2223,{roughness:.5,metalness:.3}),
+ led:mat(0x86948A,{emissive:0x9fd0a8,emissiveIntensity:1}),ledG:mat(C.gold,{emissive:C.gold,emissiveIntensity:1}),
+ mon:mat(0x111518,{emissive:0x000000,roughness:.3}),desk:mat(0xD2CFCA,{roughness:.7}),
+ trench:mat(0x3b3226,{emissive:C.gold,emissiveIntensity:.15})
+};
+
+function box(w,h,d,m,x,y,z){const g=new THREE.BoxGeometry(w,h,d);g.translate(0,h/2,0);const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;return o;}
+function cyl(rt,rb,h,m,seg=16){const g=new THREE.CylinderGeometry(rt,rb,h,seg);g.translate(0,h/2,0);const o=new THREE.Mesh(g,m);o.castShadow=true;return o;}
+
+/* animation registry: every build state is a pure function of t so scrubbing works */
+const anims=[];
+function anim(obj,t0,dur,type='grow',o={}){
+ obj.userData.base={p:obj.position.clone(),s:obj.scale.clone()};
+ anims.push({obj,t0,dur,type,out:o.out,outDur:o.outDur||1.5,h:o.h||8,fn:o.fn});return obj;
+}
+function applyAnims(t){
+ for(const a of anims){
+  const p=clamp((t-a.t0)/a.dur);let k=1;
+  if(a.out!=null)k=1-ease(clamp((t-a.out)/a.outDur));
+  const vis=p>0&&k>.001;a.obj.visible=vis;if(!vis)continue;
+  const b=a.obj.userData.base,e=ease(p);
+  a.obj.position.copy(b.p);a.obj.scale.copy(b.s);
+  switch(a.type){
+   case'grow':a.obj.scale.y=b.s.y*Math.max(e*k,.001);break;
+   case'growZ':a.obj.scale.z=b.s.z*Math.max(e*k,.001);break;
+   case'pop':a.obj.scale.multiplyScalar(Math.max(back(p)*k,.001));break;
+   case'drop':a.obj.position.y=b.p.y+(1-e)*a.h+(1-k)*a.h;break;
+   case'fn':a.fn(p,e,k);break;
+  }
+ }
+}
+const clickables=[];
+function key(o,k){o.userData.key=k;clickables.push(o);return o;}
+
+/* ---------- labels ---------- */
+const labels=[];
+function makeLabel(getText,w=6,color='#FAF7F1',border='#C39A3E',onTop=false){
+ const c=document.createElement('canvas');c.width=1024;c.height=192;
+ const tex=new THREE.CanvasTexture(c);tex.minFilter=THREE.LinearFilter;
+ const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false,depthTest:!onTop}));if(onTop)sp.renderOrder=10;
+ sp.scale.set(w,w*192/1024,1);
+ sp.userData.draw=()=>{const x=c.getContext('2d');x.clearRect(0,0,1024,192);x.font='700 70px ui-monospace, Menlo, Consolas, monospace';
+  const txt=getText();let fs=70;while(fs>34&&x.measureText(txt).width>930){fs-=4;x.font='700 '+fs+'px ui-monospace, Menlo, Consolas, monospace';}const tw=Math.min(1000,x.measureText(txt).width+60);const lx=(1024-tw)/2;
+  x.fillStyle='rgba(23,26,28,.85)';x.fillRect(lx,40,tw,112);x.strokeStyle=border;x.lineWidth=5;x.strokeRect(lx,40,tw,112);
+  x.fillStyle=color;x.textAlign='center';x.textBaseline='middle';x.fillText(txt,512,98);tex.needsUpdate=true;};
+ sp.userData.draw();labels.push(sp);return sp;
+}
+
+/* ---------- environment ---------- */
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(500,500),M.ground);ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+const grid=new THREE.GridHelper(140,70,0x3d5546,0x324739);grid.position.y=.01;grid.material.transparent=true;grid.material.opacity=.45;scene.add(grid);
+scene.add(box(160,.04,5,M.road,0,0,22));
+for(let i=-14;i<15;i++)scene.add(box(1.6,.05,.18,M.gold,i*5,0,22));
+
+/* ---------- P0 planning blueprint ---------- */
+const seats=[[7.5,-36],[7.5,-12],[7.5,12],[7.5,36],[10.6,-27],[10.6,-9],[10.6,9],[10.6,27]];
+
+const plan=new THREE.Group();
+const ghost=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(24.8,7.1,16.8)),new THREE.LineBasicMaterial({color:C.gold,transparent:true,opacity:.9}));ghost.position.y=3.55;plan.add(ghost);
+const gvw=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(13,4.6,.2)),new THREE.LineBasicMaterial({color:C.blueL}));gvw.position.set(3,3.4,-7.6);plan.add(gvw);
+seats.forEach(([r,a])=>{const e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2.2,.8,1)),new THREE.LineBasicMaterial({color:C.blueL}));e.position.set(3+r*Math.sin(a*D),.4,-7.8+r*Math.cos(a*D));e.lookAt(3,.4,-7.8);plan.add(e);});
+const pl=makeLabel(()=>lang==='es'?'$3M · ene a oct 2015':'$3M · Jan to Oct 2015',8,'#EEE3C9','#C39A3E',true);pl.position.set(0,13.5,-2);plan.add(pl);
+scene.add(anim(plan,.4,2.2,'grow',{out:6.5,outDur:1.2}));
+
+/* ---------- existing Austin office (stylized, static) ---------- */
+const COLX=[-12,-6,0,6,12],COLZ=[-8,0,8];
+const slab=key(box(24.8,.5,16.8,M.concrete,0,0,0),'slab');scene.add(slab);
+const steel=new THREE.Group();key(steel,'steel');scene.add(steel);
+COLX.forEach(x=>COLZ.forEach(z=>{if(z===0&&(x===0||x===6))return;steel.add(box(.42,6.3,.42,M.steel,x,.5,z));}));
+[-8,8].forEach(z=>steel.add(box(24.4,.45,.35,M.steel,0,6.35,z)));
+COLX.forEach(x=>steel.add(box(.35,.45,16.4,M.steel,x,6.35,0)));
+const roof=box(24.8,.3,16.8,M.roof,0,6.8,0);scene.add(roof);
+const encl=new THREE.Group();key(encl,'wall');scene.add(encl);
+encl.add(box(24.4,6.3,.3,M.wall,0,.5,-8));encl.add(box(.3,6.3,16.4,M.wall,-12,.5,0));
+encl.add(box(.12,6.3,16.4,M.glass,12,.5,0));encl.add(box(24.4,6.3,.12,M.glass,0,.5,8));
+for(let i=0;i<=12;i++)encl.add(box(.14,6.3,.16,M.gun,-12+i*2,.5,8));
+encl.add(box(24.4,.14,.16,M.gun,0,3.6,8));
+for(let i=0;i<=8;i++)encl.add(box(.16,6.3,.14,M.gun,12,.5,-8+i*2));
+const offL=new THREE.Group();const ol=makeLabel(()=>lang==='es'?'Oficina existente de SunPower · Austin':'Existing SunPower office · Austin',9,'#FAF7F1','#85A0B5',true);ol.position.set(0,8.6,10);offL.add(ol);
+scene.add(anim(offL,-1,.01,'pop',{out:13,outDur:1}));
+const sign=new THREE.Group();sign.position.set(0,0,8.6);
+const sp0=makeLabel(()=>'ROCC',3.6,'#C39A3E');sp0.position.set(-7,7.6,.4);sign.add(sp0);scene.add(anim(sign,101.5,1,'pop'));
+
+/* ---------- P1 survey and demolition ---------- */
+const partM=mat(0x86948A),cub=new THREE.Group();key(cub,'cubicle');scene.add(cub);
+let ki=0;[-5,-.5,4].forEach(z=>[-8.5,-3,2.5,8].forEach(x=>{const g=new THREE.Group();g.position.set(x,.5,z);
+ g.add(box(3,.75,1.4,M.desk,0,0,0));g.add(box(3.2,1.4,.08,partM,0,0,-.75));g.add(box(.08,1.4,1.5,partM,-1.6,0,0));g.add(box(.5,.5,.5,M.gun,0,0,1.1));
+ cub.add(anim(g,-1,.01,'pop',{out:6.2+ki*.35,outDur:.7}));ki++;}));
+const dump=new THREE.Group();dump.position.set(19,0,11);dump.add(box(4.4,1.7,2.3,mat(C.blue),0,0,0));key(dump,'dumpster');scene.add(anim(dump,5.6,1,'pop',{out:14.4,outDur:.8}));
+
+/* ---------- P2 partition framing (server room = Physical Security Perimeter) ---------- */
+const studs=new THREE.Group();key(studs,'studs');scene.add(studs);
+let si=0;
+for(let z=-7.6;z<=-1.9;z+=.8){studs.add(anim(box(.1,6,.25,M.steel,-6,.5,z),15.6+si*.22,.6,'grow',{out:40.6,outDur:.8}));si++;}
+for(let x=-11.6;x<=-6.3;x+=.8){studs.add(anim(box(.25,6,.1,M.steel,x,.5,0),15.6+si*.22,.6,'grow',{out:40.6,outDur:.8}));si++;}
+studs.add(anim(box(.12,.1,8,M.steel,-6,6.4,-4),20.2,1,'drop',{h:3}));
+studs.add(anim(box(6,.1,.12,M.steel,-9,6.4,0),20.6,1,'drop',{h:3}));
+studs.add(anim(box(.14,.14,1.4,M.steel,-6,2.9,-.8),22.4,1,'drop',{h:3}));
+
+/* ---------- P3 MEP ---------- */
+const fans=[];
+const hvac=new THREE.Group();key(hvac,'hvac');scene.add(hvac);
+[-6,0,6].forEach((x,i)=>{const u=new THREE.Group();u.position.set(x,7.1,-4);u.add(box(3.2,1.3,2.2,M.bone,0,0,0));
+ [-.75,.75].forEach(fx=>{const f=new THREE.Group();f.position.set(fx,1.32,0);const d=cyl(.55,.55,.06,M.gun,20);f.add(d);f.add(box(1,.04,.14,M.steel,0,.06,0));u.add(f);fans.push(f);});
+ hvac.add(anim(u,27+i*.6,1.4,'drop',{h:8}));});
+const gen=new THREE.Group();gen.position.set(17.5,0,-4);gen.add(box(4.2,2.2,2.2,M.green,0,0,0));const st=cyl(.18,.18,1.2,M.gun);st.position.set(1.4,2.2,0);gen.add(st);gen.add(box(4.6,.2,2.6,M.concrete,0,0,0));
+key(gen,'gen');scene.add(anim(gen,28.4,1.4,'pop'));
+const ups=new THREE.Group();ups.position.set(17.5,0,1.4);ups.add(box(3.2,2.4,2,M.steel,0,0,0));ups.add(box(1.2,.5,.05,M.ledG,-.6,1.6,1.02));ups.add(box(3.6,.2,2.4,M.concrete,0,0,0));
+key(ups,'ups');scene.add(anim(ups,29.2,1.4,'pop'));
+const cond=new THREE.Group();cond.add(box(3.4,.22,.22,M.gun,13.9,.25,-4));cond.add(box(3.4,.22,.22,M.gun,14.2,.25,1.4));scene.add(anim(cond,30.4,1,'pop'));
+const trench=box(.6,.06,12,M.trench,4,0,20);trench.geometry.translate(0,0,-6);key(trench,'fiber');scene.add(anim(trench,30,3,'growZ'));
+const trays=new THREE.Group();key(trays,'trays');scene.add(trays);
+[-2,3].forEach((z,i)=>trays.add(anim(box(23,.14,.6,M.steel,0,5.7,z),31.4+i*.5,1.2,'drop',{h:3})));
+const supp=new THREE.Group();key(supp,'supp');scene.add(supp);
+[-5,0,5].forEach((z,i)=>{const p=new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,23,8),M.red);p.rotation.z=Math.PI/2;p.position.set(0,6.15,z);supp.add(anim(p,33+i*.4,1,'drop',{h:3}));});
+
+/* ---------- P5 fit-out ---------- */
+const fc=document.createElement('canvas');fc.width=fc.height=128;{const x=fc.getContext('2d');x.fillStyle='#D2CFCA';x.fillRect(0,0,128,128);x.strokeStyle='#A5A39F';x.lineWidth=4;x.strokeRect(0,0,128,128);x.fillStyle='#C0B7A6';x.fillRect(48,48,32,32);}
+const ft=new THREE.CanvasTexture(fc);ft.wrapS=ft.wrapT=THREE.RepeatWrapping;ft.repeat.set(24,16);
+const floor=box(23.6,.25,15.7,mat(0xffffff,{map:ft}),0,.5,0);key(floor,'floor');scene.add(anim(floor,36.5,2.4,'grow'));
+const dryM=mat(C.sand,{transparent:true,opacity:.5,depthWrite:false});
+const dry=new THREE.Group();key(dry,'drywall');scene.add(dry);
+dry.add(anim(box(.16,6,8,dryM,-6,.5,-4),39,1.6,'grow'));
+dry.add(anim(box(6,6,.16,dryM,-9,.5,0),39.4,1.6,'grow'));
+const door=new THREE.Group();door.add(box(.2,2.4,1.2,M.gun,-6,.75,-.8));
+const badge=box(.12,.42,.3,M.ledG,-5.84,1.85,.05);key(badge,'badge');door.add(badge);
+scene.add(anim(door,41.6,1,'pop'));
+// Physical Security Perimeter outline (CIP-006)
+const psp=new THREE.Group();
+const pspMat=new THREE.LineBasicMaterial({color:C.gold,transparent:true,opacity:1});
+const pe=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(6.1,6.1,8.1)),pspMat);pe.position.set(-9,3.8,-4);psp.add(pe);
+const pspL=makeLabel(()=>'PSP · CIP-006',3.6,'#EEE3C9','#C39A3E',true);pspL.position.set(-5.6,5.2,-4.6);psp.add(pspL);
+scene.add(anim(psp,53.2,1,'pop'));
+const srv=new THREE.Group();key(srv,'server');scene.add(srv);
+const ledsA=[];let ri=0;
+[[-6.4,1],[-2.6,-1]].forEach(([z,dir])=>{[-11,-10,-9,-8].forEach(x=>{const r=new THREE.Group();r.position.set(x,.75,z);r.add(box(.82,2.4,1.1,M.rack,0,0,0));
+ for(let j=0;j<6;j++){const l=box(.6,.05,.02,(j%3===2)?M.ledG:M.led,0,.35+j*.33,dir*.56);r.add(l);ledsA.push(l);}
+ srv.add(anim(r,45+ri*.32,1,'drop',{h:4}));ri++;});});
+ledsA.forEach((l,i)=>anim(l,56+i*.09,.3,'pop'));
+// video wall
+const VW={w:1024,h:362};const vc=document.createElement('canvas');vc.width=VW.w;vc.height=VW.h;const vx=vc.getContext('2d');
+const vtex=new THREE.CanvasTexture(vc);vtex.minFilter=THREE.LinearFilter;
+const vwG=new THREE.Group();key(vwG,'vw');scene.add(vwG);
+vwG.add(anim(box(13.5,4.9,.25,M.gun,3,1.15,-7.72),50,1.4,'grow'));
+const screen=new THREE.Mesh(new THREE.PlaneGeometry(13,4.6),new THREE.MeshBasicMaterial({map:vtex}));screen.position.set(3,3.6,-7.58);
+vwG.add(anim(screen,51,1.4,'fn',{fn:(p,e)=>{screen.scale.set(Math.max(e,.001),1,1);}}));
+// consoles + operators
+const consoles=[];const CEN=new THREE.Vector3(3,.75,-7.8);
+seats.forEach(([r,a],i)=>{const g=new THREE.Group();g.position.set(CEN.x+r*Math.sin(a*D),.75,CEN.z+r*Math.cos(a*D));g.lookAt(CEN.x,.75,CEN.z);
+ g.add(box(2.3,.78,1,M.desk,0,0,0));
+ [-.72,0,.72].forEach((mx,j)=>{const m=box(.66,.44,.05,M.mon,mx,1.0,.28);m.rotation.y=(j-1)*-.25;g.add(m);});
+ g.add(box(.6,.5,.6,M.gun,0,0,-.95));
+ const op=new THREE.Group();op.position.set(0,.5,-.95);const tor=cyl(.22,.28,.62,M.green,12);op.add(tor);const hd=new THREE.Mesh(new THREE.SphereGeometry(.19,14,10),mat(0xC9A27E));hd.position.y=.82;op.add(hd);
+ key(op,'op');g.add(anim(op,102.2+i*.25,.8,'pop'));
+ key(g,'console');scene.add(anim(g,51.6+i*.42,1,'drop',{h:3}));consoles.push(g);});
+// cables (P6)
+const cableMat=new THREE.MeshBasicMaterial({color:C.gold});
+const cables=new THREE.Group();key(cables,'cable');scene.add(cables);
+consoles.forEach((g,i)=>{const p=g.position;const pts=[new THREE.Vector3(-7.6,.8,-4.5),new THREE.Vector3(-4.5,.8,-4.5),new THREE.Vector3(p.x,.8,-4.5+ (i%4)*.15),new THREE.Vector3(p.x,.8,p.z)];
+ const path=new THREE.CurvePath();for(let j=0;j<3;j++)path.add(new THREE.LineCurve3(pts[j],pts[j+1]));
+ const geo=new THREE.TubeGeometry(path,60,.05,5,false);const n=geo.index.count;const m=new THREE.Mesh(geo,cableMat);
+ cables.add(anim(m,58+i*.42,1.6,'fn',{fn:p=>{geo.setDrawRange(0,Math.floor(p*n/3)*3);}}));});
+
+/* ---------- P7 WAN ---------- */
+const dish=new THREE.Group();dish.position.set(9,7.1,4);dish.add(cyl(.12,.12,1.3,M.steel));
+const dm=new THREE.Mesh(new THREE.SphereGeometry(1.1,24,12,0,TAU,0,.95),mat(C.bone,{side:THREE.DoubleSide}));dm.position.y=1.6;dm.rotation.x=-Math.PI*.62;dish.add(dm);
+key(dish,'dish');scene.add(anim(dish,66,1.6,'pop'));
+const mast=new THREE.Group();mast.position.set(-9,7.1,4);mast.add(cyl(.1,.14,5,M.steel));
+[0,120,240].forEach(a=>{const pnl=box(.3,1,.12,M.bone,.35*Math.sin(a*D),3.6,.35*Math.cos(a*D));pnl.rotation.y=a*D;mast.add(pnl);});
+key(mast,'mast');scene.add(anim(mast,66.5,1.6,'pop'));
+const beamMat=new THREE.MeshBasicMaterial({color:C.gold,transparent:true,opacity:.35,depthWrite:false,side:THREE.DoubleSide});
+const beam=new THREE.Mesh((()=>{const g=new THREE.CylinderGeometry(.5,.25,7.9,20,1,true);g.translate(0,3.95,0);return g;})(),beamMat);beam.position.set(0,7.1,0);
+key(beam,'beam');scene.add(anim(beam,67,3,'grow'));
+
+const R=9;const globeLabels=[];
+function ll(lat,lon,r){const phi=(90-lat)*D,th=(lon+180)*D;return new THREE.Vector3(-r*Math.sin(phi)*Math.cos(th),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(th));}
+const globe=new THREE.Group();globe.position.set(0,24,0);scene.add(globe);
+const tilt=new THREE.Group();tilt.rotation.x=.28;globe.add(tilt);
+const gin=new THREE.Group();tilt.add(gin);
+const aus=ll(AUSTIN.lat,AUSTIN.lon,R);const BASE_ROT=-Math.atan2(aus.x,aus.z);
+const sph=new THREE.Mesh(new THREE.SphereGeometry(R,56,36),new THREE.MeshPhongMaterial({color:C.blueD,emissive:0x0a1822,shininess:12}));key(sph,'globe');gin.add(sph);
+const atm=new THREE.Mesh(new THREE.SphereGeometry(R*1.07,40,24),new THREE.MeshBasicMaterial({color:C.blueL,transparent:true,opacity:.09,side:THREE.BackSide,depthWrite:false}));globe.add(atm);
+{const pts=[];for(let lat=-58;lat<=82;lat+=1.9){const step=1.9/Math.max(.2,Math.cos(lat*D));for(let lon=-180;lon<180;lon+=step){if(isLand(lon,lat))pts.push(ll(lat,lon,R+.03));}}
+ const g=new THREE.BufferGeometry().setFromPoints(pts);gin.add(new THREE.Points(g,new THREE.PointsMaterial({color:C.goldL,size:.2,sizeAttenuation:true})));}
+for(let lat=-60;lat<=60;lat+=30){const rr=R*Math.cos(lat*D)+.02;const g=new THREE.BufferGeometry().setFromPoints(new THREE.EllipseCurve(0,0,rr,rr).getPoints(96).map(p=>new THREE.Vector3(p.x,R*Math.sin(lat*D),p.y)));gin.add(new THREE.Line(g,new THREE.LineBasicMaterial({color:C.blueL,transparent:true,opacity:.18})));}
+anim(globe,67,4,'fn',{fn:(p,e)=>{globe.position.y=8+16*e;globe.scale.setScalar(Math.max(e,.01));}});
+// hub
+const hub=new THREE.Group();hub.position.copy(aus);gin.add(hub);
+const hubM=new THREE.Mesh(new THREE.SphereGeometry(.42,16,12),new THREE.MeshBasicMaterial({color:C.bone}));key(hubM,'hub');hub.add(hubM);
+const hubRing=new THREE.Mesh(new THREE.RingGeometry(.5,.62,32),new THREE.MeshBasicMaterial({color:C.gold,transparent:true,side:THREE.DoubleSide,depthWrite:false}));hubRing.lookAt(aus.clone().multiplyScalar(2));hub.add(hubRing);
+const hubL=makeLabel(()=>L().hubLabel,6,'#FAF7F1');hubL.position.copy(ll(AUSTIN.lat-7,AUSTIN.lon+9,R+1.2).sub(aus));hub.add(hubL);globeLabels.push([hubL,hub]);
+anim(hub,69.4,1,'pop');
+// sites, arcs, shields, locks, packets
+const nodeMat=new THREE.MeshBasicMaterial({color:C.gold});
+const arcs=[];
+SITES.forEach((s,i)=>{
+ const p=ll(s.lat,s.lon,R);
+ const node=new THREE.Group();node.position.copy(p);gin.add(node);
+ const nm=new THREE.Mesh(new THREE.SphereGeometry(.28,14,10),nodeMat);key(nm,'site:'+i);node.add(nm);
+ if(!s.nolabel){const lb=makeLabel(()=>s.n[lang==='es'?1:0],7,'#EEE3C9','#85A0B5');const lo=s.lo||[0,0];lb.position.copy(ll(s.lat+lo[0],s.lon+lo[1],R+1.4).sub(p));node.add(lb);globeLabels.push([lb,node]);}
+ anim(node,70+i*.3,.9,'pop');
+ const sh=new THREE.Mesh(new THREE.SphereGeometry(.85,16,12),new THREE.MeshBasicMaterial({color:C.blueL,transparent:true,opacity:.28,depthWrite:false}));sh.position.copy(p);key(sh,'shield');gin.add(anim(sh,85+i*.22,1,'pop'));
+ const mid=aus.clone().add(p).multiplyScalar(.5);const dist=aus.distanceTo(p);mid.normalize().multiplyScalar(R+.8+dist*.42);
+ const curve=new THREE.QuadraticBezierCurve3(aus.clone(),mid,p.clone());
+ const geo=new THREE.TubeGeometry(curve,80,.075,6,false);const n=geo.index.count;
+ const am=new THREE.MeshBasicMaterial({color:C.gold,transparent:true,opacity:.95});
+ const tube=new THREE.Mesh(geo,am);gin.add(tube);
+ const t0=71+i*.5;anim(tube,t0,1.4,'fn',{fn:pp=>geo.setDrawRange(0,Math.floor(pp*n/3)*3)});
+ const lock=new THREE.Mesh(new THREE.TorusGeometry(.32,.09,8,20),new THREE.MeshBasicMaterial({color:C.blueL}));lock.position.copy(curve.getPoint(.5));lock.lookAt(curve.getPoint(.52));key(lock,'lock');gin.add(anim(lock,86.5+i*.15,.8,'pop'));
+ const pin=new THREE.Mesh(new THREE.SphereGeometry(.17,10,8),new THREE.MeshBasicMaterial({color:C.goldL}));
+ const pout=new THREE.Mesh(new THREE.SphereGeometry(.15,10,8),new THREE.MeshBasicMaterial({color:C.blueL}));
+ gin.add(pin);gin.add(pout);
+ arcs.push({curve,am,pin,pout,done:t0+1.4});
+});
+// backup satellite path for the Chile drill
+const ch=SITES[CHILE];const chp=ll(ch.lat,ch.lon,R);
+const bmid=aus.clone().add(chp).multiplyScalar(.5).normalize().multiplyScalar(R*1.95);
+const bcurve=new THREE.QuadraticBezierCurve3(aus.clone(),bmid,chp.clone());
+const bgeo=new THREE.TubeGeometry(bcurve,80,.06,6,false);const bn=bgeo.index.count;
+const bmat=new THREE.MeshBasicMaterial({color:C.blueL,transparent:true,opacity:.5});
+const btube=new THREE.Mesh(bgeo,bmat);gin.add(btube);anim(btube,95.5,1.5,'fn',{fn:p=>bgeo.setDrawRange(0,Math.floor(p*bn/3)*3)});
+const bpk=new THREE.Mesh(new THREE.SphereGeometry(.2,10,8),new THREE.MeshBasicMaterial({color:C.bone}));gin.add(bpk);
+
+/* ---------- P8 cyber ---------- */
+const RR=[15,18.5,22,25.5];
+RR.forEach((r,i)=>{const g=new THREE.Group();const ring=new THREE.Mesh(new THREE.RingGeometry(r-.13,r+.13,160),new THREE.MeshBasicMaterial({color:i===1?C.gold:C.blueL,transparent:true,opacity:.85,side:THREE.DoubleSide,depthWrite:false}));
+ ring.rotation.x=-Math.PI/2;ring.position.y=.07;g.add(ring);
+ const lb=makeLabel(()=>L().rings[i],6.6,'#FAF7F1',i===1?'#C39A3E':'#85A0B5',true);const la=(18+i*14)*D;lb.position.set(r*Math.sin(la),1.2,r*Math.cos(la));g.add(lb);
+ key(g,'ring'+i);scene.add(anim(g,78.5+i*1.2,1.2,'pop'));g.userData.ring=ring;});
+const dome=new THREE.Group();dome.scale.set(1,.55,1);
+const dg=new THREE.SphereGeometry(16,40,14,0,TAU,0,Math.PI/2);
+dome.add(new THREE.Mesh(dg,new THREE.MeshBasicMaterial({color:C.blueL,wireframe:true,transparent:true,opacity:.22,depthWrite:false})));
+dome.add(new THREE.Mesh(dg,new THREE.MeshBasicMaterial({color:C.blue,transparent:true,opacity:.07,side:THREE.DoubleSide,depthWrite:false})));
+key(dome,'dome');scene.add(anim(dome,83,3,'pop'));
+const threats=[];let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+for(let i=0;i<22;i++){const a=rnd()*TAU,y=.15+rnd()*.7,rr=Math.sqrt(1-y*y);const m=new THREE.Mesh(new THREE.SphereGeometry(.22,8,6),new THREE.MeshBasicMaterial({color:C.red,transparent:true}));
+ key(m,'threat');scene.add(m);threats.push({m,d:new THREE.Vector3(Math.cos(a)*rr,y,Math.sin(a)*rr),o:rnd()});}
+
+/* ---------- video wall content ---------- */
+const MAPDOTS=[];for(let lat=-56;lat<=78;lat+=3.2)for(let lon=-180;lon<180;lon+=3.2)if(isLand(lon,lat))MAPDOTS.push([lon,lat]);
+function drawMap(x0,y0,w,h,t,amb){
+ vx.fillStyle='#3a4a40';
+ for(const [lo,la] of MAPDOTS){vx.fillRect(x0+(lo+180)/360*w,y0+(80-la)/140*h,2.4,2.4);}
+ const px=(lo)=>x0+(lo+180)/360*w,py=(la)=>y0+(80-la)/140*h;
+ const ax=px(AUSTIN.lon),ay=py(AUSTIN.lat);
+ SITES.forEach((s,i)=>{const on=t>=arcs[i].done;const down=(i===CHILE&&t>=94&&t<99);
+  if(on){vx.strokeStyle=down?'rgba(180,71,58,.8)':'rgba(195,154,62,.55)';vx.lineWidth=1.5;vx.beginPath();vx.moveTo(ax,ay);vx.quadraticCurveTo((ax+px(s.lon))/2,Math.min(ay,py(s.lat))-30,px(s.lon),py(s.lat));vx.stroke();}
+  vx.fillStyle=down?'#B4473A':on?'#DCC48F':'#555';const r=on?3.5+1.5*Math.sin(amb*4+i):2.5;vx.beginPath();vx.arc(px(s.lon),py(s.lat),r,0,TAU);vx.fill();});
+ vx.fillStyle='#FAF7F1';vx.beginPath();vx.arc(ax,ay,5,0,TAU);vx.fill();
+}
+function hdr(txt,col){vx.fillStyle='#1d2a30';vx.fillRect(0,0,VW.w,40);vx.fillStyle=col||'#C39A3E';vx.font='700 22px ui-monospace,Menlo,monospace';vx.textAlign='left';vx.textBaseline='middle';vx.fillText(txt,18,21);
+ vx.fillStyle='#86948A';vx.textAlign='right';vx.font='16px ui-monospace,Menlo,monospace';vx.fillText('ROCC · AUSTIN TX',VW.w-18,21);}
+function drawVW(t,amb){
+ const V=L().vw;vx.fillStyle='#0f1416';vx.fillRect(0,0,VW.w,VW.h);vx.textBaseline='middle';
+ if(t<52){}
+ else if(t<56){const p=clamp((t-52)/3.5);vx.fillStyle='#C39A3E';vx.font='700 34px ui-monospace,Menlo,monospace';vx.textAlign='center';vx.fillText(V.check,VW.w/2,150);
+  vx.strokeStyle='#C39A3E';vx.lineWidth=2;vx.strokeRect(312,195,400,22);vx.fillRect(316,199,392*p,14);}
+ else if(t<66){hdr(V.stage);const lines=['VLAN 110  SCADA','VLAN 120  HISTORIAN','VLAN 130  HMI','FW POLICY  BASELINE','NTP  GPS STRATUM 1','IP PLAN  10.20.0.0/16'];
+  vx.font='22px ui-monospace,Menlo,monospace';lines.forEach((l,i)=>{const ts=56.3+i*1.4;if(t<ts)return;vx.textAlign='left';vx.fillStyle='#E4DAC6';vx.fillText('> '+l,40,80+i*44);
+   if(t>ts+.8){vx.fillStyle='#9fd0a8';vx.textAlign='right';vx.fillText('[ OK ]',VW.w-60,80+i*44);}else{vx.fillStyle='#C39A3E';vx.textAlign='right';vx.fillText('...',VW.w-60,80+i*44);}});}
+ else if(t<90){hdr(V.links);drawMap(30,58,700,290,t,amb);const n=arcs.filter(a=>t>=a.done).length;
+  vx.textAlign='left';vx.fillStyle='#C39A3E';vx.font='700 72px ui-monospace,Menlo,monospace';vx.fillText(n+'/10',770,170);vx.fillStyle='#E4DAC6';vx.font='22px ui-monospace,Menlo,monospace';vx.fillText(V.online,775,225);
+  if(t>78){vx.fillStyle='#85A0B5';vx.font='18px ui-monospace,Menlo,monospace';vx.fillText('NERC CIP v5 · ESP',775,275);}}
+ else if(t<102){hdr(V.tests);const names=['FAT','SAT','POINT-TO-POINT','FAILOVER / CIP-009','VULN. ASSESS. / CIP-010'];vx.font='22px ui-monospace,Menlo,monospace';
+  names.forEach((nm,i)=>{const y=82+i*52;vx.textAlign='left';vx.fillStyle='#E4DAC6';vx.fillText(nm,40,y);const ok=t>=TICKS9[i];const run=!ok&&(i===0||t>=TICKS9[i-1]);
+   vx.textAlign='right';vx.fillStyle=ok?'#9fd0a8':run?'#C39A3E':'#555';vx.fillText(ok?V.pass:run?'RUNNING':'--',420,y);});
+  drawMap(460,60,540,260,t,amb);}
+ else{hdr(V.live,'#DCC48F');
+  vx.fillStyle=(Math.floor(amb*1.6)%2)?'#C39A3E':'#5a4a24';vx.beginPath();vx.arc(VW.w-200,21,7,0,TAU);vx.fill();
+  drawMap(20,56,560,290,t,amb);
+  const mw=Math.round(880+170*Math.sin(amb*.35)+25*Math.sin(amb*2.1));
+  vx.textAlign='left';vx.fillStyle='#E4DAC6';vx.font='18px ui-monospace,Menlo,monospace';vx.fillText(V.out,610,72);
+  vx.fillStyle='#C39A3E';vx.font='700 60px ui-monospace,Menlo,monospace';vx.fillText(mw+' MW',610,122);
+  // trend
+  vx.strokeStyle='#DCC48F';vx.lineWidth=2.5;vx.beginPath();for(let i=0;i<=80;i++){const s=amb-8+i*.1;const v=880+170*Math.sin(s*.35)+25*Math.sin(s*2.1);const x=610+i*4.8,y=258-(v-650)/420*90;i?vx.lineTo(x,y):vx.moveTo(x,y);}vx.stroke();
+  vx.strokeStyle='#2c3a40';vx.lineWidth=1;vx.strokeRect(610,160,384,100);
+  vx.fillStyle='#E4DAC6';vx.font='18px ui-monospace,Menlo,monospace';vx.fillText(V.sites+' 10/10',610,295);vx.fillText(V.alarms+': 0 '+V.crit+' · '+(1+Math.floor(frac(amb/9)*3))+' '+V.warn,610,325);}
+ vx.strokeStyle='#23282A';vx.lineWidth=5;for(let i=1;i<4;i++){vx.beginPath();vx.moveTo(i*VW.w/4,0);vx.lineTo(i*VW.w/4,VW.h);vx.stroke();}vx.beginPath();vx.moveTo(0,VW.h/2);vx.lineTo(VW.w,VW.h/2);vx.stroke();
+ vtex.needsUpdate=true;
+}
+
+/* ---------- camera path ---------- */
+const CAM=[
+ [0,[44,30,44],[0,2,0]],[5,[32,22,32],[0,1,0]],[7.5,[6,19,24],[0,1,0]],[14,[3,18,22],[0,1,0]],
+ [16.5,[-1,11,11],[-8,2.5,-4]],[25,[0,11.5,12],[-8,2.5,-4]],
+ [28,[26,20,-24],[0,4,0]],[35.5,[24,18,-22],[0,4,0]],
+ [38.5,[5,4.6,7.2],[-7,2.3,-3]],[43.5,[3.5,4.5,6.2],[-7,2.3,-3]],
+ [46,[4,17,22],[1,1.5,-2]],[52.5,[2,15,20],[1,1.5,-2]],[55.5,[3,4.6,6.5],[-8,2.4,-3.5]],
+ [58,[2.5,4.6,5],[-9,1.8,-4.6]],[65,[1.5,4.4,5.5],[-9,1.8,-4.6]],
+ [68.5,[0,19,60],[0,18,0]],[77,[8,21,58],[0,19,0]],
+ [80,[38,24,48],[0,12,0]],[89,[40,26,46],[0,13,0]],
+ [92,[-12,28,38],[0,21,0]],[101,[-8,28,38],[0,21,0]],
+ [103.5,[1.5,4.4,6.8],[3,3.2,-7.5]],[109.5,[4.5,4.2,6.2],[3,3.2,-7.5]],
+ [112.5,[38,28,48],[0,12,0]],[118,[42,30,46],[0,12,0]]
+].map(([t,p,g])=>({t,p:new THREE.Vector3(...p),g:new THREE.Vector3(...g)}));
+const cp=new THREE.Vector3(),cg=new THREE.Vector3();
+function camAt(t){let i=0;while(i<CAM.length-1&&CAM[i+1].t<=t)i++;const a=CAM[i],b=CAM[Math.min(i+1,CAM.length-1)];
+ const u=b===a?0:smooth(clamp((t-a.t)/(b.t-a.t)));cp.lerpVectors(a.p,b.p,u);cg.lerpVectors(a.g,b.g,u);
+ const asp=camera.aspect;if(asp<1&&cp.y>6){const m=Math.max(1,Math.tan(27.5*D)/(Math.tan(camera.fov*D/2)*asp));cp.sub(cg).multiplyScalar(m).add(cg);}}
+
+/* ---------- state ---------- */
+let t=0,playing=true,speed=1,guided=true,amb=0,idle=0,last=performance.now(),curPh=-1;
+const TOASTS=[[5,9,'cut',''],[80,83,'esp','ok'],[86,89.5,'threat','warn'],[94,96.5,'down','warn'],[96.5,99,'bk',''],[99,101.8,'pass','ok'],[102,106.5,'live','ok']];
+const CIPMAP=[['002',0,2],['003',8,1],['004',8,3],['005',8,0],['006',5,3],['007',6,2],['008',8,4],['009',9,3],['010',6,3],['011',8,2]];
+const ticks=PH.map((p,i)=>i===9?TICKS9:L().ph[i].k.map((_,k,a)=>p.s+(k+1)/(a.length+1)*(p.e-p.s)));
+function spin(ts){const f=u=>Math.sin(TAU*u)*Math.sin(Math.PI*u)*3.4;if(ts<73)return 0;if(ts<93)return f((ts-73)/20);if(ts<100)return 0;return f(frac((ts-100)/24));}
+
+const tmp=new THREE.Vector3(),gW=new THREE.Vector3(),nW=new THREE.Vector3();
+const cipT=CIPMAP.map(([c,ph,k])=>ticks[ph][k]);
+const chipEls=CIPMAP.map(([c],i)=>{const b=document.createElement('button');b.textContent=c;b.onclick=()=>showCard('cip:'+i);$('chips').appendChild(b);return b;});
+function update(t){
+ applyAnims(t);
+ const ro=1-.9*ease(clamp((t-5)/2));M.roof.opacity=ro;M.roof.depthWrite=ro>.97;roof.castShadow=ro>.5;
+ fans.forEach((f,i)=>f.rotation.y=amb*(6+i));
+ M.led.emissiveIntensity=.7+.3*Math.sin(amb*7);M.ledG.emissiveIntensity=.5+.5*(Math.sin(amb*3.3)>0?1:.2);
+ if(t<54){M.mon.emissive.setHex(0x000000);}else if(t<102){M.mon.emissive.setHex(C.blue);M.mon.emissiveIntensity=.6;}else{M.mon.emissive.setHex(0x4f86ad);M.mon.emissiveIntensity=.9+.1*Math.sin(amb*2);}
+ beamMat.opacity=.25+.15*Math.sin(amb*3);
+ globe.getWorldPosition(gW);globeLabels.forEach(([lb,nd])=>{nd.getWorldPosition(nW);const n=nW.clone().sub(gW).normalize();const c=camera.position.clone().sub(nW).normalize();lb.visible=n.dot(c)>.3;});
+ pspMat.opacity=(t>=78&&t<90)?.6+.4*Math.sin(amb*5):.85;
+ hubRing.scale.setScalar(1+frac(amb*.8)*2.2);hubRing.material.opacity=1-frac(amb*.8);
+ gin.rotation.y=BASE_ROT+spin(t+idle);
+ arcs.forEach((a,i)=>{const down=i===CHILE&&t>=94&&t<99;a.am.color.setHex(down?C.red:C.gold);
+  const on=t>=90&&t>=a.done;a.pin.visible=on&&!down;a.pout.visible=on&&!down;
+  if(on){a.pin.position.copy(a.curve.getPoint(1-frac(amb*.28+i*.13)));a.pout.position.copy(a.curve.getPoint(frac(amb*.2+i*.31)));}});
+ bmat.opacity=(t>=96.5&&t<99)?1:.45;bpk.visible=t>=96.5&&t<99;if(bpk.visible)bpk.position.copy(bcurve.getPoint(1-frac(amb*.5)));
+ const shT=t>=86;threats.forEach(o=>{o.m.visible=shT;if(!shT)return;const f=frac(amb*.3+o.o);const r=2.6-1.6*Math.min(1,f/.88);
+  o.m.position.set(o.d.x*r*16,o.d.y*r*16*.55,o.d.z*r*16);
+  if(f>.88){const q=(f-.88)/.12;o.m.scale.setScalar(1+q*4);o.m.material.opacity=1-q;}else{o.m.scale.setScalar(1);o.m.material.opacity=1;}});
+ scene.children.forEach(c=>{if(c.userData.ring)c.userData.ring.material.opacity=.6+.3*Math.sin(amb*2+c.userData.ring.geometry.parameters.innerRadius);});
+ if(screen.visible)drawVW(t,amb);
+ updateUI(t);
+}
+
+/* ---------- UI ---------- */
+const track=$('track'),head=$('head');const segs=[];
+PH.forEach((p,i)=>{const s=document.createElement('div');s.className='sg';s.style.width=((p.e-p.s)/T*100)+'%';s.innerHTML='<i></i><span></span>';track.insertBefore(s,head);segs.push(s);});
+function applyLang(){
+ document.documentElement.lang=lang;
+ document.querySelectorAll('[data-i]').forEach(el=>{const v=L()[el.dataset.i];if(v!=null)el.textContent=v;});
+ $('aboutBody').innerHTML=L().aboutHtml;
+ segs.forEach((s,i)=>{s.querySelector('span').textContent=(i+1)+' '+L().short[i];s.title=L().ph[i].t;});
+ $('lenBtn').classList.toggle('on',lang==='en');$('lesBtn').classList.toggle('on',lang==='es');
+ labels.forEach(l=>l.userData.draw());curPh=-1;updBtns();if(cardKey)showCard(cardKey);
+ try{localStorage.setItem('rocc-lang',lang);}catch(e){}
+}
+function updBtns(){$('playBtn').textContent=playing?L().pause:L().play;const cb=$('camBtn');cb.textContent=guided?L().guided:L().free;cb.classList.toggle('on',!guided);
+ document.querySelectorAll('[data-sp]').forEach(b=>b.classList.toggle('on',+b.dataset.sp===speed));}
+let lastK=0,toastKey=null;
+function updateUI(t){
+ let idx=0;for(let i=0;i<PH.length;i++)if(t>=PH[i].s)idx=i;
+ if(idx!==curPh){curPh=idx;const P=L().ph[idx];
+  $('phEy').textContent=L().phase+' '+String(idx+1).padStart(2,'0')+' / '+PH.length+' · '+L().months[idx]+' ('+L().assumed+')';
+  $('phT').textContent=P.t;$('phD').textContent=P.d;$('tasks').innerHTML=P.k.map(k=>'<li>'+k+'</li>').join('');
+  segs.forEach((s,i)=>s.classList.toggle('cur',i===idx));}
+ const lis=$('tasks').children;for(let k=0;k<lis.length;k++)lis[k].classList.toggle('done',t>=ticks[idx][k]);
+ segs.forEach((s,i)=>{s.firstChild.style.width=(clamp((t-PH[i].s)/(PH[i].e-PH[i].s))*100)+'%';});
+ head.style.left='calc('+(t/T*100)+'% - 1.5px)';
+ const mm=Math.floor(t/60),ss=Math.floor(t%60);$('time').textContent=mm+':'+String(ss).padStart(2,'0')+' / 1:58';
+ // toasts
+ let tk=null;for(const x of TOASTS)if(t>=x[0]&&t<x[1])tk=x;const to=$('toast');
+ if(tk){if(toastKey!==tk[2]+lang){to.textContent=L().toasts[tk[2]];to.className='show '+tk[3];toastKey=tk[2]+lang;}}else if(toastKey){to.className='';toastKey=null;}
+ const now=performance.now();if(now-lastK<90)return;lastK=now;
+ const sch=clamp(t/102);$('kSch').textContent=Math.round(sch*100)+'%';$('bSch').style.width=sch*100+'%';
+ const bu=3*smooth(clamp(t/102));$('kBud').textContent='$'+bu.toFixed(2)+'M / $3.00M';$('bBud').style.width=bu/3*100+'%';
+ const pl=arcs.filter(a=>t>=a.done).length;$('kPl').textContent=pl+' / 10';$('bPl').style.width=pl*10+'%';
+ const zn=RR.filter((_,i)=>t>=78.5+i*1.2+.6).length;$('kZn').textContent=zn+' / 4';$('bZn').style.width=zn*25+'%';
+ const cn=cipT.filter(x=>t>=x).length;$('kCip').textContent=cn+' / 10';chipEls.forEach((b,i)=>{b.classList.toggle('on',t>=cipT[i]);b.title='CIP-'+CIPMAP[i][0]+' · '+L().cipN[i];});
+ const ts=TICKS9.filter(x=>t>=x).length;$('kTs').textContent=ts+' / 5';$('bTs').style.width=ts*20+'%';
+ $('ops').classList.toggle('show',t>=102);
+ if(t>=102){const g=1.3*ease(clamp((t-104)/5));$('kGw').textContent=L().gwPre+g.toFixed(1)+L().gwPost;
+  const h=frac(amb/14)*24;$('kClk').textContent=String(Math.floor(h)).padStart(2,'0')+':'+String(Math.floor(frac(h)*60)).padStart(2,'0');}
+ $('hint').style.opacity=(t<10||!guided)?1:0;
+}
+// card
+let cardKey=null;
+function showCard(k){cardKey=k;let it,title;
+ if(k.startsWith('cip:')){const i=+k.split(':')[1];it=['',L().cipD[i],0];title='CIP-'+CIPMAP[i][0]+' · '+L().cipN[i];}
+ else if(k.startsWith('site:')){const i=+k.split(':')[1];it=L().info.site;title=SITES[i].n[lang==='es'?1:0]+' · '+it[0];}else{it=L().info[k];title=it&&it[0];}
+ if(!it)return;$('cT').textContent=title;$('cB').textContent=it[1];$('cA').style.display=it[2]?'inline-block':'none';$('card').classList.add('show');}
+$('cardX').onclick=()=>{$('card').classList.remove('show');cardKey=null;};
+// picking
+const ray=new THREE.Raycaster(),mouse=new THREE.Vector2();
+const shown=o=>{while(o){if(!o.visible)return false;o=o.parent;}return true;};
+function pick(ev){const r=canvas.getBoundingClientRect();mouse.set((ev.clientX-r.left)/r.width*2-1,-(ev.clientY-r.top)/r.height*2+1);ray.setFromCamera(mouse,camera);
+ const hits=ray.intersectObjects(clickables,true);for(const h of hits){if(h.object.isSprite)continue;if(!shown(h.object))continue;let o=h.object;while(o&&!o.userData.key)o=o.parent;if(o)return o.userData.key;}return null;}
+let down=null,hovT=0;
+canvas.addEventListener('pointerdown',e=>{down={x:e.clientX,y:e.clientY};});
+canvas.addEventListener('pointerup',e=>{if(down&&Math.hypot(e.clientX-down.x,e.clientY-down.y)<6){const k=pick(e);if(k)showCard(k);}down=null;});
+canvas.addEventListener('pointermove',e=>{if(e.buttons)return;const n=performance.now();if(n-hovT<80)return;hovT=n;canvas.classList.toggle('hot',!!pick(e));});
+controls.addEventListener('start',()=>{if(guided){guided=false;updBtns();}});
+// buttons
+$('playBtn').onclick=()=>{if(!playing&&t>=T){t=0;idle=0;}playing=!playing;updBtns();};
+$('rstBtn').onclick=()=>{t=0;idle=0;playing=true;guided=true;updBtns();};
+$('camBtn').onclick=()=>{guided=!guided;updBtns();};
+document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{speed=+b.dataset.sp;updBtns();});
+$('lenBtn').onclick=()=>{lang='en';applyLang();};$('lesBtn').onclick=()=>{lang='es';applyLang();};
+$('aboutBtn').onclick=()=>$('about').classList.add('show');$('aboutX').onclick=()=>$('about').classList.remove('show');
+$('about').addEventListener('click',e=>{if(e.target.id==='about')$('about').classList.remove('show');});
+let drag=false;
+function seek(e){const r=track.getBoundingClientRect();t=clamp((e.clientX-r.left)/r.width)*T;idle=0;guided=true;updBtns();}
+track.addEventListener('pointerdown',e=>{drag=true;track.setPointerCapture(e.pointerId);seek(e);});
+track.addEventListener('pointermove',e=>{if(drag)seek(e);});
+track.addEventListener('pointerup',()=>{drag=false;});
+window.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;
+ if(e.code==='Space'){e.preventDefault();$('playBtn').click();}
+ if(e.code==='ArrowRight'){let i=PH.findIndex(p=>p.s>t+.01);if(i<0)i=PH.length-1;t=PH[i].s+.01;guided=true;updBtns();}
+ if(e.code==='ArrowLeft'){let i=0;for(let j=0;j<PH.length;j++)if(PH[j].s<t-.6)i=j;t=PH[i].s+.01;guided=true;updBtns();}});
+
+function resize(){const w=window.innerWidth,h=window.innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=camera.aspect<1?Math.min(75,2*Math.atan(Math.tan(27.5*D)/camera.aspect)/D):45;camera.updateProjectionMatrix();}
+window.addEventListener('resize',resize);resize();
+applyLang();
+
+function frame(now){
+ const dt=Math.min(.05,(now-last)/1000);last=now;amb+=dt;
+ if(playing){t+=dt*speed;if(t>=T){t=T;playing=false;updBtns();}}
+ if(t>=T)idle+=dt;else idle=0;
+ update(t);
+ if(guided){camAt(t);camera.position.copy(cp);controls.target.copy(cg);camera.lookAt(cg);}else controls.update();
+ renderer.render(scene,camera);requestAnimationFrame(frame);
+}
+window.__rocc={seek:v=>{t=v;playing=false;updBtns();},get t(){return t;}};
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
